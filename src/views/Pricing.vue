@@ -1,4 +1,6 @@
 <template>
+    <MainHeader/>
+
     <!-- Breadcrumb -->
     <div class="inner-page-header section-padding style-dark mb-5">
       <div class="container">
@@ -102,11 +104,16 @@
         </div>
     </section>
     <!-- Pricing Content End -->
+
+    <MainFooter/>
 </template>
 <script>
+import MainHeader from './MainHeader.vue'
+import MainFooter from './MainFooter.vue'
 export default {
-    mounted(){
-        window.scrollTo(0,0)
-    }
+    mounted() {
+        window.scrollTo(0, 0);
+    },
+    components: { MainHeader, MainFooter }
 }
 </script>

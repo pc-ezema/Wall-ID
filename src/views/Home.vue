@@ -1,4 +1,6 @@
 <template>
+  <MainHeader/>
+  
   <img class="blob_img" src="@/assets/images/blob.svg" alt="">
   <!-- Welcome Screen -->
   <section class="hero-area hero-bg d-flex align-items-center dot-bg mb-5">
@@ -11,7 +13,7 @@
                 Wall-ID helps individuals, groups and organisations easily manage membership and facilitate access control via a simple mobile application.
               </p>
               <div class="btn-div">
-                <a href="http://wall.greenmouseproperties.com/register/account-type" target="_blank">Sign Up For Free! <i class="fas fa-sign-in-alt"></i></a>
+                <router-link to="/signup-option" class="routerLink"><a>Sign Up For Free! <i class="fas fa-sign-in-alt"></i></a></router-link>
               </div>
             <div class="section-btn-box hero-btn-box pt-2">
               <a class="download-btn" href="#"><img src="@/assets/images/btn-app-store.svg" alt="App Store"></a>
@@ -280,12 +282,17 @@
     </div>
   </section>
   <!-- Download Mobile App Ends -->
+
+  <MainFooter/>
 </template>
 
 <script>
+import MainHeader from './MainHeader.vue'
+import MainFooter from './MainFooter.vue'
 export default {
     mounted(){
         window.scrollTo(0,0)
-    }
+    },
+    components:{ MainHeader, MainFooter, }
 }
 </script>

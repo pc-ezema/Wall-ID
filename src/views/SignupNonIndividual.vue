@@ -1,4 +1,6 @@
 <template>
+    <MainHeader/>
+
     <section class="login-area-sign">
         <div class="row m-0">
             <div class="col-lg-3"></div>
@@ -181,11 +183,16 @@
             <div class="col-lg-3"></div>
         </div>
     </section>
+
+    <MainFooter/>
 </template>
 <script>
+import MainHeader from './MainHeader.vue'
+import MainFooter from './MainFooter.vue'
 export default {
-    mounted(){
-        window.scrollTo(0,0)
-    }
+    mounted() {
+        window.scrollTo(0, 0);
+    },
+    components: { MainHeader, MainFooter }
 }
 </script>

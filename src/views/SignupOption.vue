@@ -1,4 +1,6 @@
 <template>
+    <MainHeader/>
+
     <div class="signup-portal-div">
         <div class="col-md-12 text-center">
             <h3>How are you signing up?</h3>
@@ -45,11 +47,16 @@
             <p>Already have a wall-id account? <router-link :to="{name: 'Login'}"><a>Login</a></router-link></p>
         </div> 
     </div>
+
+    <MainFooter/>
 </template>
 <script>
+import MainHeader from './MainHeader.vue'
+import MainFooter from './MainFooter.vue'
 export default {
-    mounted(){
-        window.scrollTo(0,0)
-    }
+    mounted() {
+        window.scrollTo(0, 0);
+    },
+    components: { MainHeader, MainFooter }
 }
 </script>
