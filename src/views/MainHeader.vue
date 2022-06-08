@@ -64,8 +64,14 @@
 <script>
 import $ from 'jquery'
 export default {
+    methods: { 
+        scrollToTop() {
+            window.scrollTo(0,0);
+        }
+    },
     mounted() {
         window.scrollTo(0, 0)
+
         var $ = require('jquery')
         (function ($) {
             "use strict";
@@ -81,6 +87,6 @@ export default {
                 });
             });
         })
-    }
+    },
 }
 </script>

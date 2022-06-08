@@ -1564,14 +1564,55 @@ About
 
 /*** FORM SECTION HERE ****/
 .signup-portal-div {
-    padding: 130px 10px 40px 10px !important;
+    padding: 150px 10px 40px 10px !important;
     background-color: rgb(255, 255, 255);
   }
   .signup-portal-div h3{
     padding-bottom: 30px;
-    color: #000;
-    font-size: 28px;
+    color: #7406c2;
+    font-size: 23px;
     font-weight: 600;
+  }
+  .signupColumn{
+    padding: 20px 20px 10px 20px;
+    border-radius: 10px;
+    transition: all 0.6s ease-in-out;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 20px;
+  }
+  @media(max-width: 1399px){
+    .signupColumn{
+      height: 120px;
+    }
+  }
+  @media(max-width: 991px){
+    .signupColumn{
+      height: auto;
+      width: 100%;
+    }
+  }
+  .signupColumn:hover {
+    transform: scale(1.1);
+  }
+  .signupColumnOrganisation{
+    background-color: rgb(255, 241, 214);
+    border: 1px solid orange;
+  }
+  .signupColumnIndividual{
+    background-color: rgb(255, 229, 249);
+    border: 1px solid rgb(249, 74, 103);
+  }
+  .signupColumn h4{
+    color: #000;
+    font-weight: 500;
+    font-size: 20px;
+  }
+  .signupColumn p{
+    color: #000;
+    font-weight: 400;
+    font-size: 15px;
+    padding: 1px;
   }
   .signup-portal-div .hover-div{
     max-width: 60%;
@@ -1596,11 +1637,6 @@ About
   }
   .signup-portal-div a{
     text-decoration: none;
-  }
-  .signup-portal-div p{
-    margin-top: -20px;
-    color: #000;
-    font-weight: 500;
   }
   .signup-portal-div p a{
     color: #7406c2;
@@ -1685,7 +1721,7 @@ About
     width: 100%;
     text-align: center;
     font-size: 14px;
-    margin-top: 18px;
+    margin-top: 6px;
   }
   .form-form-div .forgot-password{
       text-align: center !important;

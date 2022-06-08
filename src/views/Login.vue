@@ -8,19 +8,19 @@
                     <div class="login-content">
                         <div class="login-form">
                             <div class="col-lg-12 text-center">
-                                <h3>Welcome Back!</h3>
-                                <p>Login to your Wall-ID account to continue.</p>
+                                <h3>Login</h3>
+                                <p>Enter your Wall-ID details to continue.</p>
                             </div>
                             <form class="form-form-div">
-                                <!-- Wall-ID Number or Email Here -->
+                                <!-- Email Here -->
                                 <div>
-                                    <label for="full name">Wall-ID No or Email</label>
-                                    <input type="text" required placeholder="Enter your wall-id number or email">
+                                    <label>Email</label>
+                                    <input type="text" required placeholder="Enter your email">
                                 </div>
 
                                 <!-- Password Here -->
                                 <div>
-                                    <label for="password">Password</label>
+                                    <label>Password</label>
                                     <input type="password" required placeholder="*********">
                                 </div>
 
@@ -35,7 +35,7 @@
                                 </div>
 
                                 <!-- Alread Have An Account -->
-                                <div class="already">Don't have a wall-id account? <router-link :to="{name: 'SignupOption'}"><a>Sign Up</a></router-link></div>
+                                <div class="already">Don't have an account? <router-link :to="{name: 'SignupOption'}"><a>Sign Up</a></router-link></div>
                             </form>
                         </div>
                     </div>

@@ -4,31 +4,19 @@
     <section class="login-area-sign">
         <div class="row m-0">
             <div class="col-lg-3"></div>
-            <div class="col-lg-6">
+            <div class="col-lg-6 col-md-12">
                 <div class="login-content signup-content-only">
                     <div class="login-form">
                         <div class="col-lg-12 text-center">
-                            <h3>Individual Sign Up</h3>
+                            <h3>Organisation Sign Up</h3>
                             <p>Fill up the form below to sign up for your Wall-ID account.</p>
                         </div>
                         <form class="form-form-div">
                             <div class="row">
-                                <!-- First Name Here -->
-                                <div class="col-lg-6">
-                                    <label>First Name</label>
-                                    <input type="text" required placeholder="Enter first name">
-                                </div>
-
-                                <!-- Last Name Here -->
-                                <div class="col-lg-6">
-                                    <label>Last Name</label>
-                                    <input type="text" required placeholder="Enter last name">
-                                </div>
-
-                                <!-- Username Here -->
+                                <!-- Company Name Here -->
                                 <div class="col-lg-12">
-                                <label>Username</label>
-                                <input type="text" required placeholder="Enter your preferred unique username">
+                                    <label>Company Name</label>
+                                    <input type="text" required placeholder="Enter your company name">
                                 </div>
 
                                 <!-- Email Here -->
@@ -61,6 +49,16 @@
                                     <input type="password" required placeholder="*********">
                                 </div>
 
+                                <!-- Access type -->
+                                <div class="col-lg-12">
+                                    <label>Access Type</label>
+                                    <select>
+                                        <option>Select Type</option>
+                                        <option>Free Pass</option>
+                                        <option>Restricted</option>
+                                    </select>
+                                </div>
+
                                 <!-- Accept Privacy Policy -->
                                 <div class="col-lg-12 accept-terms">By clicking submit, you agree to Wall-ID <a href="#">Terms of Service</a> and <a href="#">Privacy Policy.</a></div>
 
@@ -71,13 +69,13 @@
                             </div>
 
                             <!-- Alread Have An Account -->
-                            <div class="already">Not an individual? <router-link to="signup-organisation"><a>Sign up as an organisation</a></router-link></div>
+                            <div class="already">Not an organisation? <router-link to="signup-individual"><a>Sign up as an individual</a></router-link></div>
                             <div class="already">Already have a wall-id account? <router-link :to="{name: 'Login'}"><a>Login</a></router-link></div>
                         </form>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-3 p-0"></div>
+            <div class="col-lg-3"></div>
         </div>
     </section>
 

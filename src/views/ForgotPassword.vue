@@ -8,19 +8,19 @@
                 <div class="login-content">
                     <div class="login-form">
                         <div class="col-lg-12 text-center">
-                            <h3>Forgot Password?</h3>
-                            <p>Enter your registered email below.</p>
+                            <h3>Forgot Password</h3>
+                            <p>Please enter your email to reset your password</p>
                         </div>
                         <form class="form-form-div">
                             <!-- Email Here -->
                             <div>
                                 <label for="full name">Email</label>
-                                <input type="email" placeholder="Type email" required>
+                                <input type="email" placeholder="Enter email" required>
                             </div>
 
                             <!-- Submit Button Here-->
                             <div class="signup-btn-div text-center">
-                                <input type="submit" value="Submit" class="submit-form">
+                                <input type="submit" value="Send email" class="submit-form">
                             </div>
 
                             <!-- Forgot Password Here -->

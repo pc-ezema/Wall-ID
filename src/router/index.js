@@ -8,7 +8,7 @@ import Login from '../views/Login.vue'
 import ForgotPassword from '../views/ForgotPassword.vue'
 import SignupOption from '../views/SignupOption.vue'
 import SignupIndividual from '../views/SignupIndividual.vue'
-import SignupNonIndividual from '../views/SignupNonIndividual.vue'
+import SignupOrganisation from '../views/SignupOrganisation.vue'
 import Page404 from '../views/Page404.vue'
 
 // Individual Dashboard
@@ -128,9 +128,9 @@ const routes = [
       title: 'Signup Individual | WALLID'
     }
   },
-  {path: '/signup-non-individual', name: 'SignupNonIndividual', component: SignupNonIndividual,
+  {path: '/signup-organisation', name: 'SignupOrganisation', component: SignupOrganisation,
     meta: {
-      title: 'Signup Non-Individual | WALLID'
+      title: 'Signup Organisation | WALLID'
     }
   },
   {path: '/:catchAll(.*)', name: 'Page404', component: Page404,
@@ -392,9 +392,6 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
-  scrollBehavior(){
-    return {x: 0, y: 0}
-  }
 })
 
 export default router
