@@ -23,7 +23,7 @@
                </div>
 
                <!--Boxes Section-->
-               <div class="row mb-3">
+               <div class="row mb-3 justify-content-center">
                    <!--Box 1-->
                    <div class="col-lg-4 mb-4">
                         <div class="ser-box serbox1">
@@ -64,6 +64,20 @@
                                 </a>
                             </router-link>
                             <p><i class="bi bi-question-circle-fill" data-toggle="modal" data-target="#modalMember"></i></p>
+                        </div>
+                    </div>
+                    <!--Box 4-->
+                    <div class="col-lg-6 mb-4">
+                        <div class="ser-box serbox4">
+                            <router-link to="/organisation-dashboard/verification">
+                                <a>
+                                    <h5>
+                                        <img src="@/assets/img/dashAssets/serBox4.png" draggable="false">
+                                        <span>Verification</span>
+                                    </h5>
+                                </a>
+                            </router-link>
+                            <p><i class="bi bi-question-circle-fill" data-toggle="modal" data-target="#modalVerify"></i></p>
                         </div>
                     </div>
                </div>
@@ -184,6 +198,22 @@
                     <div class="modal-content serboxModal">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLongTitle">Membership & Subscription</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Join organisations, request for membership and pay for membership subscriptons</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Box 4-->
+            <div class="modal fade" id="modalVerify" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content serboxModal">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Verification</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>

@@ -53,6 +53,16 @@
                                         <option>Casual</option>
                                     </select>
                                 </div>
+                                <!--Visibility-->
+                                <div class="col-lg-12 mb-3">
+                                    <label>Visibility</label>
+                                    <select class="input">
+                                        <option hidden>Choose Event Visibility</option>
+                                        <option>Open</option>
+                                        <option>Semi-open</option>
+                                        <option>Close</option>
+                                    </select>
+                                </div>
                                 <!--Add photo of event-->
                                 <div class="col-lg-12 mb-3">
                                     <label>Add Photo of Event</label>
@@ -67,16 +77,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!--Event type-->
-                                <div class="col-lg-12 mb-3">
-                                    <label>Visibility</label>
-                                    <select class="input">
-                                        <option hidden>Choose Event Visibility</option>
-                                        <option>Open</option>
-                                        <option>Semi-open</option>
-                                        <option>Close</option>
-                                    </select>
                                 </div>
                             </div>
                             <div class="row">

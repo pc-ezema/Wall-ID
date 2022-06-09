@@ -43,7 +43,6 @@
                                                 <th scope="col">Start Date</th>
                                                 <th scope="col">End Date</th>
                                                 <th scope="col">Image</th>
-                                                <th scope="col">Status</th>
                                                 <th scope="col">Action</th>
                                             </tr>
                                         </thead>
@@ -57,9 +56,6 @@
                                                 <td>2022-03-30</td>
                                                 <td>
                                                    <img src="@/assets/img/dashAssets/eventImg.jpg">
-                                                </td>
-                                                <td>
-                                                   <a href="#" class="status_btn">Active</a>
                                                 </td>
                                                 <td>
                                                    <div class="action_btns d-flex">

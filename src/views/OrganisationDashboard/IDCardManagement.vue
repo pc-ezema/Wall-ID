@@ -24,19 +24,27 @@
 
                <!--Boxes Section-->
                <div class="row justify-content-center mb-5">
-                   <router-link to="/organisation-dashboard/create-id" class="innerSerBox innerSerBox1">
+                   <router-link to="/organisation-dashboard/create-template" class="innerSerBox innerSerBox1">
                         <a>
                             <div class="text-center">
                                 <img src="@/assets/img/dashAssets/innerSerBox1.png" draggable="false">
-                                <p>Create ID</p>
+                                <p>Create Template</p>
                             </div>
                         </a>
                     </router-link>
-                    <router-link to="/organisation-dashboard/created-cards" class="innerSerBox innerSerBox2">
+                    <router-link to="/organisation-dashboard/created-template" class="innerSerBox innerSerBox2">
                         <a>
                             <div class="text-center">
                                 <img src="@/assets/img/dashAssets/innerSerBox2.png" draggable="false">
-                                <p>Created Cards</p>
+                                <p>Created Template</p>
+                            </div>
+                        </a>
+                    </router-link>
+                    <router-link to="/organisation-dashboard/member-id" class="innerSerBox innerSerBox4">
+                        <a>
+                            <div class="text-center">
+                                <img src="@/assets/img/dashAssets/innerSerBox2.png" draggable="false">
+                                <p>Members IDs</p>
                             </div>
                         </a>
                     </router-link>

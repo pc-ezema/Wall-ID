@@ -26,6 +26,11 @@
                <!--Boxes Section-->
                <div class="row justify-content-center mt-3 secForm">
                    <div class="col-lg-11 secFormHead">
+                        <h5>
+                            <router-link to="/individual-dashboard/add-subscription-plan"><a><i class="bi bi-plus-circle-fill"></i> Add New Subscription Plans</a></router-link>
+                        </h5>
+                   </div>
+                   <div class="col-lg-11 secFormHead">
                         <h5>All Subscription Plans</h5>
                    </div>
                    <div class="col-lg-11 mt-3">

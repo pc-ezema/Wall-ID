@@ -14,7 +14,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="dashboard_header_title">
-                                        <h3>Student Card</h3>
+                                        <h3>My Cards</h3>
                                         <p><router-link to="/individual-dashboard/id-card-management"><a><i class="bi bi-arrow-left"></i> ID Card Management</a></router-link></p>
                                     </div>
                                 </div>
@@ -27,8 +27,15 @@
                <div class="row justify-content-center mt-3 secForm">
                    <div class="col-lg-11 secFormHead">
                         <h5>
-                            <router-link to="/individual-dashboard/create-id"><a><i class="bi bi-plus-circle-fill"></i> Add Business ID Card</a></router-link>
+                            <router-link to="/individual-dashboard/add-card"><a><i class="bi bi-plus-circle-fill"></i> Add ID Card</a></router-link>
                         </h5>
+                   </div>
+                   <div class="col-lg-11 filterSelect">
+                        <select>
+                            <option hidden>Filter</option>
+                            <option>Approved</option>
+                            <option>Pending</option>
+                        </select>
                    </div>
                    <div class="col-lg-11 mt-3">
                      <div class="white_card card_height_100 mb_30">
@@ -42,9 +49,7 @@
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Issued By</th>
                                                 <th scope="col">Issued Date</th>
-                                                <th scope="col">Expiry Date</th>
-                                                <th scope="col">Category</th>
-                                                <th scope="col">Role</th>
+                                                <th scope="col">Status</th>
                                                 <th scope="col">Action</th>
                                             </tr>
                                         </thead>
@@ -54,9 +59,20 @@
                                                 <td>Name Surname</td>
                                                 <td>Name Surname</td>
                                                 <td>2022-03-15</td>
-                                                <td>2023-03-15</td>
-                                                <td>Business</td>
-                                                <td>Secretary</td>
+                                                <td><a class="a-approved">Approved</a></td>
+                                                <td>
+                                                   <div class="action_btns d-flex">
+                                                      <a href="#" title="View" class="action_btn"> <i class="bi bi-eye-fill"></i> </a>
+                                                      <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a>
+                                                  </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">2</th>
+                                                <td>Name Surname</td>
+                                                <td>Name Surname</td>
+                                                <td>2022-03-15</td>
+                                                <td><a class="a-pending">Pending</a></td>
                                                 <td>
                                                    <div class="action_btns d-flex">
                                                       <a href="#" title="View" class="action_btn"> <i class="bi bi-eye-fill"></i> </a>
@@ -87,6 +103,7 @@
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
+<style scoped src="@/assets/css/styleDashboardSupport.css"></style>
 <script>
 import DashboardSidebar from './DashboardSidebar.vue'
 import DashboardNavbar from './DashboardNavbar.vue';

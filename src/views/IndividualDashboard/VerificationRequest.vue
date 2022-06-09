@@ -40,7 +40,7 @@
                                 <div class="searchResult mb-2">
                                     <p>Search Result <span>(1)</span></p>
                                 </div>
-                                <router-link to="/individual-dashboard/organisation-details">
+                                <router-link to="/individual-dashboard/organisation-verifier">
                                     <div class="resultDivDisplay">
                                         <div class="resultPicture">
                                             <div class="pictureDiv">
@@ -62,14 +62,7 @@
                        <!-- Show this page below only if the users select an organisation-->
                        <!--
                        -------
-                       check page in OrganisationDetails.vue
-                       -------
-                       -->
-
-                        <!-- Show this page below only if the users has selected an organisation and click on the create card button-->
-                        <!--
-                       -------
-                       check page in CreateID.vue
+                       check page in OrganisationVerifier.vue
                        -------
                        -->
                         

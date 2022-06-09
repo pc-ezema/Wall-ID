@@ -26,6 +26,11 @@
                <!--Boxes Section-->
                <div class="row justify-content-center mt-3 secForm">
                    <div class="col-lg-11 secFormHead">
+                        <h5>
+                            <router-link to="/individual-dashboard/join-new-organisation"><a><i class="bi bi-plus-circle-fill"></i> Join New Organisation</a></router-link>
+                        </h5>
+                   </div>
+                   <div class="col-lg-11 secFormHead">
                         <h5>All Membership</h5>
                    </div>
                    <div class="col-lg-11 mt-3">

@@ -35,10 +35,9 @@
                 </router-link>
                <ul>
                   <li><router-link to="/individual-dashboard/id-card-management" class="menuRouter"><a>Overview</a></router-link></li>
-                  <li><router-link to="/individual-dashboard/create-id" class="menuRouter"><a>Create ID</a></router-link></li>
-                  <li><router-link to="/individual-dashboard/business-card" class="menuRouter"><a>Business Card</a></router-link></li>
-                  <li><router-link to="/individual-dashboard/health-card" class="menuRouter"><a>Health Card</a></router-link></li>
-                  <li><router-link to="/individual-dashboard/student-card" class="menuRouter"><a>Student Card</a></router-link></li>
+                  <li><router-link to="/individual-dashboard/add-card" class="menuRouter"><a>Add Cards</a></router-link></li>
+                  <li><router-link to="/individual-dashboard/my-cards" class="menuRouter"><a>My Cards</a></router-link></li>
+                  <li><router-link to="/individual-dashboard/pending-cards" class="menuRouter"><a>Pending Cards</a></router-link></li>
                </ul>
             </li>
             <!--Event Management-->
@@ -81,8 +80,24 @@
                    <li><router-link to="/individual-dashboard/history" class="menuRouter"><a>History</a></router-link></li>
                 </ul>
             </li>
-            <!--My Wallet-->
+            <!--Verification-->
             <li class="">
+                <router-link to="#" class="has-arrow menuRouter">
+                    <a aria-expanded="false">
+                    <div class="nav_icon_small">
+                        <img src="@/assets/img/dashAssets/menu-verify.png">
+                    </div>
+                    <div class="nav_title">
+                        <span>Verification</span>
+                    </div>
+                    </a>
+                </router-link>
+                <ul>
+                   <li><router-link to="/individual-dashboard/verification-request" class="menuRouter"><a>Verification Request</a></router-link></li>
+                </ul>
+            </li>
+            <!--My Wallet-->
+            <!-- <li class="">
                 <router-link to="#" class="has-arrow menuRouter">
                     <a aria-expanded="false">
                         <div class="nav_icon_small">
@@ -100,7 +115,7 @@
                   <li><router-link to="/individual-dashboard/membership-cards" class="menuRouter"><a>Membership Cards</a></router-link></li>
                   <li><router-link to="/individual-dashboard/tickets" class="menuRouter"><a>Tickets</a></router-link></li>
                </ul>
-           </li>
+           </li> -->
             <!--Log Out-->
             <li class="">
                 <router-link to="#" class="menuRouter">

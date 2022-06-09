@@ -15,7 +15,7 @@
                                 <div class="col-lg-12">
                                     <div class="dashboard_header_title">
                                         <h3>Create ID</h3>
-                                        <p><router-link to="/individual-dashboard/id-card-management"><a><i class="bi bi-arrow-left"></i> ID Card Management</a></router-link></p>
+                                        <p><router-link to="/individual-dashboard/add-card"><a><i class="bi bi-arrow-left"></i> Go back</a></router-link></p>
                                     </div>
                                 </div>
                             </div>
@@ -30,89 +30,30 @@
                    </div>
                    <div class="col-lg-11 mt-3">
                         <form>
-                            <div class="row justify-content-center">
-                                <!--Holders username-->
+                            <div class="row">
                                 <div class="col-lg-12 mb-3">
-                                    <label>Holders Username</label>
-                                    <input type="text" class="input" placeholder="Wall ID username">
+                                    <label>Holders Full Name</label>
+                                    <input type="text" class="input" placeholder="Holders Full Name">
                                 </div>
-                                <!--Role-->
                                 <div class="col-lg-6 mb-3">
-                                    <label>Role</label>
-                                    <input type="text" class="input" placeholder="Holders role">
-                                </div>
-                                <!--Category-->
-                                <div class="col-lg-6 mb-3">
-                                    <label>Category</label>
-                                    <select class="input">
-                                        <option hidden>Select Category</option>
-                                        <option>Business Card</option>
-                                        <option>Health Card</option>
-                                        <option>Student Card</option>
-                                    </select>
-                                </div>
-                                <!--Date issued-->
-                                <div class="col-lg-6 mb-3">
-                                    <label>Date Issued</label>
+                                    <label>Date Joined</label>
                                     <input type="date" class="input">
                                 </div>
-                                <!--Expiry date-->
-                                <div class="col-lg-6 mb-3">
-                                    <label>Expiry Date</label>
-                                    <input type="date" class="input">
-                                </div>
-                                <!--Layout-->
                                 <div class="col-lg-12 mb-3">
-                                    <label>Layout</label>
-                                    <select class="input">
-                                        <option hidden>Choose a layout</option>
-                                        <option>Horizontal</option>
-                                        <option>Vertical</option>
-                                    </select>
-                                </div>
-                                <!--Template-->
-                                <div class="col-lg-12 mb-3">
-                                    <label>Template</label>
-                                    <div class="accordion" id="showTemplate">
-                                        <div class="accordion-item">
-                                          <h2 class="accordion-header">
-                                            <button class="collapsed template-btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                              Choose a template
-                                            </button>
-                                          </h2>
-                                          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#showTemplate">
-                                            <div class="accordion-body">
-                                                <div class="template-div">
-                                                   <div class="row justify-content-center">
-                                                      <div class="col-md-6">
-                                                         <!--Template 1-->
-                                                         <label class="labelTemp">
-                                                            <input checked type="radio" name="template" id="templateOne" />
-                                                            <div class="plan-content">
-                                                            <h5>Template 1</h5>
-                                                            <img src="@/assets/img/dashAssets/template1.png" draggable="false">
-                                                            </div>
-                                                         </label>
-                                                      </div>
-                                                      <div class="col-md-6">
-                                                         <!--Template 2-->
-                                                         <label class="labelTemp">
-                                                            <input type="radio" name="template" id="templateTwo" />
-                                                            <div class="plan-content">
-                                                              <h5>Template 2</h5>
-                                                              <img src="@/assets/img/dashAssets/template1.png" draggable="false">
-                                                            </div>
-                                                          </label>
-                                                      </div>
-                                                   </div>
-                                                </div>
+                                    <label>Select ID Image</label>
+                                    <div class="col-ting">
+                                        <div class="control-group file-upload" id="file-upload1">
+                                            <div class="image-box text-center">
+                                                <p>Upload Photo</p>
+                                                <img src="" alt="">
                                             </div>
-                                          </div>
+                                            <div class="controls" style="display: none;">
+                                                <input type="file" name="contact_image_1"/>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <!--Button-->
-                                <div class="col-lg-3 text-center mb-3">
+                                <div class="col-lg-12 text-center mb-3 mt-4">
                                     <button type="submit" class="button">Create ID</button>
                                 </div>
                             </div>
@@ -142,6 +83,31 @@ export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
     mounted() {
         window.scrollTo(0, 0)
+
+        $(".image-box").click(function(event) {
+        var previewImg = $(this).children("img");
+
+        $(this)
+            .siblings()
+            .children("input")
+            .trigger("click");
+
+        $(this)
+            .siblings()
+            .children("input")
+            .change(function() {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    var urll = e.target.result;
+                    $(previewImg).attr("src", urll);
+                    previewImg.parent().css("background", "transparent");
+                    previewImg.show();
+                    previewImg.siblings("p").hide();
+                };
+                reader.readAsDataURL(this.files[0]);
+            });
+        });
     }
 }
 </script>

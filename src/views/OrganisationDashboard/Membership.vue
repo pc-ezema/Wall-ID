@@ -28,6 +28,15 @@
                    <div class="col-lg-11 secFormHead">
                         <h5>All Membership</h5>
                    </div>
+                   <div class="col-lg-11 filterSelect">
+                        <select>
+                            <option>Filter</option>
+                            <option>Pending</option>
+                            <option>Declined</option>
+                            <option>Activated</option>
+                            <option>Deactivated</option>
+                        </select>
+                   </div>
                    <div class="col-lg-11 mt-3">
                      <div class="white_card card_height_100 mb_30">
                         <div class="white_card_body">

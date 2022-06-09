@@ -48,8 +48,16 @@
                         </div>
                     </form>
                    </div>
-                   <div class="col-lg-11 secFormHead">
+                   <div class="col-lg-11 secFormHead mt-2">
                      <h5>All my invitations</h5>
+                   </div>
+                   <div class="col-lg-11 filterSelect">
+                        <select>
+                            <option>Filter</option>
+                            <option>All</option>
+                            <option>Accepted</option>
+                            <option>Declined</option>
+                        </select>
                    </div>
                    <div class="col-lg-11 mt-3">
                      <div class="white_card card_height_100 mb_30">

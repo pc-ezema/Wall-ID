@@ -14,7 +14,8 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="dashboard_header_title">
-                                        <h3>ID Card Management</h3>
+                                        <h3>All Subscription Plan</h3>
+                                        <p><router-link to="/individual-dashboard/subscriptions"><a><i class="bi bi-arrow-left"></i> Go Back</a></router-link></p>
                                     </div>
                                 </div>
                             </div>
@@ -23,31 +24,10 @@
                </div>
 
                <!--Boxes Section-->
-               <div class="row justify-content-center mb-5">
-                   <router-link to="/individual-dashboard/add-card" class="innerSerBox innerSerBox2">
-                        <a>
-                            <div class="text-center">
-                                <img src="@/assets/img/dashAssets/innerSerBox2.png" draggable="false">
-                                <p>Add Cards</p>
-                            </div>
-                        </a>
-                    </router-link>
-                    <router-link to="/individual-dashboard/my-cards" class="innerSerBox innerSerBox1">
-                        <a>
-                            <div class="text-center">
-                                <img src="@/assets/img/dashAssets/innerSerBox2.png" draggable="false">
-                                <p>My Cards</p>
-                            </div>
-                        </a>
-                    </router-link>
-                    <router-link to="/individual-dashboard/pending-cards" class="innerSerBox innerSerBox4">
-                        <a>
-                            <div class="text-center">
-                                <img src="@/assets/img/dashAssets/innerSerBox2.png" draggable="false">
-                                <p>Pending Cards</p>
-                            </div>
-                        </a>
-                    </router-link>
+               <div class="row justify-content-center mt-3 secForm">
+                   <div class="col-lg-11 secFormHead">
+                        <h5>Choose an organisation to subscribe to</h5>
+                   </div>
                </div>
             </div>
          </div>

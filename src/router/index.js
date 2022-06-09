@@ -17,10 +17,11 @@ import IndividualMyProfile from '../views/IndividualDashboard/MyProfile.vue'
 import IndividualDashboardSetting from '../views/IndividualDashboard/DashboardSetting.vue'
 //id card management
 import IndividualIDCardManagement from '../views/IndividualDashboard/IDCardManagement.vue'
+import IndividualAddCard from '../views/IndividualDashboard/AddCard.vue'
+import IndividualOrganisationDetails from '../views/IndividualDashboard/OrganisationDetails.vue'
 import IndividualCreateID from '../views/IndividualDashboard/CreateID.vue'
-import IndividualBusinessCard from '../views/IndividualDashboard/BusinessCard.vue'
-import IndividualHealthCard from '../views/IndividualDashboard/HealthCard.vue'
-import IndividualStudentCard from '../views/IndividualDashboard/StudentCard.vue'
+import IndividualMyCards from '../views/IndividualDashboard/MyCards.vue'
+import IndividualPendingCards from '../views/IndividualDashboard/PendingCards.vue'
 //event mamagement
 import IndividualEventManagement from '../views/IndividualDashboard/EventManagement.vue'
 import IndividualUpcomingEvent from '../views/IndividualDashboard/UpcomingEvent.vue'
@@ -31,14 +32,21 @@ import IndividualEventHistory from '../views/IndividualDashboard/EventHistory.vu
 //membership & subscription
 import IndividualMembershipAndSubscription from '../views/IndividualDashboard/MembershipAndSubscription.vue'
 import IndividualSubscription from '../views/IndividualDashboard/Subscription.vue'
+import IndividualAddSubscriptionPlan from '../views/IndividualDashboard/AddSubscriptionPlan.vue'
 import IndividualMembership from '../views/IndividualDashboard/Membership.vue'
+import IndividualJoinNewOrganisation from '../views/IndividualDashboard/JoinNewOrganisation.vue'
+import IndividualChooseOrganisation from '../views/IndividualDashboard/ChooseOrganisation.vue'
 import IndividualMembershipSubscriptionHistory from '../views/IndividualDashboard/MembershipSubscriptionHistory.vue'
+// verification
+import IndividualVerificationRequest from '../views/IndividualDashboard/VerificationRequest.vue'
+import IndividualOrganisationVerifier from '../views/IndividualDashboard/OrganisationVerifier.vue'
 // my wallet
+/*
 import IndividualMyWallet from '../views/IndividualDashboard/MyWallet.vue'
-import IndividualAddCard from '../views/IndividualDashboard/AddCard.vue'
 import IndividualIDCard from '../views/IndividualDashboard/IDCard.vue'
 import IndividualMembershipCard from '../views/IndividualDashboard/MembershipCard.vue'
 import IndividualTicket from '../views/IndividualDashboard/Ticket.vue'
+*/
 
 
 // Organisation Dashboard
@@ -47,8 +55,10 @@ import OrganisationMyProfile from '../views/OrganisationDashboard/MyProfile.vue'
 import OrganisationDashboardSetting from '../views/OrganisationDashboard/DashboardSetting.vue'
 //id card management
 import OrganisationIDCardManagement from '../views/OrganisationDashboard/IDCardManagement.vue'
-import OrganisationCreateID from '../views/OrganisationDashboard/CreateID.vue'
-import OrganisationCreatedCard from '../views/OrganisationDashboard/CreatedCard.vue'
+import OrganisationCreateTemplate from '../views/OrganisationDashboard/CreateTemplate.vue'
+import OrganisationCreatedTemplate from '../views/OrganisationDashboard/CreatedTemplate.vue'
+import OrganisationEditTemplate from '../views/OrganisationDashboard/EditTemplate.vue'
+import OrganisationMemberID from '../views/OrganisationDashboard/MemberID.vue'
 // event management
 import OrganisationEventManagement from '../views/OrganisationDashboard/EventManagement.vue'
 import OrganisationUpcomingEvent from '../views/OrganisationDashboard/UpcomingEvent.vue'
@@ -65,12 +75,15 @@ import OrganisationMembershipSubscriptionHistory from '../views/OrganisationDash
 import OrganisationVerification from '../views/OrganisationDashboard/Verification.vue'
 import OrganisationCreateVerifier from '../views/OrganisationDashboard/CreateVerifier.vue'
 import OrganisationViewVerifier from '../views/OrganisationDashboard/ViewVerifier.vue'
+import OrganisationPendingRequest from '../views/OrganisationDashboard/PendingRequest.vue'
 // my wallet
+/*
 import OrganisationMyWallet from '../views/OrganisationDashboard/MyWallet.vue'
 import OrganisationAddCard from '../views/OrganisationDashboard/AddCard.vue'
 import OrganisationIDCard from '../views/OrganisationDashboard/IDCard.vue'
 import OrganisationMembershipCard from '../views/OrganisationDashboard/MembershipCard.vue'
 import OrganisationTicket from '../views/OrganisationDashboard/Ticket.vue'
+*/
 
 const routes = [
   {path: '/', name: 'Home', component: Home,
@@ -161,24 +174,29 @@ const routes = [
       title: 'ID Card Management - Individual Dashboard | WALLID'
     }
   },
+  {path: '/individual-dashboard/add-card', name: 'IndividualAddCard', component: IndividualAddCard,
+    meta: {
+      title: 'Add Card - Individual Dashboard | WALLID'
+    }
+  },
+  {path: '/individual-dashboard/organisation-details', name: 'IndividualOrganisationDetails', component: IndividualOrganisationDetails,
+     meta: {
+       title: 'Organisation Details - Individual Dashboard | WALLID'
+     }
+ },
   {path: '/individual-dashboard/create-id', name: 'IndividualCreateID', component: IndividualCreateID,
+     meta: {
+       title: 'Create ID - Individual Dashboard | WALLID'
+    }
+   },
+  {path: '/individual-dashboard/my-cards', name: 'IndividualMyCards', component: IndividualMyCards,
     meta: {
-      title: 'Create ID - Individual Dashboard | WALLID'
+      title: 'My Cards - Individual Dashboard | WALLID'
     }
   },
-  {path: '/individual-dashboard/business-card', name: 'IndividualBusinessCard', component: IndividualBusinessCard,
+  {path: '/individual-dashboard/pending-cards', name: 'IndividualPendingCards', component: IndividualPendingCards,
     meta: {
-      title: 'Business Card - Individual Dashboard | WALLID'
-    }
-  },
-  {path: '/individual-dashboard/health-card', name: 'IndividualHealthCard', component: IndividualHealthCard,
-    meta: {
-      title: 'Health Card - Individual Dashboard | WALLID'
-    }
-  },
-  {path: '/individual-dashboard/student-card', name: 'IndividualStudentCard', component: IndividualStudentCard,
-    meta: {
-      title: 'Student Card - Individual Dashboard | WALLID'
+      title: 'Pending Cards - Individual Dashboard | WALLID'
     }
   },
   //event mamagement
@@ -223,9 +241,24 @@ const routes = [
       title: 'Subscription - Individual Dashboard | WALLID'
     }
   },
+  {path: '/individual-dashboard/add-subscription-plan', name: 'IndividualAddSubscriptionPlan', component: IndividualAddSubscriptionPlan,
+    meta: {
+      title: 'Add Subscription Plan - Individual Dashboard | WALLID'
+    }
+  },
   {path: '/individual-dashboard/memberships', name: 'IndividualMembership', component: IndividualMembership,
     meta: {
       title: 'Membership - Individual Dashboard | WALLID'
+    }
+  },
+  {path: '/individual-dashboard/join-new-organisation', name: 'IndividualJoinNewOrganisation', component: IndividualJoinNewOrganisation,
+    meta: {
+      title: 'Join New Organisation - Individual Dashboard | WALLID'
+    }
+  },
+  {path: '/individual-dashboard/choose-organisation', name: 'IndividualChooseOrganisation', component: IndividualChooseOrganisation,
+    meta: {
+      title: 'Choose Organisation - Individual Dashboard | WALLID'
     }
   },
   {path: '/individual-dashboard/history', name: 'IndividualMembershipSubscriptionHistory', component: IndividualMembershipSubscriptionHistory,
@@ -233,30 +266,15 @@ const routes = [
       title: 'Membership & Subscription History - Individual Dashboard | WALLID'
     }
   },
-  //my wallet
-  {path: '/individual-dashboard/my-wallet', name: 'IndividualMyWallet', component: IndividualMyWallet,
+  //verification
+  {path: '/individual-dashboard/verification-request', name: 'IndividualVerificationRequest', component: IndividualVerificationRequest,
     meta: {
-      title: 'My Wallet - Individual Dashboard | WALLID'
+      title: 'Verification Request - Individual Dashboard | WALLID'
     }
   },
-  {path: '/individual-dashboard/add-card', name: 'IndividualAddCard', component: IndividualAddCard,
+  {path: '/individual-dashboard/organisation-verifier', name: 'IndividualOrganisationVerifier', component: IndividualOrganisationVerifier,
     meta: {
-      title: 'Add Card - Individual Dashboard | WALLID'
-    }
-  },
-  {path: '/individual-dashboard/id-cards', name: 'IndividualIDCard', component: IndividualIDCard,
-    meta: {
-      title: 'ID Card - Individual Dashboard | WALLID'
-    }
-  },
-  {path: '/individual-dashboard/membership-cards', name: 'IndividualMembershipCard', component: IndividualMembershipCard,
-    meta: {
-      title: 'Membership Cards - Individual Dashboard | WALLID'
-    }
-  },
-  {path: '/individual-dashboard/tickets', name: 'IndividualTicket', component: IndividualTicket,
-    meta: {
-      title: 'Tickets - Individual Dashboard | WALLID'
+      title: 'Organisation Verifier - Individual Dashboard | WALLID'
     }
   },
 
@@ -283,14 +301,24 @@ const routes = [
       title: 'ID Card Management - Orgainsation Dashboard | WALLID'
     }
   },
-  {path: '/organisation-dashboard/create-id', name: 'OrganisationCreateID', component: OrganisationCreateID,
+  {path: '/organisation-dashboard/create-template', name: 'OrganisationCreateTemplate', component: OrganisationCreateTemplate,
     meta: {
-      title: 'Create ID - Orgainsation Dashboard | WALLID'
+      title: 'Create Template - Orgainsation Dashboard | WALLID'
     }
   },
-  {path: '/organisation-dashboard/created-cards', name: 'OrganisationCreatedCard', component: OrganisationCreatedCard,
+  {path: '/organisation-dashboard/created-template', name: 'OrganisationCreatedTemplate', component: OrganisationCreatedTemplate,
     meta: {
-      title: 'Created Cards - Orgainsation Dashboard | WALLID'
+      title: 'Created Template - Orgainsation Dashboard | WALLID'
+    }
+  },
+  {path: '/organisation-dashboard/edit-template', name: 'OrganisationEditTemplate', component: OrganisationEditTemplate,
+    meta: {
+      title: 'Edit Template - Orgainsation Dashboard | WALLID'
+    }
+  },
+  {path: '/organisation-dashboard/member-id', name: 'OrganisationMemberID', component: OrganisationMemberID,
+    meta: {
+      title: 'Member ID - Orgainsation Dashboard | WALLID'
     }
   },
   // event management
@@ -356,35 +384,16 @@ const routes = [
       title: 'Create Verifier - Orgainsation Dashboard | WALLID'
     }
   },
-  {path: '/organisation-dashboard/view-verifier', name: 'OrganisationViewVerifier', component: OrganisationViewVerifier,
+  {path
+    : '/organisation-dashboard/view-verifier', name: 'OrganisationViewVerifier', component: OrganisationViewVerifier,
     meta: {
       title: 'View Verifier - Orgainsation Dashboard | WALLID'
     }
   },
-  // my wallet
-  {path: '/organisation-dashboard/my-wallet', name: 'OrganisationMyWallet', component: OrganisationMyWallet,
+  {path
+    : '/organisation-dashboard/pending-request', name: 'OrganisationPendingRequest', component: OrganisationPendingRequest,
     meta: {
-      title: 'My Wallet - Orgainsation Dashboard | WALLID'
-    }
-  },
-  {path: '/organisation-dashboard/add-card', name: 'OrganisationAddCard', component: OrganisationAddCard,
-    meta: {
-      title: 'Add Card - Orgainsation Dashboard | WALLID'
-    }
-  },
-  {path: '/organisation-dashboard/id-cards', name: 'OrganisationIDCard', component: OrganisationIDCard,
-    meta: {
-      title: 'ID Card - Orgainsation Dashboard | WALLID'
-    }
-  },
-  {path: '/organisation-dashboard/membership-cards', name: 'OrganisationMembershipCard', component: OrganisationMembershipCard,
-    meta: {
-      title: 'Membership Cards - Orgainsation Dashboard | WALLID'
-    }
-  },
-  {path: '/organisation-dashboard/tickets', name: 'OrganisationTicket', component: OrganisationTicket,
-    meta: {
-      title: 'Tickets - Orgainsation Dashboard | WALLID'
+      title: 'Pending Request - Orgainsation Dashboard | WALLID'
     }
   },
 ]

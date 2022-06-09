@@ -1,8 +1,8 @@
 <template>
     <nav class="sidebar">
          <div class="logo d-flex justify-content-between">
-            <router-link to="/individual-dashboard/home"><a class="large_logo"><img src="@/assets/img/logo.png" alt=""></a></router-link>
-            <router-link to="/individual-dashboard/home"><a class="small_logo"><img src="@/assets/img/mini_logo.png" alt=""></a></router-link>
+            <router-link to="/organisation-dashboard/home"><a class="large_logo"><img src="@/assets/img/logo.png" alt=""></a></router-link>
+            <router-link to="/organisation-dashboard/home"><a class="small_logo"><img src="@/assets/img/mini_logo.png" alt=""></a></router-link>
             <div class="sidebar_close_icon d-lg-none">
                <i class="ti-close"></i>
             </div>
@@ -35,8 +35,9 @@
                 </router-link>
                <ul>
                   <li><router-link to="/organisation-dashboard/id-card-management" class="menuRouter"><a>Overview</a></router-link></li>
-                  <li><router-link to="/organisation-dashboard/create-id" class="menuRouter"><a>Create ID</a></router-link></li>
-                  <li><router-link to="/organisation-dashboard/created-cards" class="menuRouter"><a>Created Cards</a></router-link></li>
+                  <li><router-link to="/organisation-dashboard/create-template" class="menuRouter"><a>Create Template</a></router-link></li>
+                  <li><router-link to="/organisation-dashboard/created-template" class="menuRouter"><a>Created Template</a></router-link></li>
+                  <li><router-link to="/organisation-dashboard/member-id" class="menuRouter"><a>Member ID</a></router-link></li>
                </ul>
             </li>
             <!--Event Management-->
@@ -95,10 +96,11 @@
                    <li><router-link to="/organisation-dashboard/verification" class="menuRouter"><a>Overview</a></router-link></li>
                    <li><router-link to="/organisation-dashboard/create-verifier" class="menuRouter"><a>Create Verifier</a></router-link></li>
                    <li><router-link to="/organisation-dashboard/view-verifier" class="menuRouter"><a>View Verifier</a></router-link></li>
+                   <li><router-link to="/organisation-dashboard/pending-request" class="menuRouter"><a>Pending Request</a></router-link></li>
                 </ul>
             </li>
             <!--My Wallet-->
-            <li class="">
+            <!-- <li class="">
                 <router-link to="#" class="has-arrow menuRouter">
                     <a aria-expanded="false">
                         <div class="nav_icon_small">
@@ -116,7 +118,7 @@
                   <li><router-link to="/organisation-dashboard/membership-cards" class="menuRouter"><a>Membership Cards</a></router-link></li>
                   <li><router-link to="/organisation-dashboard/tickets" class="menuRouter"><a>Tickets</a></router-link></li>
                </ul>
-           </li>
+           </li> -->
             <!--Log Out-->
             <li class="">
                 <router-link to="#" class="menuRouter">

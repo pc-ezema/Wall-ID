@@ -42,15 +42,24 @@
                                     <textarea cols="30" rows="4" class="input" placeholder="Write a little note about the event"></textarea>
                                 </div>
                                 <!--Event type-->
-                                <div class="col-lg-12 mb-3">
+                                <div class="col-lg-6 mb-3">
                                     <label>Event Type</label>
                                     <select class="input">
                                         <option hidden>Choose Event Category</option>
+                                        <option>New Vibe</option>
+                                        <option>Live Concert</option>
+                                        <option>Religion</option>
                                         <option>Entertainment</option>
-                                        <option>Religious</option>
-                                        <option>Corporate/Business</option>
-                                        <option>Educational/Training</option>
-                                        <option>Casual</option>
+                                    </select>
+                                </div>
+                                <!--Visibility-->
+                                <div class="col-lg-6 mb-3">
+                                    <label>Visibility</label>
+                                    <select class="input">
+                                        <option hidden>Choose Event Visibility</option>
+                                        <option>Open</option>
+                                        <option>Semi-opened</option>
+                                        <option>Closed</option>
                                     </select>
                                 </div>
                                 <!--Add photo of event-->
@@ -67,16 +76,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!--Event type-->
-                                <div class="col-lg-12 mb-3">
-                                    <label>Visibility</label>
-                                    <select class="input">
-                                        <option hidden>Choose Event Visibility</option>
-                                        <option>Open</option>
-                                        <option>Semi-open</option>
-                                        <option>Close</option>
-                                    </select>
                                 </div>
                             </div>
                             <div class="row">

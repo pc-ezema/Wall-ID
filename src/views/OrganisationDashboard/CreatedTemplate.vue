@@ -14,7 +14,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="dashboard_header_title">
-                                        <h3>Created Cards</h3>
+                                        <h3>Created Template</h3>
                                         <p><router-link to="/organisation-dashboard/id-card-management"><a><i class="bi bi-arrow-left"></i> ID Card Management</a></router-link></p>
                                     </div>
                                 </div>
@@ -27,7 +27,7 @@
                <div class="row justify-content-center mt-3 secForm">
                    <div class="col-lg-11 secFormHead">
                         <h5>
-                            <router-link to="/organisation-dashboard/create-id"><a><i class="bi bi-plus-circle-fill"></i> Add ID Card</a></router-link>
+                            <router-link to="/organisation-dashboard/create-template"><a><i class="bi bi-plus-circle-fill"></i> Add New Template</a></router-link>
                         </h5>
                    </div>
                    <div class="col-lg-11 mt-3">
@@ -39,33 +39,29 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col">ID</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Issued By</th>
-                                                <th scope="col">Issued Date</th>
-                                                <th scope="col">Expiry Date</th>
-                                                <th scope="col">Category</th>
                                                 <th scope="col">Role</th>
+                                                <th scope="col">Logo</th>
+                                                <th scope="col">Card Template</th>
+                                                <th scope="col">Date Created</th>
                                                 <th scope="col">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <th scope="row">1</th>
-                                                <td>Name Surname</td>
-                                                <td>Name Surname</td>
-                                                <td>2022-03-15</td>
-                                                <td>2023-03-15</td>
-                                                <td>Business</td>
-                                                <td>Secretary</td>
+                                                <td>Senior Developer</td>
+                                                <td><img src="@/assets/img/dashAssets/innerSerBox666.png"></td>
+                                                <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView">View Card</button></td>
+                                                <td>09-May-2022</td>
                                                 <td>
                                                    <div class="action_btns d-flex">
-                                                      <a href="#" title="View" class="action_btn"> <i class="bi bi-eye-fill"></i> </a>
                                                       <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a>
                                                   </div>
                                                 </td>
                                             </tr>
                                         </tbody>
                                     </table>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -84,9 +80,53 @@
          <i class="ti-angle-up"></i>
          </a>
       </div>
+
+      <!--Box 1-->
+    <div class="modal fade" id="modalView" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content viewCardModal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">ID Card</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div 
+                       class="cardTemplate modalCardTemplate" 
+                       style="
+                        background-color: #a100ff;
+                        width: 330px;
+                        height: 200px;
+                        border-radius: 5px;
+                        padding: 20px 15px;
+                       "
+                       >
+                           <div class="cardLogo">
+                               <img src="@/assets/img/image.png">
+                           </div>
+                           <div class="cardContent">
+                               <p style="color: #ffffff !important">Holder's Name:</p>
+                               <p style="color: #ffffff !important">Job Role:</p>
+                               <p style="color: #ffffff !important">ID No:</p>
+                               <p style="color: #ffffff !important">Join Date:</p>
+                           </div>
+                           <div class="cardImage">
+                               <img src="@/assets/img/image2.png">
+                           </div>
+                           <div class="clear"></div>
+                        </div>
+                        <div class="col-lg-12 mt-4 text-center">
+                            <a href="/organisation-dashboard/edit-template" class="editTemplateBtn">Edit Template</a>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
+<style scoped src="@/assets/css/styleDashboardSupport.css"></style>
 <script>
 import DashboardSidebar from './DashboardSidebar.vue'
 import DashboardNavbar from './DashboardNavbar.vue';

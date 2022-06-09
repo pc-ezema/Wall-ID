@@ -14,8 +14,8 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="dashboard_header_title">
-                                        <h3>Business Card</h3>
-                                        <p><router-link to="/individual-dashboard/id-card-management"><a><i class="bi bi-arrow-left"></i> ID Card Management</a></router-link></p>
+                                        <h3>Pending Request</h3>
+                                        <p><router-link to="/organisation-dashboard/verification"><a><i class="bi bi-arrow-left"></i> Verification</a></router-link></p>
                                     </div>
                                 </div>
                             </div>
@@ -26,9 +26,7 @@
                <!--Boxes Section-->
                <div class="row justify-content-center mt-3 secForm">
                    <div class="col-lg-11 secFormHead">
-                        <h5>
-                            <router-link to="/individual-dashboard/create-id"><a><i class="bi bi-plus-circle-fill"></i> Add Business ID Card</a></router-link>
-                        </h5>
+                        <h5>All pending verification requests</h5>
                    </div>
                    <div class="col-lg-11 mt-3">
                      <div class="white_card card_height_100 mb_30">
@@ -40,28 +38,25 @@
                                             <tr>
                                                 <th scope="col">ID</th>
                                                 <th scope="col">Name</th>
-                                                <th scope="col">Issued By</th>
-                                                <th scope="col">Issued Date</th>
-                                                <th scope="col">Expiry Date</th>
-                                                <th scope="col">Category</th>
-                                                <th scope="col">Role</th>
+                                                <th scope="col">Phone</th>
+                                                <th scope="col">Date Joined</th>
+                                                <th scope="col">Type</th>
+                                                <th scope="col">Staus</th>
                                                 <th scope="col">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <th scope="row">1</th>
-                                                <td>Name Surname</td>
-                                                <td>Name Surname</td>
-                                                <td>2022-03-15</td>
-                                                <td>2023-03-15</td>
-                                                <td>Business</td>
-                                                <td>Secretary</td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
                                                 <td>
-                                                   <div class="action_btns d-flex">
-                                                      <a href="#" title="View" class="action_btn"> <i class="bi bi-eye-fill"></i> </a>
-                                                      <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a>
-                                                  </div>
+                                                    <button class="tbl-btn btn-disable">Disable</button>
+                                                    <button class="tbl-btn btn-enable">Enable</button>
+                                                    <button class="tbl-btn btn-delete">Delete</button>
                                                 </td>
                                             </tr>
                                         </tbody>
