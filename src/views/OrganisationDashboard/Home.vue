@@ -14,7 +14,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="dashboard_header_title">
-                                        <h3>Good Afternoon, Greenmouse Technologies!</h3>
+                                        <h3>Good Afternoon, {{ user.data.user.details.user.name }}!</h3>
                                     </div>
                                 </div>
                             </div>
@@ -234,6 +234,7 @@ import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+    props: ['user'],
     mounted() {
         window.scrollTo(0, 0)
 

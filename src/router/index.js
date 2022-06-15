@@ -84,6 +84,8 @@ import OrganisationIDCard from '../views/OrganisationDashboard/IDCard.vue'
 import OrganisationMembershipCard from '../views/OrganisationDashboard/MembershipCard.vue'
 import OrganisationTicket from '../views/OrganisationDashboard/Ticket.vue'
 */
+// import auth from "@/middleware/auth";
+// import guest from "@/middleware/guest";
 
 const routes = [
   {path: '/', name: 'Home', component: Home,
@@ -155,7 +157,8 @@ const routes = [
   // Individual Dashboard
   {path: '/individual-dashboard/home', name: 'IndividualHome', component: IndividualHome,
     meta: {
-      title: 'Dashboard - Individual Dashboard | WALLID'
+      title: 'Dashboard - Individual Dashboard | WALLID',
+      // middleware: auth
     }
   },
   {path: '/individual-dashboard/my-profile', name: 'IndividualMyProfile', component: IndividualMyProfile,

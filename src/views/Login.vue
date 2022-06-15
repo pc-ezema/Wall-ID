@@ -11,17 +11,22 @@
                                 <h3>Login</h3>
                                 <p>Enter your Wall-ID details to continue.</p>
                             </div>
-                            <form class="form-form-div">
+                            <div v-if="message" id="alerttopright" class="alert-timeout alert alert-danger alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                            <error v-if="error" :error="error" />
+                            <form class="form-form-div"  @submit.prevent="init_login()">
                                 <!-- Email Here -->
                                 <div>
                                     <label>Email</label>
-                                    <input type="text" required placeholder="Enter your email">
+                                    <input type="email" v-model="login.email" required placeholder="Enter your email">
                                 </div>
 
                                 <!-- Password Here -->
                                 <div>
                                     <label>Password</label>
-                                    <input type="password" required placeholder="*********">
+                                    <input type="password" v-model="login.password" required placeholder="*********">
                                 </div>
 
                                 <!-- Submit Button Here-->
@@ -49,10 +54,64 @@
 <script>
 import MainHeader from './MainHeader.vue'
 import MainFooter from './MainFooter.vue'
+import axios from 'axios'
+import Error from './Error.vue'
+
 export default {
+    components: { MainHeader, MainFooter, Error },
+
+    data() {
+        return {
+            login:{
+                email: "", 
+                password: "",
+            },
+            error: "",
+            message: "",
+        }
+    },
+
+    methods: {
+        async init_login() {
+            if (this.login.email == ''|| this.login.password == '') {
+                this.error = "Please enter all the needed fields."
+                this.login = ""
+                return
+            }
+
+            await axios.post('auth/login', this.login)
+            .then(
+                response => {
+                    this.error = "";
+                    this.message = response.data.message;
+                    
+                    localStorage.setItem('token', response.data.data.tokens.access_token);
+                
+                    this.$store.dispatch('user', response.data.data.user);
+
+                    if(response.data.data.user.type == 'individual'){
+                        // go to dashboard page
+                        setTimeout(() => {
+                            this.$router.push('/individual-dashboard/home');
+                        }, 800);
+                    } else if(response.data.data.user.type == 'organization'){
+                        // go to dashboard page
+                        setTimeout(() => {
+                            this.$router.push('/organisation-dashboard/home');
+                        }, 800);
+                    }
+                }
+            ).catch (
+                error => {
+                    this.message = "";
+                    this.error = error.response.data.message;
+                }
+            )
+        }
+    },
+
     mounted() {
         window.scrollTo(0, 0);
-    },
-    components: { MainHeader, MainFooter }
+    }
 }
 </script>
