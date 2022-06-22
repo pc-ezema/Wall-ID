@@ -60,7 +60,7 @@
                                 <!-- Access type -->
                                 <div class="col-lg-12">
                                     <label>Access Type</label>
-                                    <select required v-model="type">
+                                    <select required v-model="register.type">
                                         <option>Select Type</option>
                                         <option value="0"> Free Pass / Open </option>
                                         <option value="1"> Restricted / Closed </option>

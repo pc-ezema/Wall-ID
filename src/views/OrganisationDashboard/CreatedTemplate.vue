@@ -48,7 +48,7 @@
                                         </thead>
                                         <tbody v-if="!template || !template.length">
                                             <tr>
-                                                <td class="align-enter text-dark font-13" colspan="6">No Templated Added</td>
+                                                <td class="align-enter text-dark font-13" colspan="6">No Template Added</td>
                                             </tr>
                                         </tbody>
                                         <tbody v-else>
@@ -75,10 +75,10 @@
                                                                         <img v-bind:src="`http://localhost:8000${row.path}`">
                                                                     </div>
                                                                     <div class="cardContent">
-                                                                        <p :style="{'color': row.text_color + '!important'}">Holder's Name:</p>
+                                                                        <!-- <p :style="{'color': row.text_color + '!important'}">Holder's Name:</p>
                                                                         <p :style="{'color': row.text_color + '!important'}">Job Role:</p>
                                                                         <p :style="{'color': row.text_color + '!important'}">ID No:</p>
-                                                                        <p :style="{'color': row.text_color + '!important'}">Join Date:</p>
+                                                                        <p :style="{'color': row.text_color + '!important'}">Join Date:</p> -->
                                                                     </div>
                                                                     <div class="cardImage">
                                                                         <img src="@/assets/img/image2.png">
@@ -91,11 +91,11 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                </div> 
                                                 <td>{{ new Date(row.created_at).toLocaleString() }}</td>
                                                 <td>
                                                    <div class="action_btns d-flex">
-                                                      <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a>
+                                                      <a href="javascript:void(0)" @click="deleteTemplate(row.id)" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a>
                                                   </div>
                                                 </td>
                                             </tr>
@@ -120,6 +120,48 @@
          <i class="ti-angle-up"></i>
          </a>
       </div>
+
+      <!-- <div class="modal fade" id="modalView" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content viewCardModal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">ID Card</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div 
+                       class="cardTemplate modalCardTemplate" 
+                       style="
+                        background-color: #a100ff;
+                        width: 330px;
+                        height: 200px;
+                        border-radius: 5px;
+                        padding: 20px 15px;
+                       "
+                       >
+                           <div class="cardLogo">
+                               <img src="@/assets/img/image.png">
+                           </div>
+                           <div class="cardContent">
+                               <p style="color: #ffffff !important">Holder's Name:</p>
+                               <p style="color: #ffffff !important">Job Role:</p>
+                               <p style="color: #ffffff !important">ID No:</p>
+                               <p style="color: #ffffff !important">Join Date:</p>
+                           </div>
+                           <div class="cardImage">
+                               <img src="@/assets/img/image2.png">
+                           </div>
+                           <div class="clear"></div>
+                        </div>
+                        <div class="col-lg-12 mt-4 text-center">
+                            <a href="/organisation-dashboard/edit-template" class="editTemplateBtn">Edit Template</a>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
@@ -170,6 +212,33 @@ export default {
                 }
             )
         },
+
+        deleteTemplate(data) {
+            this.$Progress.start();
+            axios.delete('id-card/templates/delete/' + data)
+            .then(
+                response => {
+                    this.$Progress.finish();
+                    this.$notify({
+                        type: "success",
+                        title: response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                    this.loadMyTemplate;
+                }
+            ).catch (
+                error => {
+                    this.$Progress.fail();
+                    this.$notify({
+                        type: "error",
+                        title: error.response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                }
+            )
+        }
     },
 
     created() {

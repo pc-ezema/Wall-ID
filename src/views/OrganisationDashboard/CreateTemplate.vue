@@ -67,7 +67,7 @@
                                </div>
                                <div class="col-lg-12 mb-2">
                                    <label>Logo</label>
-                                   <input type="file" @change="processFile()" accept="jpg, jpeg, png, jfif" class="input">
+                                   <input type="file" @change="onFileChange" accept="jpg, jpeg, png, jfif" class="input">
                                </div>
                                <div class="col-lg-12">
                                    <botton v-if="$wait.is('processing')" style="background-image: linear-gradient(180deg, #8604e2, #ac38ff); padding: 12px 5px; 
@@ -108,68 +108,72 @@ export default {
             template:{
                 background_color: "", 
                 text_color: "",
-                role: "",
-                logo: ""
+                role: ""
             },
+            logo: ""
         }
     },
 
     methods: {
         createTemplate() {
-            const formData = new FormData();
-            formData.append('logo', this.template.logo)
+            const fd = new FormData();
+            fd.append("background_color", this.template.background_color);
+            fd.append("text_color", this.template.text_color);
+            fd.append("role", this.template.role);
+            fd.append("logo", this.logo);
 
-            console.log(formData);
-
-            // this.$wait.start("processing");
-            // this.$Progress.start();
+            this.$wait.start("processing");
+            this.$Progress.start();
             
-            // axios.post('id-card/templates/add', {
-            //         background_color: this.template.background_color,
-            //         text_color: this.template.text_color,
-            //         role: this.template.role,
-            //         logo: formData
-            //     }, {
-            //     headers: {
-            //         'Content-Type': 'multipart/form-data'
-            //     }
-            // })
-            // .then(
-            //     response => {
-            //         this.$wait.end("processing");
-            //         this.$Progress.finish();
-            //         console.log(response.data);
-            //     }
-            // ).catch (
-            //     error => {
-            //         console.log(error)
-            //         if (error.response.status == 401) {
-            //             this.$wait.end("processing");
-            //             this.$Progress.fail();
-            //             for (let i in error.response.data.error) {
-            //                 this.$notify({
-            //                     type: "error",
-            //                     title: error.response.data.error[i][0],
-            //                     duration: 5000,
-            //                     speed: 1000,
-            //                 });
-            //             } 
-            //         } else {
-            //             this.$wait.end("processing");
-            //             this.$Progress.fail();
-            //             this.$notify({
-            //                 type: "error",
-            //                 title: error.response.data.message,
-            //                 duration: 5000,
-            //                 speed: 1000,
-            //             });
-            //         }
-            //     }
-            // )
+            axios.post('id-card/templates/add', fd, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(
+                response => {
+                    this.$wait.end("processing");
+                    this.$Progress.finish();
+                    this.$notify({
+                        type: "success",
+                        title: response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                    setTimeout(() => {
+                        this.$router.push('/organisation-dashboard/created-template');
+                    }, 800);
+                }
+            ).catch (
+                error => {
+                    console.log(error)
+                    if (error.response.status == 401) {
+                        this.$wait.end("processing");
+                        this.$Progress.fail();
+                        for (let i in error.response.data.error) {
+                            this.$notify({
+                                type: "error",
+                                title: error.response.data.error[i][0],
+                                duration: 5000,
+                                speed: 1000,
+                            });
+                        } 
+                    } else {
+                        this.$wait.end("processing");
+                        this.$Progress.fail();
+                        this.$notify({
+                            type: "error",
+                            title: error.response.data.message,
+                            duration: 5000,
+                            speed: 1000,
+                        });
+                    }
+                }
+            )
         },
 
-        processFile(){
-            this.template.logo = this.$refs.file.files[0];
+        onFileChange(e){
+            this.logo = e.target.files[0];
         }
     },
 

@@ -19,7 +19,7 @@ import wait from '@meforma/vue-wait-for'
 import VueProgressBar from "@aacassandra/vue3-progressbar"
 
 const options = {
-    color: "#bffaf3",
+    color: "#228B22",
     failedColor: "#874b4b",
     thickness: "5px",
     transition: {
