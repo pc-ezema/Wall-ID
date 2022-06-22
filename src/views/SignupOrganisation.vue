@@ -142,7 +142,13 @@ export default {
                 return
             }
 
-            await axios.post('auth/organization/register', this.register)
+            await axios.post('auth/organization/register', {
+                name: this.register.name, 
+                email: this.register.email, 
+                phone: this.register.phone, 
+                password: this.register.password,
+                type: this.register.type
+            })
             .then(
                 response => {
                 this.error = "";

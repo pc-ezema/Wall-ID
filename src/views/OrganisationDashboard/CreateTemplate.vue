@@ -67,7 +67,7 @@
                                </div>
                                <div class="col-lg-12 mb-2">
                                    <label>Logo</label>
-                                   <input type="file" @change="processFile" accept="jpg, jpeg, png, jfif" class="input">
+                                   <input type="file" @change="processFile()" accept="jpg, jpeg, png, jfif" class="input">
                                </div>
                                <div class="col-lg-12">
                                    <botton v-if="$wait.is('processing')" style="background-image: linear-gradient(180deg, #8604e2, #ac38ff); padding: 12px 5px; 
@@ -109,16 +109,12 @@ export default {
                 background_color: "", 
                 text_color: "",
                 role: "",
-                logo: null
+                logo: ""
             },
         }
     },
 
     methods: {
-        processFile(event){
-            this.template.logo = event.target.files[0];
-        },
-
         createTemplate() {
             const formData = new FormData();
             formData.append('logo', this.template.logo, this.template.logo.name)
@@ -169,6 +165,10 @@ export default {
                 }
             )
         },
+
+        processFile(event){
+            this.template.logo = event.target.files[0];
+        }
     },
 
     mounted() {

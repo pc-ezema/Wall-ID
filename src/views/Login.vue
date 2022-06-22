@@ -83,7 +83,10 @@ export default {
                 return
             }
             
-            await axios.post('auth/login', this.login)
+            await axios.post('auth/login', { 
+                email: this.login.email, 
+                password: this.login.password
+            })
             .then(
                 response => {
                     this.error = "";

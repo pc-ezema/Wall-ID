@@ -169,7 +169,14 @@ export default {
               return
           }
 
-          await axios.post('auth/register', this.register)
+          await axios.post('auth/register', {
+              firstname: this.register.firstname, 
+              lastname: this.register.lastname, 
+              username: this.register.username,
+              email: this.register.email, 
+              phone: this.register.phone, 
+              password: this.register.password
+          })
           .then(
             response => {
               this.error = "";
