@@ -117,57 +117,59 @@ export default {
     methods: {
         createTemplate() {
             const formData = new FormData();
-            formData.append('logo', this.template.logo, this.template.logo.name)
+            formData.append('logo', this.template.logo)
 
-            this.$wait.start("processing");
-            this.$Progress.start();
+            console.log(formData);
+
+            // this.$wait.start("processing");
+            // this.$Progress.start();
             
-            axios.post('id-card/templates/add', {
-                    background_color: this.template.background_color,
-                    text_color: this.template.text_color,
-                    role: this.template.role,
-                    logo: formData
-                }, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-            .then(
-                response => {
-                    this.$wait.end("processing");
-                    this.$Progress.finish();
-                    console.log(response.data);
-                }
-            ).catch (
-                error => {
-                    console.log(error)
-                    if (error.response.status == 401) {
-                        this.$wait.end("processing");
-                        this.$Progress.fail();
-                        for (let i in error.response.data.error) {
-                            this.$notify({
-                                type: "error",
-                                title: error.response.data.error[i][0],
-                                duration: 5000,
-                                speed: 1000,
-                            });
-                        } 
-                    } else {
-                        this.$wait.end("processing");
-                        this.$Progress.fail();
-                        this.$notify({
-                            type: "error",
-                            title: error.response.data.message,
-                            duration: 5000,
-                            speed: 1000,
-                        });
-                    }
-                }
-            )
+            // axios.post('id-card/templates/add', {
+            //         background_color: this.template.background_color,
+            //         text_color: this.template.text_color,
+            //         role: this.template.role,
+            //         logo: formData
+            //     }, {
+            //     headers: {
+            //         'Content-Type': 'multipart/form-data'
+            //     }
+            // })
+            // .then(
+            //     response => {
+            //         this.$wait.end("processing");
+            //         this.$Progress.finish();
+            //         console.log(response.data);
+            //     }
+            // ).catch (
+            //     error => {
+            //         console.log(error)
+            //         if (error.response.status == 401) {
+            //             this.$wait.end("processing");
+            //             this.$Progress.fail();
+            //             for (let i in error.response.data.error) {
+            //                 this.$notify({
+            //                     type: "error",
+            //                     title: error.response.data.error[i][0],
+            //                     duration: 5000,
+            //                     speed: 1000,
+            //                 });
+            //             } 
+            //         } else {
+            //             this.$wait.end("processing");
+            //             this.$Progress.fail();
+            //             this.$notify({
+            //                 type: "error",
+            //                 title: error.response.data.message,
+            //                 duration: 5000,
+            //                 speed: 1000,
+            //             });
+            //         }
+            //     }
+            // )
         },
 
-        processFile(event){
-            this.template.logo = event.target.files[0];
+        processFile(){
+            this.template.logo = this.$refs.file.files[0];
         }
     },
 
