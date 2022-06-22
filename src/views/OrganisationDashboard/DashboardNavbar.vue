@@ -53,13 +53,13 @@
                            <div class="profile_info_iner">
                               <div class="profile_author_name">
                                  <p>Organisation</p>
-                                 <h5>Company Name</h5>
+                                 <h5>{{ user.details.name }}</h5>
                               </div>
                               <div class="profile_info_details">
                                  <router-link to="/organisation-dashboard/my-profile"><a>My Profile</a></router-link>
                                  <router-link to="/organisation-dashboard/my-wallet"><a>My Wallet</a></router-link>
                                  <router-link to="/organisation-dashboard/settings"><a>Settings</a></router-link>
-                                 <router-link to="#"><a>Log Out</a></router-link>
+                                 <a href="javascript:void(0)" @click="logoutClick">Log Out</a>
                               </div>
                            </div>
                         </div>
@@ -72,8 +72,22 @@
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
 <script>
+import {mapGetters} from 'vuex';
+
 export default {
-  mounted() {
+   computed: {
+      ...mapGetters(['user'])
+   },
+
+   methods: {
+      logoutClick() {
+         localStorage.removeItem('token');
+         this.$store.dispatch('user', null);
+         this.$router.push('/');
+      }
+   },
+
+   mounted() {
     window.scrollTo(0, 0);
 
     let externalScriptJquery = document.createElement("script");

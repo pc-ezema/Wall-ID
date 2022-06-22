@@ -25,6 +25,13 @@
 
                <!--Boxes Section-->
                <div class="row justify-content-center mt-3 secForm">
+                   <div class="col-lg-11 filterSelect">
+                        <select>
+                            <option hidden>Filter</option>
+                            <option>Individual</option>
+                            <option>Organization</option>
+                        </select>
+                   </div>
                    <div class="col-lg-11 mt-3">
                      <div class="white_card card_height_100 mb_30">
                         <div class="white_card_body">
@@ -34,24 +41,26 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col">ID</th>
+                                                <th scope="col">ID Number</th>
                                                 <th scope="col">Name</th>
-                                                <th scope="col">Issued By</th>
                                                 <th scope="col">Issued Date</th>
-                                                <th scope="col">Action</th>
+                                                <th scope="col">Role</th>
+                                                <th scope="col">Status</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody v-if="!mypendingidcards || !mypendingidcards.length">
                                             <tr>
-                                                <th scope="row">1</th>
-                                                <td>Name Surname</td>
-                                                <td>Name Surname</td>
-                                                <td>2022-03-15</td>
-                                                <td>
-                                                   <div class="action_btns d-flex">
-                                                      <a href="#" title="View" class="action_btn"> <i class="bi bi-eye-fill"></i> </a>
-                                                      <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a>
-                                                  </div>
-                                                </td>
+                                                <td class="align-enter text-dark font-13" colspan="6">No Pending ID Card.</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody v-else>
+                                            <tr v-for="row in mypendingidcards" v-bind:key="row.id">
+                                                <th scope="row">{{ row.id }}</th>
+                                                <td>{{ row.id_card_number }}</td>
+                                                <td>{{ row.name }}</td>
+                                                <td>{{ row.issued_date }}</td>
+                                                <td>{{ row.role }}</td>
+                                                <td><a class="a-pending">{{ row.status }}</a></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -81,8 +90,52 @@
 import DashboardSidebar from './DashboardSidebar.vue'
 import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
+
+import axios from 'axios'
+
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+    data() {
+        return {
+            pagination: {},
+            mypendingidcards: [],
+        }
+    },
+
+    methods: {
+        prepPagination(data) {
+            this.pagination = {
+                data: data.data,
+                current_page: data.meta.current_page,
+                first_item: data.meta.first_item,
+                last_item: data.meta.last_item,
+                last_page: data.meta.last_page,
+                next_page_url: data.meta.next_page_url,
+                per_page: data.meta.per_page,
+                previous_page_url: data.meta.previous_page_url,
+                total: data.meta.total,
+            };
+        },
+
+        loadMyCard(page = 1) {
+            axios.get('id-card-management/pending/id-card/individual' + "?page=" + page)
+            .then(
+                response => {
+                    this.prepPagination(response.data);
+                    this.mypendingidcards = response.data.data;
+                }
+            ).catch (
+                error => {
+                    console.log(error);
+                }
+            )
+        },
+    },
+
+    created() {
+        this.loadMyCard();
+    },
+
     mounted() {
         window.scrollTo(0, 0)
     }

@@ -14,7 +14,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="dashboard_header_title">
-                                        <h3>Good Afternoon, {{ user.data.user.details.user.name }}!</h3>
+                                        <h3>{{ getTime() }}, {{ user.details.name }}!</h3>
                                     </div>
                                 </div>
                             </div>
@@ -25,7 +25,7 @@
                <!--Boxes Section-->
                <div class="row mb-3 justify-content-center">
                    <!--Box 1-->
-                   <div class="col-lg-4 mb-4">
+                   <div class="col-lg-6 mb-4">
                         <div class="ser-box serbox1">
                             <router-link to="/organisation-dashboard/id-card-management">
                                 <a>
@@ -39,7 +39,7 @@
                         </div>
                    </div>
                    <!--Box 2-->
-                   <div class="col-lg-4 mb-4">
+                   <div class="col-lg-6 mb-4">
                         <div class="ser-box serbox2">
                             <router-link to="/organisation-dashboard/event-management">
                                 <a>
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                     <!--Box 3-->
-                    <div class="col-lg-4 mb-4">
+                    <div class="col-lg-6 mb-4">
                         <div class="ser-box serbox3">
                             <router-link to="/organisation-dashboard/membership-subscription">
                                 <a>
@@ -229,44 +229,76 @@
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
 <script>
-import DashboardSidebar from './DashboardSidebar.vue'
+import DashboardSidebar from './DashboardSidebar.vue';
 import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
+
+import {mapGetters} from 'vuex';
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
-    props: ['user'],
+    
+    computed: {
+        ...mapGetters(['user'])
+    },
+
+    methods: {
+        getTime() {
+            const d = new Date();
+            const time = d.getHours();
+
+            if (time < 12) {
+                return "Good Morning";
+            } else if (time >= 12 && time <= 17) {
+                return "Good Afternoon";
+            } else if (time >= 17 && time <= 24) {
+                return "Good Evening";
+            }
+        },
+    },
+    
     mounted() {
         window.scrollTo(0, 0)
 
         const ctx = document.getElementById('myChart').getContext('2d');
-            const myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['ID Cards', 'Events', 'Subscription'],
-                    datasets: [{
-                        label: 'Stats',
-                        data: [15, 5, 20],
-                        backgroundColor: [
-                            '#FF7EA5',
-                            '#E6ADFF',
-                            '#C388F6'
-                        ],
-                        borderColor: [
-                            '#FF7EA5',
-                            '#E6ADFF',
-                            '#C388F6'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['ID Cards', 'Events', 'Subscription'],
+                datasets: [{
+                    label: 'Stats',
+                    data: [15, 5, 20],
+                    backgroundColor: [
+                        '#FF7EA5',
+                        '#E6ADFF',
+                        '#C388F6'
+                    ],
+                    borderColor: [
+                        '#FF7EA5',
+                        '#E6ADFF',
+                        '#C388F6'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
-            });
+            }
+        });
+    },
+
+    created() {
+        this.$notify({
+            type: "success",
+            title: "Authorization",
+            text: "You have been logged in!",
+            duration: 5000,
+            speed: 1000,
+        });
     }
+        
 }
 </script>

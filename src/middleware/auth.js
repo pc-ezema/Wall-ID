@@ -1,9 +1,8 @@
-// import store from "@/store/state";
+/* eslint-disable */
+export default function auth({next,router}){
+    if(!localStorage.getItem('token')){
+        return router.push({ name: 'Login' });
+    }
 
-// export default function auth({ next, router }) {
-//   if (!store.getters.isAuthenticated) {
-//     return router.push({ name: "login" });
-//   }
-
-//   return next();
-// }
+    return next()
+}

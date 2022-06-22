@@ -84,8 +84,9 @@ import OrganisationIDCard from '../views/OrganisationDashboard/IDCard.vue'
 import OrganisationMembershipCard from '../views/OrganisationDashboard/MembershipCard.vue'
 import OrganisationTicket from '../views/OrganisationDashboard/Ticket.vue'
 */
-// import auth from "@/middleware/auth";
-// import guest from "@/middleware/guest";
+
+import auth from "../middleware/auth";
+import guest from "../middleware/guest";
 
 const routes = [
   {path: '/', name: 'Home', component: Home,
@@ -100,303 +101,364 @@ const routes = [
           name: 'keyword',
           content: 'WALLID'
         }
-      ]
+      ],
+      meta: {
+        middleware: guest
+      }
     }
   },
   {path: '/about', name: 'About', component: About,
     meta: {
-      title: 'About | WALLID'
+      title: 'About | WALLID',
+      middleware: guest
     }
   },
   {path: '/pricing', name: 'Pricing', component: Pricing,
     meta: {
-      title: 'Pricing | WALLID'
+      title: 'Pricing | WALLID',
+      middleware: guest
     }
   },
   {path: '/faq', name: 'Faq', component: Faq,
     meta: {
-      title: 'Faq | WALLID'
+      title: 'Faq | WALLID',
+      middleware: guest
     }
   },
   {path: '/contact', name: 'Contact', component: Contact,
     meta: {
-      title: 'Contact | WALLID'
+      title: 'Contact | WALLID',
+      middleware: guest
     }
   },
   {path: '/login', name: 'Login', component: Login,
     meta: {
-      title: 'Login | WALLID'
+      title: 'Login | WALLID',
+      middleware: guest
     }
   },
   {path: '/forgot-password', name: 'ForgotPassword', component: ForgotPassword,
     meta: {
-      title: 'Forgot Password | WALLID'
+      title: 'Forgot Password | WALLID',
+      middleware: guest
     }
   },
   {path: '/signup-option', name: 'SignupOption', component: SignupOption,
     meta: {
-      title: 'Signup Option | WALLID'
+      title: 'Signup Option | WALLID',
+      middleware: guest
     }
   },
   {path: '/signup-individual', name: 'SignupIndividual', component: SignupIndividual,
     meta: {
-      title: 'Signup Individual | WALLID'
+      title: 'Signup Individual | WALLID',
+      middleware: guest
     }
   },
   {path: '/signup-organisation', name: 'SignupOrganisation', component: SignupOrganisation,
     meta: {
-      title: 'Signup Organisation | WALLID'
+      title: 'Signup Organisation | WALLID',
+      middleware: guest
     }
   },
   {path: '/:catchAll(.*)', name: 'Page404', component: Page404,
-  meta: {
-    title: 'Page Not Found | WALLID'
-  }
+    meta: {
+      title: 'Page Not Found | WALLID',
+      middleware: guest
+    }
   },
 
   // Individual Dashboard
   {path: '/individual-dashboard/home', name: 'IndividualHome', component: IndividualHome,
     meta: {
       title: 'Dashboard - Individual Dashboard | WALLID',
-      // middleware: auth
+      middleware: auth
     }
   },
   {path: '/individual-dashboard/my-profile', name: 'IndividualMyProfile', component: IndividualMyProfile,
     meta: {
-      title: 'My Profile - Individual Dashboard | WALLID'
+      title: 'My Profile - Individual Dashboard | WALLID',
+        middleware: auth
     }
   },
   {path: '/individual-dashboard/settings', name: 'IndividualDashboardSetting', component: IndividualDashboardSetting,
     meta: {
-      title: 'Setting - Individual Dashboard | WALLID'
+      title: 'Setting - Individual Dashboard | WALLID',
+      middleware: [
+          auth, guest
+      ]
     }
   },
   //id card management
   {path: '/individual-dashboard/id-card-management', name: 'IndividualIDCardManagement', component: IndividualIDCardManagement,
     meta: {
-      title: 'ID Card Management - Individual Dashboard | WALLID'
+      title: 'ID Card Management - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/individual-dashboard/add-card', name: 'IndividualAddCard', component: IndividualAddCard,
     meta: {
-      title: 'Add Card - Individual Dashboard | WALLID'
+      title: 'Add Card - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/individual-dashboard/organisation-details', name: 'IndividualOrganisationDetails', component: IndividualOrganisationDetails,
      meta: {
-       title: 'Organisation Details - Individual Dashboard | WALLID'
+       title: 'Organisation Details - Individual Dashboard | WALLID',
+       middleware: auth
      }
  },
   {path: '/individual-dashboard/create-id', name: 'IndividualCreateID', component: IndividualCreateID,
      meta: {
-       title: 'Create ID - Individual Dashboard | WALLID'
+       title: 'Create ID - Individual Dashboard | WALLID',
+       middleware: auth
     }
    },
   {path: '/individual-dashboard/my-cards', name: 'IndividualMyCards', component: IndividualMyCards,
     meta: {
-      title: 'My Cards - Individual Dashboard | WALLID'
+      title: 'My Cards - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/individual-dashboard/pending-cards', name: 'IndividualPendingCards', component: IndividualPendingCards,
     meta: {
-      title: 'Pending Cards - Individual Dashboard | WALLID'
+      title: 'Pending Cards - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
   //event mamagement
   {path: '/individual-dashboard/event-management', name: 'IndividualEventManagement', component: IndividualEventManagement,
     meta: {
-      title: 'Event Management - Individual Dashboard | WALLID'
+      title: 'Event Management - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/individual-dashboard/upcoming-event', name: 'IndividualUpcomingEvent', component: IndividualUpcomingEvent,
     meta: {
-      title: 'Upcoming Event - Individual Dashboard | WALLID'
+      title: 'Upcoming Event - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/individual-dashboard/event-gallery', name: 'IndividualEventGallery', component: IndividualEventGallery,
     meta: {
-      title: 'Event Gallery - Individual Dashboard | WALLID'
+      title: 'Event Gallery - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/individual-dashboard/create-event', name: 'IndividualCreateEvent', component: IndividualCreateEvent,
     meta: {
-      title: 'Create Event - Individual Dashboard | WALLID'
+      title: 'Create Event - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/individual-dashboard/invitation', name: 'IndividualInvitation', component: IndividualInvitation,
     meta: {
-      title: 'Invitation - Individual Dashboard | WALLID'
+      title: 'Invitation - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/individual-dashboard/event-history', name: 'IndividualEventHistory', component: IndividualEventHistory,
     meta: {
-      title: 'Event History - Individual Dashboard | WALLID'
+      title: 'Event History - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
   //membership & subscription
   {path: '/individual-dashboard/membership-subscription', name: 'IndividualMembershipAndSubscription', component: IndividualMembershipAndSubscription,
     meta: {
-      title: 'Membership & Subscription - Individual Dashboard | WALLID'
+      title: 'Membership & Subscription - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/individual-dashboard/subscriptions', name: 'IndividualSubscription', component: IndividualSubscription,
     meta: {
-      title: 'Subscription - Individual Dashboard | WALLID'
+      title: 'Subscription - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/individual-dashboard/add-subscription-plan', name: 'IndividualAddSubscriptionPlan', component: IndividualAddSubscriptionPlan,
     meta: {
-      title: 'Add Subscription Plan - Individual Dashboard | WALLID'
+      title: 'Add Subscription Plan - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/individual-dashboard/memberships', name: 'IndividualMembership', component: IndividualMembership,
     meta: {
-      title: 'Membership - Individual Dashboard | WALLID'
+      title: 'Membership - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/individual-dashboard/join-new-organisation', name: 'IndividualJoinNewOrganisation', component: IndividualJoinNewOrganisation,
     meta: {
-      title: 'Join New Organisation - Individual Dashboard | WALLID'
+      title: 'Join New Organisation - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
-  {path: '/individual-dashboard/choose-organisation', name: 'IndividualChooseOrganisation', component: IndividualChooseOrganisation,
+  {path: '/individual-dashboard/choose-organisation/:username', name: 'IndividualChooseOrganisation', component: IndividualChooseOrganisation,
     meta: {
-      title: 'Choose Organisation - Individual Dashboard | WALLID'
+      title: 'Choose Organisation - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/individual-dashboard/history', name: 'IndividualMembershipSubscriptionHistory', component: IndividualMembershipSubscriptionHistory,
     meta: {
-      title: 'Membership & Subscription History - Individual Dashboard | WALLID'
+      title: 'Membership & Subscription History - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
   //verification
   {path: '/individual-dashboard/verification-request', name: 'IndividualVerificationRequest', component: IndividualVerificationRequest,
     meta: {
-      title: 'Verification Request - Individual Dashboard | WALLID'
+      title: 'Verification Request - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/individual-dashboard/organisation-verifier', name: 'IndividualOrganisationVerifier', component: IndividualOrganisationVerifier,
     meta: {
-      title: 'Organisation Verifier - Individual Dashboard | WALLID'
+      title: 'Organisation Verifier - Individual Dashboard | WALLID',
+      middleware: auth
     }
   },
 
 
-   // Organisation Dashboard
-   {path: '/organisation-dashboard/home', name: 'OrganisationHome', component: OrganisationHome,
+  // Organisation Dashboard
+  {path: '/organisation-dashboard/home', name: 'OrganisationHome', component: OrganisationHome,
     meta: {
-      title: 'Dashboard - Organisation Dashboard | WALLID'
+      title: 'Dashboard - Organisation Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/organisation-dashboard/my-profile', name: 'OrganisationMyProfile', component: OrganisationMyProfile,
     meta: {
-      title: 'My Profile - Orgainsation Dashboard | WALLID'
+      title: 'My Profile - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/organisation-dashboard/settings', name: 'OrganisationDashboardSetting', component: OrganisationDashboardSetting,
     meta: {
-      title: 'Setting - Orgainsation Dashboard | WALLID'
+      title: 'Setting - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   // id card management
   {path: '/organisation-dashboard/id-card-management', name: 'OrganisationIDCardManagement', component: OrganisationIDCardManagement,
     meta: {
-      title: 'ID Card Management - Orgainsation Dashboard | WALLID'
+      title: 'ID Card Management - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/organisation-dashboard/create-template', name: 'OrganisationCreateTemplate', component: OrganisationCreateTemplate,
     meta: {
-      title: 'Create Template - Orgainsation Dashboard | WALLID'
+      title: 'Create Template - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/organisation-dashboard/created-template', name: 'OrganisationCreatedTemplate', component: OrganisationCreatedTemplate,
     meta: {
-      title: 'Created Template - Orgainsation Dashboard | WALLID'
+      title: 'Created Template - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/organisation-dashboard/edit-template', name: 'OrganisationEditTemplate', component: OrganisationEditTemplate,
     meta: {
-      title: 'Edit Template - Orgainsation Dashboard | WALLID'
+      title: 'Edit Template - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/organisation-dashboard/member-id', name: 'OrganisationMemberID', component: OrganisationMemberID,
     meta: {
-      title: 'Member ID - Orgainsation Dashboard | WALLID'
+      title: 'Member ID - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
+
   // event management
   {path: '/organisation-dashboard/event-management', name: 'OrganisationEventManagement', component: OrganisationEventManagement,
     meta: {
-      title: 'Event Management - Orgainsation Dashboard | WALLID'
+      title: 'Event Management - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/organisation-dashboard/upcoming-event', name: 'OrganisationUpcomingEvent', component: OrganisationUpcomingEvent,
     meta: {
-      title: 'Upcoming Event - Orgainsation Dashboard | WALLID'
+      title: 'Upcoming Event - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/organisation-dashboard/event-gallery', name: 'OrganisationEventGallery', component: OrganisationEventGallery,
     meta: {
-      title: 'Event Gallery - Orgainsation Dashboard | WALLID'
+      title: 'Event Gallery - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/organisation-dashboard/create-event', name: 'OrganisationCreateEvent', component: OrganisationCreateEvent,
     meta: {
-      title: 'Create Event - Orgainsation Dashboard | WALLID'
+      title: 'Create Event - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/organisation-dashboard/invitation', name: 'OrganisationInvitation', component: OrganisationInvitation,
     meta: {
-      title: 'Invitation - Orgainsation Dashboard | WALLID'
+      title: 'Invitation - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/organisation-dashboard/event-history', name: 'OrganisationEventHistory', component: OrganisationEventHistory,
     meta: {
-      title: 'Event History - Orgainsation Dashboard | WALLID'
+      title: 'Event History - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   // membership & subscription
   {path: '/organisation-dashboard/membership-subscription', name: 'OrganisationMembershipAndSubscription', component: OrganisationMembershipAndSubscription,
     meta: {
-      title: 'Membership & Subscription - Orgainsation Dashboard | WALLID'
+      title: 'Membership & Subscription - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/organisation-dashboard/subscriptions', name: 'OrganisationSubscription', component: OrganisationSubscription,
     meta: {
-      title: 'Subscription - Orgainsation Dashboard | WALLID'
+      title: 'Subscription - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/organisation-dashboard/memberships', name: 'OrganisationMembership', component: OrganisationMembership,
     meta: {
-      title: 'Membership - Orgainsation Dashboard | WALLID'
+      title: 'Membership - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/organisation-dashboard/history', name: 'OrganisationMembershipSubscriptionHistory', component: OrganisationMembershipSubscriptionHistory,
     meta: {
-      title: 'Membership & Subscription History - Orgainsation Dashboard | WALLID'
+      title: 'Membership & Subscription History - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   // verification
   {path: '/organisation-dashboard/verification', name: 'OrganisationVerification', component: OrganisationVerification,
     meta: {
-      title: 'Verification - Orgainsation Dashboard | WALLID'
+      title: 'Verification - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path: '/organisation-dashboard/create-verifier', name: 'OrganisationCreateVerifier', component: OrganisationCreateVerifier,
     meta: {
-      title: 'Create Verifier - Orgainsation Dashboard | WALLID'
+      title: 'Create Verifier - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path
     : '/organisation-dashboard/view-verifier', name: 'OrganisationViewVerifier', component: OrganisationViewVerifier,
     meta: {
-      title: 'View Verifier - Orgainsation Dashboard | WALLID'
+      title: 'View Verifier - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
   {path
     : '/organisation-dashboard/pending-request', name: 'OrganisationPendingRequest', component: OrganisationPendingRequest,
     meta: {
-      title: 'Pending Request - Orgainsation Dashboard | WALLID'
+      title: 'Pending Request - Orgainsation Dashboard | WALLID',
+      middleware: auth
     }
   },
 ]
@@ -406,28 +468,42 @@ const router = createRouter({
   routes,
 })
 
-export default router
+function nextFactory(context, middleware, index) {
+  const subsequentMiddleware = middleware[index];
+  // If no subsequent Middleware exists,
+  // the default `next()` callback is returned.
+  if (!subsequentMiddleware) return context.next;
 
-// This callback runs before every route change, including on page load.
+  return (...parameters) => {
+    // Run the default Vue Router `next()` callback first.
+    context.next(...parameters);
+    // Then run the subsequent Middleware with a new
+    // `nextMiddleware()` callback.
+    const nextMiddleware = nextFactory(context, middleware, index + 1);
+   subsequentMiddleware({ ...context, next: nextMiddleware });
+  };
+  
+}
+
 router.beforeEach((to, from, next) => {
-  const nearestWithTitle = to.matched.slice().reverse().find(r => r.meta && r.meta.title);
-  const nearestWithMeta = to.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
-  const previousNearestWithMeta = from.matched.slice().reverse().find(r => r.meta && r.meta.metaTags);
-  if(nearestWithTitle) {
-    document.title = nearestWithTitle.meta.title;
-  } else if(previousNearestWithMeta) {
-    document.title = previousNearestWithMeta.meta.title;
+  if (to.meta.middleware) {
+      const middleware = Array.isArray(to.meta.middleware)
+        ? to.meta.middleware
+        : [to.meta.middleware];
+  
+      const context = {
+        from,
+        next,
+        router,
+        to,
+      };
+      const nextMiddleware = nextFactory(context, middleware, 1);
+  
+      return middleware[0]({ ...context, next: nextMiddleware });
   }
-  Array.from(document.querySelectorAll('[data-vue-router-controlled]')).map(el => el.parentNode.removeChild(el));
-  if(!nearestWithMeta) return next();
-  nearestWithMeta.meta.metaTags.map(tagDef => {
-    const tag = document.createElement('meta');
-    Object.keys(tagDef).forEach(key => {
-      tag.setAttribute(key, tagDef[key]);
-    });
-    tag.setAttribute('data-vue-router-controlled', '');
-    return tag;
-  })
-  .forEach(tag => document.head.appendChild(tag));
-  next();
+
+  return next();
+
 });
+
+export default router

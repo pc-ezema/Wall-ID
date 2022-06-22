@@ -43,7 +43,6 @@
                             </li>
 
                         </ul>
-
                             <ul class="nav_btn">
                             <li class="nav-item">
                                 <router-link :to="{name: 'Login'}" class="nav-button-link-login"><i class="fa fa-user"></i> <span>Login</span></router-link>

@@ -31,23 +31,23 @@
                    </div>
                    <div class="col-lg-5 mb-4">
                      <span>First Name</span>
-                     <p>Tunde</p>
+                     <p>{{ user.details.firstname }} </p>
                    </div>
                    <div class="col-lg-5 mb-4">
                      <span>Last Name</span>
-                     <p>Timileyin</p>
+                     <p>{{ user.details.lastname }}</p>
                    </div>
                    <div class="col-lg-5 mb-4">
                      <span>Email</span>
-                     <p>email@email.com</p>
+                     <p>{{ user.email }}</p>
                    </div>
                    <div class="col-lg-5 mb-4">
                      <span>Phone</span>
-                     <p>08012345678</p>
+                     <p>{{ user.details.phone }}</p>
                    </div>
                    <div class="col-lg-5 mb-4">
                      <span>Registered</span>
-                     <p>25 March, 2022</p>
+                     <p>{{ new Date(user.details.created_at).toLocaleString() }}</p>
                    </div>
                    <div class="col-lg-5 mb-4">
                      <span>Type</span>
@@ -76,8 +76,16 @@
 import DashboardSidebar from './DashboardSidebar.vue'
 import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
+
+import {mapGetters} from 'vuex';
+
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+    
+    computed: {
+        ...mapGetters(['user'])
+    },
+
     mounted() {
         window.scrollTo(0, 0)
     }

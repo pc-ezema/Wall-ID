@@ -46,13 +46,53 @@
                                                 <th scope="col">Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody v-if="!template || !template.length">
                                             <tr>
-                                                <th scope="row">1</th>
-                                                <td>Senior Developer</td>
-                                                <td><img src="@/assets/img/dashAssets/innerSerBox666.png"></td>
-                                                <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView">View Card</button></td>
-                                                <td>09-May-2022</td>
+                                                <td class="align-enter text-dark font-13" colspan="6">No Templated Added</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody v-else>
+                                            <tr v-for="row in template" v-bind:key="row.id">
+                                                <th scope="row">{{ row.id }}</th>
+                                                <td>{{ row.role }}</td>
+                                                <td><img v-bind:src="`http://localhost:8000${row.path}`"></td>
+                                                <td><button class="viewCardBtn" data-toggle="modal" :data-target="'#viewTemplate'+row.id">View Card</button></td>
+                                                <!--Box 1-->
+                                                <div class="modal fade" :id="'viewTemplate'+row.id" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content viewCardModal">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="exampleModalLongTitle">ID Card</h5>
+                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div 
+                                                                class="cardTemplate modalCardTemplate" 
+                                                                v-bind:style="{ 'width' : '330px', 'height' : '200px', 'border-radius' : '5px', 'padding': '20px 15px', 'background-color': row.background_color }">
+                                                                    <div class="cardLogo">
+                                                                        <img v-bind:src="`http://localhost:8000${row.path}`">
+                                                                    </div>
+                                                                    <div class="cardContent">
+                                                                        <p :style="{'color': row.text_color + '!important'}">Holder's Name:</p>
+                                                                        <p :style="{'color': row.text_color + '!important'}">Job Role:</p>
+                                                                        <p :style="{'color': row.text_color + '!important'}">ID No:</p>
+                                                                        <p :style="{'color': row.text_color + '!important'}">Join Date:</p>
+                                                                    </div>
+                                                                    <div class="cardImage">
+                                                                        <img src="@/assets/img/image2.png">
+                                                                    </div>
+                                                                    <div class="clear"></div>
+                                                                    </div>
+                                                                    <div class="col-lg-12 mt-4 text-center">
+                                                                        <a href="/organisation-dashboard/edit-template" class="editTemplateBtn">Edit Template</a>
+                                                                    </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <td>{{ new Date(row.created_at).toLocaleString() }}</td>
                                                 <td>
                                                    <div class="action_btns d-flex">
                                                       <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a>
@@ -80,49 +120,6 @@
          <i class="ti-angle-up"></i>
          </a>
       </div>
-
-      <!--Box 1-->
-    <div class="modal fade" id="modalView" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content viewCardModal">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">ID Card</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div 
-                       class="cardTemplate modalCardTemplate" 
-                       style="
-                        background-color: #a100ff;
-                        width: 330px;
-                        height: 200px;
-                        border-radius: 5px;
-                        padding: 20px 15px;
-                       "
-                       >
-                           <div class="cardLogo">
-                               <img src="@/assets/img/image.png">
-                           </div>
-                           <div class="cardContent">
-                               <p style="color: #ffffff !important">Holder's Name:</p>
-                               <p style="color: #ffffff !important">Job Role:</p>
-                               <p style="color: #ffffff !important">ID No:</p>
-                               <p style="color: #ffffff !important">Join Date:</p>
-                           </div>
-                           <div class="cardImage">
-                               <img src="@/assets/img/image2.png">
-                           </div>
-                           <div class="clear"></div>
-                        </div>
-                        <div class="col-lg-12 mt-4 text-center">
-                            <a href="/organisation-dashboard/edit-template" class="editTemplateBtn">Edit Template</a>
-                        </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
@@ -131,10 +128,52 @@
 import DashboardSidebar from './DashboardSidebar.vue'
 import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
+import axios from 'axios';
+
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
     mounted() {
         window.scrollTo(0, 0)
-    }
+    },
+
+    data() {
+        return {
+            template: []
+        }
+    },
+
+    methods: {
+        prepPagination(data) {
+            this.pagination = {
+                data: data.data,
+                current_page: data.meta.current_page,
+                first_item: data.meta.first_item,
+                last_item: data.meta.last_item,
+                last_page: data.meta.last_page,
+                next_page_url: data.meta.next_page_url,
+                per_page: data.meta.per_page,
+                previous_page_url: data.meta.previous_page_url,
+                total: data.meta.total,
+            };
+        },
+
+        loadMyTemplate() {
+            axios.get('id-card/templates')
+            .then(
+                response => {
+                    this.prepPagination(response.data);
+                    this.template = response.data.data;
+                }
+            ).catch (
+                error => {
+                    console.log(error);
+                }
+            )
+        },
+    },
+
+    created() {
+        this.loadMyTemplate();
+    },
 }
 </script>

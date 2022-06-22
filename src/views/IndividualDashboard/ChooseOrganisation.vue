@@ -15,7 +15,7 @@
                                 <div class="col-lg-12">
                                     <div class="dashboard_header_title">
                                         <h3>Organisation Details</h3>
-                                        <p><router-link to="/individual-dashboard/add-card"><a><i class="bi bi-arrow-left"></i> Go back</a></router-link></p>
+                                        <p><router-link to="/individual-dashboard/memberships"><a><i class="bi bi-arrow-left"></i> Go back</a></router-link></p>
                                     </div>
                                 </div>
                             </div>
@@ -35,31 +35,33 @@
                             <div class="col-lg-12">
                                 <div class="txtCnt">
                                     <h5>Name</h5>
-                                    <p>Greenmouse Technologies</p>
+                                    <p>{{organization.details.name}}</p>
                                 </div>
                                 <div class="txtCnt">
                                     <h5>Email</h5>
-                                    <p>greenmousedev@gmail.com</p>
+                                    <p>{{organization.email}}</p>
                                 </div>
                                 <div class="txtCnt">
-                                    <h5>About</h5>
-                                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus esse sed dolorum, praesentium nulla itaque repellat tempore officia laboriosam neque soluta unde, adipisci vero ipsa inventore nesciunt laudantium eos obcaecati? Quae est dolores delectus, odit voluptates dolore tenetur accusamus doloribus illo officiis illum tempora non similique, facere modi quisquam in iusto cum, necessitatibus vero adipisci rem quia molestias magnam? Quasi dolores iure necessitatibus, quo modi fugit aliquam, adipisci omnis exercitationem esse corporis placeat officiis repudiandae? Incidunt ex, maiores eaque nihil sequi ut voluptates porro consequuntur dolor aspernatur soluta harum velit exercitationem atque quibusdam laborum quas, tenetur culpa quo voluptatem explicabo.</p>
+                                    <h5>Username</h5>
+                                    <p>{{organization.username}}</p> 
                                 </div>
                                 <div class="txtCnt">
                                     <h5>Registered Date</h5>
-                                    <p>18-May-2022</p>
+                                    <p>{{ new Date(organization.details.created_at).toLocaleString()}}</p>
                                 </div>
                                 <div class="txtCnt selectRoles">
-                                    <form>
+                                    <form @submit.prevent="sendJoinRequest()">
                                         <label>Roles (?)</label>
-                                        <select required>
-                                            <option hidden>Roles</option>
-                                            <option>Senior Staff</option>
-                                            <option>Junior Staff</option>
+                                        <select required v-model="role">
+                                            <optgroup label="-- Select Roles --">  
+                                                <option value="Senior Staff">Senior Staff</option>
+                                                <option value="Junior Staff">Junior Staff</option>
+                                            </optgroup>
                                         </select>
                                         <span>If your role is not available, please contact your organisation.</span>
                                         <div class="txtCnt mt-5">
-                                            <button type="submit">Send Request</button>
+                                            <button v-if="$wait.is('processing')" type="button">Request Processing</button>
+                                            <button v-else type="submit">Send Request</button>
                                         </div>
                                     </form>
                                 </div>
@@ -87,10 +89,81 @@
 import DashboardSidebar from './DashboardSidebar.vue'
 import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
+import axios from 'axios';
+
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+    data() {
+        return {
+            organization: {},
+            role: "",
+        }
+    },
+
     mounted() {
-        window.scrollTo(0, 0)
-    }
+        window.scrollTo(0, 0);
+    },
+
+    methods: {
+        displayOrganization() {
+            let username = this.$route.params.username;
+
+            console.log(username);
+
+            axios.get('users/organization/get', {
+                params: {
+                    username: username
+                }
+            }).then(
+                response => {
+                    this.organization = response.data.data[0];
+                }
+            ).catch (
+                error => {
+                    console.log(error);
+                }
+            )
+        },
+
+        sendJoinRequest() {
+            this.$wait.start("processing");
+            this.$Progress.start();
+
+            axios.post('individuals/organizations/join-request', {
+                name: this.organization.username,
+                role: this.role
+            }).then(
+                response => {
+                    this.$wait.end("processing");
+                    this.$Progress.finish();
+                    this.$notify({
+                        type: "success",
+                        title: response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                    setTimeout(() => {
+                        this.$router.push('/individual-dashboard/memberships');
+                    }, 6000);
+                }
+            ).catch (
+                error => {
+                    this.$wait.end("processing");
+                    this.$Progress.fail();
+                    this.$notify({
+                        type: "error",
+                        title: error.response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                }
+            )
+        }
+    },
+    
+    created() {
+        this.displayOrganization();
+    },
+
 }
 </script>

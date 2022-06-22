@@ -14,7 +14,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="dashboard_header_title">
-                                        <h3>{{ getTime() }}, {{ user.details.user.name }}!</h3>                                        
+                                        <h3>{{ getTime() }}, {{ user.details.firstname }} {{ user.details.lastname }}!</h3>                                        
                                     </div>
                                 </div>
                             </div>
@@ -289,6 +289,16 @@ export default {
                     }
                 }
             });
+    },
+
+    created() {
+        this.$notify({
+            type: "success",
+            title: "Authorization",
+            text: "You have been logged in!",
+            duration: 5000,
+            speed: 1000,
+        });
     }
 }
 </script> 

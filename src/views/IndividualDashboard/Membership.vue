@@ -44,19 +44,24 @@
                                                 <th scope="col">ID</th>
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Phone</th>
+                                                <th scope="col">Role</th>
                                                 <th scope="col">Date Joined</th>
-                                                <th scope="col">Membership Staus</th>
-                                                <th scope="col">Action</th>
+                                                <th scope="col">Membership Status</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody v-if="!membership || !membership.length">
                                             <tr>
-                                                <th scope="row">1</th>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                                <td class="align-enter text-dark font-13" colspan="5">No Joined Memebership</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody v-else>
+                                            <tr v-for="row in membership" v-bind:key="row.id">
+                                                <th scope="row">{{ row.id }}</th>
+                                                <td>{{ row.organization.name }}</td>
+                                                <td>{{ row.organization.phone }}</td>
+                                                <td>{{ row.role }}</td>
+                                                <td>{{ new Date(row.created_at).toLocaleString() }}</td>
+                                                <td><a class="a-approved">{{ row.status }}</a></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -85,8 +90,53 @@
 import DashboardSidebar from './DashboardSidebar.vue'
 import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
+
+import axios from 'axios';
+
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+    
+    data() {
+        return {
+            pagination: {},
+            membership: [],
+        }
+    },
+
+    methods: {
+        prepPagination(data) {
+            this.pagination = {
+                data: data.data,
+                current_page: data.meta.current_page,
+                first_item: data.meta.first_item,
+                last_item: data.meta.last_item,
+                last_page: data.meta.last_page,
+                next_page_url: data.meta.next_page_url,
+                per_page: data.meta.per_page,
+                previous_page_url: data.meta.previous_page_url,
+                total: data.meta.total,
+            };
+        },
+
+        loadMyCard(page = 1) {
+            axios.get('individuals/organizations/join-requests')
+            .then(
+                response => {
+                    this.prepPagination(response.data);
+                    this.membership = response.data.data;
+                }
+            ).catch (
+                error => {
+                    console.log(error);
+                }
+            )
+        },
+    },
+
+    created() {
+        this.loadMyCard();
+    },
+
     mounted() {
         window.scrollTo(0, 0)
     }

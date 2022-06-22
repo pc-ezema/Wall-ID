@@ -11,9 +11,17 @@
               <h3>Individual Sign Up</h3>
               <p>Fill up the form below to sign up for your Wall-ID account.</p>
             </div>
-            <div v-if="message" id="alerttopright" class="alert-timeout alert alert-danger alert-dismissible fade show" role="alert">
+            <div v-if="message" id="alerttopright" class="alert-timeout alert alert-success alert-dismissible fade show" role="alert">
                 {{ message }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div v-if="notifmsg">
+              <div v-for="(errorArray, idx) in notifmsg" :key="idx">
+                  <div v-for="(allErrors, idx) in errorArray" :key="idx" id="alerttopright" class="alert-timeout alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ allErrors }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+              </div>
             </div>
             <error v-if="error" :error="error" />
                             
@@ -64,17 +72,6 @@
                   <input type="tel" v-model="register.phone" required placeholder="Enter phone number" />
                 </div>
 
-                <!-- Address Here -->
-                <!-- <div class="col-lg-12">
-                  <label>Address</label>
-                  <textarea
-                    v-model="form.username"
-                    cols="30"
-                    rows="3"
-                    placeholder="House addres"
-                  ></textarea>
-                </div> -->
-
                 <!-- Password Here -->
                 <div class="col-lg-12">
                   <label>Password</label>
@@ -96,7 +93,8 @@
 
                 <!-- Submit Button Here-->
                 <div class="col-lg-12 signup-btn-div text-center mb-3">
-                  <input type="submit" value="Sign Up" class="submit-form" />
+                  <input v-if="$wait.is('processing')" value="Signing up..." class="submit-form text-center mb-3" >
+                  <input v-else type="submit" value="Sign Up" class="submit-form" />
                 </div>
               </div>
 
@@ -143,19 +141,31 @@ export default {
             password_confirmation: "",
             message: "",
             error: "",
+            notifmsg: ""
         }
     },
 
     methods: {
         async init_register() {
+          this.$wait.start("processing");
+          this.$Progress.start();
+
           if (this.register.firstname == '' || this.register.lastname == '' || this.register.username == '' || this.register.email == ''
               || this.register.phone == '' || this.register.password == '') {
+              this.message = "";
+              this.notifmsg = "";
               this.error = "Please enter all the needed fields."
+              this.$wait.end("processing");
+              this.$Progress.fail();
               return
           }
 
           if (this.password_confirmation !== this.register.password) {
+              this.message = "";
+              this.notifmsg = "";
               this.error = "Confirm password doesn't match with actual password."
+              this.$wait.end("processing");
+              this.$Progress.fail();
               return
           }
 
@@ -164,13 +174,26 @@ export default {
             response => {
               this.error = "";
               this.message = response.data.message;
-              this.register = ""
-              this.password_confirmation = ""
+              this.register = "";
+              this.password_confirmation = "";
+              this.$wait.end("processing");
+              this.$Progress.finish();
             }
           ).catch (
             error => {
-                this.message = "";
-                this.error = error.response.data.message;
+                if (error.response.status == 422) {
+                  this.message = "";
+                  this.error = "";
+                  this.notifmsg = error.response.data.error;
+                  this.$wait.end("processing");
+                  this.$Progress.fail();
+                } else {
+                  this.message = "";
+                  this.notifmsg = "";
+                  this.error = error.response.data.message;
+                  this.$wait.end("processing");
+                  this.$Progress.fail();
+                }
             }
           )
 

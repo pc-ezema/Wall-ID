@@ -53,7 +53,7 @@
                            <div class="profile_info_iner">
                               <div class="profile_author_name">
                                  <p>Individual</p>
-                                 <h5>{{ user.details.user.name }}</h5>
+                                 <h5>{{ user.details.firstname }} {{ user.details.lastname }}</h5>
                               </div>
                               <div class="profile_info_details">
                                  <router-link to="/individual-dashboard/my-profile"><a>My Profile</a></router-link>

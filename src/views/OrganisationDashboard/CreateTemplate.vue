@@ -51,26 +51,28 @@
                            <div class="clear"></div>
                        </div>
 
-                       <form class="formCardTemp mt-3">
+                       <form class="formCardTemp mt-3" @submit.prevent="createTemplate()">
                            <div class="row">
                                <div class="col-lg-12 mb-4">
-                                   <label>Custom Color</label>
-                                   <input type="color" class="inputColor">
+                                   <label>Background Color</label>
+                                   <input type="color" v-model="template.background_color" class="inputColor">
                                </div>
                                <div class="col-lg-12 mb-4">
                                    <label>Text Color</label>
-                                   <input type="color" class="inputColor">
+                                   <input type="color" v-model="template.text_color" class="inputColor">
                                </div>
                                <div class="col-lg-12">
                                    <label>Role</label>
-                                   <input type="text" placeholder="Select the role that belong to this template" class="input">
+                                   <input type="text" v-model="template.role" placeholder="Select the role that belong to this template" class="input">
                                </div>
                                <div class="col-lg-12 mb-2">
                                    <label>Logo</label>
-                                   <input type="file" accept="jpg, jpeg, png, jfif" class="input">
+                                   <input type="file" @change="processFile" accept="jpg, jpeg, png, jfif" class="input">
                                </div>
                                <div class="col-lg-12">
-                                   <button type="submit">Create Template</button>
+                                   <botton v-if="$wait.is('processing')" style="background-image: linear-gradient(180deg, #8604e2, #ac38ff); padding: 12px 5px; 
+                                   font-size: 16px; color: #fff; border: none; border-radius: 5px; width: 100%; display: block; text-align: center;">Template Adding...</botton>
+                                   <button v-else type="submit">Create Template</button>
                                </div>
                            </div>
                        </form>
@@ -96,8 +98,79 @@
 import DashboardSidebar from './DashboardSidebar.vue'
 import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
+import axios from 'axios';
+
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+
+    data() {
+        return {
+            template:{
+                background_color: "", 
+                text_color: "",
+                role: "",
+                logo: null
+            },
+        }
+    },
+
+    methods: {
+        processFile(event){
+            this.template.logo = event.target.files[0];
+        },
+
+        createTemplate() {
+            const formData = new FormData();
+            formData.append('logo', this.template.logo, this.template.logo.name)
+
+            this.$wait.start("processing");
+            this.$Progress.start();
+            
+            axios.post('id-card/templates/add', {
+                    background_color: this.template.background_color,
+                    text_color: this.template.text_color,
+                    role: this.template.role,
+                    logo: formData
+                }, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(
+                response => {
+                    this.$wait.end("processing");
+                    this.$Progress.finish();
+                    console.log(response.data);
+                }
+            ).catch (
+                error => {
+                    console.log(error)
+                    if (error.response.status == 401) {
+                        this.$wait.end("processing");
+                        this.$Progress.fail();
+                        for (let i in error.response.data.error) {
+                            this.$notify({
+                                type: "error",
+                                title: error.response.data.error[i][0],
+                                duration: 5000,
+                                speed: 1000,
+                            });
+                        } 
+                    } else {
+                        this.$wait.end("processing");
+                        this.$Progress.fail();
+                        this.$notify({
+                            type: "error",
+                            title: error.response.data.message,
+                            duration: 5000,
+                            speed: 1000,
+                        });
+                    }
+                }
+            )
+        },
+    },
+
     mounted() {
         window.scrollTo(0, 0)
     }

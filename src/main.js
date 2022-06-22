@@ -1,11 +1,8 @@
 import { createApp } from 'vue'
-import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import NotifyPlugin from 'vue-easy-notify'
 import store from './vuex'
 import './axios'
-import 'vue-easy-notify/dist/vue-easy-notify.css'
 import '@/assets/css/style.css'
 import '@/assets/css/bootstrap.min.css'
 import '@/assets/js/bootstrap.min.js'
@@ -17,5 +14,22 @@ import '@fortawesome/fontawesome-free/js/all.js'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import $ from 'jquery'
+import Notifications from '@kyvg/vue3-notification'
+import wait from '@meforma/vue-wait-for'
+import VueProgressBar from "@aacassandra/vue3-progressbar"
 
-createApp(App).use(router).use(store).use(AOS.init()).mount('#app')
+const options = {
+    color: "#bffaf3",
+    failedColor: "#874b4b",
+    thickness: "5px",
+    transition: {
+      speed: "0.2s",
+      opacity: "0.6s",
+      termination: 300,
+    },
+    autoRevert: true,
+    location: "top",
+    inverse: false,
+};
+
+createApp(App).use(router).use(store).use(Notifications).use(wait).use(VueProgressBar, options).use(AOS.init()).mount('#app')

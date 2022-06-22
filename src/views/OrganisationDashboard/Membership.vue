@@ -48,19 +48,30 @@
                                                 <th scope="col">ID</th>
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Phone</th>
-                                                <th scope="col">Date Joined</th>
-                                                <th scope="col">Membership Staus</th>
+                                                <th scope="col">Role</th>
+                                                <th scope="col">Date Requested</th>
+                                                <th scope="col">Membership Status</th>
                                                 <th scope="col">Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody v-if="!membership || !membership.length">
                                             <tr>
-                                                <th scope="row">1</th>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                                <td class="align-enter text-dark font-13" colspan="5">No Pending Memebership Request</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody v-else>
+                                            <tr v-for="row in membership" v-bind:key="row.id">
+                                                <th scope="row">{{ row.id }}</th>
+                                                <td>{{ row.individual.firstname }} {{row.individual.lastname}}</td>
+                                                <td>{{row.individual.phone}}</td>
+                                                <td>{{ row.role }}</td>
+                                                <td>{{ new Date(row.individual.created_at).toLocaleString() }}</td>
+                                                <td><a class="text-danger">{{ row.status }}</a></td>
+                                                <td>
+                                                   <div class="action_btns d-flex">
+                                                      <a href="javascript:void(0)" @click="approveMember(row.id)" title="Approve" class="action_btn"> <i class="bi bi-check-circle"></i> </a>
+                                                  </div>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -89,10 +100,78 @@
 import DashboardSidebar from './DashboardSidebar.vue'
 import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
+import axios from 'axios';
+
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+    
+    data() {
+        return {
+            pagination: {},
+            membership: [],
+        }
+    },
+    
     mounted() {
         window.scrollTo(0, 0)
-    }
+    },
+
+    methods: {
+        prepPagination(data) {
+            this.pagination = {
+                data: data.data,
+                current_page: data.meta.current_page,
+                first_item: data.meta.first_item,
+                last_item: data.meta.last_item,
+                last_page: data.meta.last_page,
+                next_page_url: data.meta.next_page_url,
+                per_page: data.meta.per_page,
+                previous_page_url: data.meta.previous_page_url,
+                total: data.meta.total,
+            };
+        },
+
+        loadMyCard(page = 1) {
+            axios.get('organizations/members/requests/get' + "?page=" + page)
+            .then(
+                response => {
+                    this.prepPagination(response.data);
+                    this.membership = response.data.data;
+                }
+            ).catch (
+                error => {
+                    console.log(error);
+                }
+            )
+        },
+
+        async approveMember(data){
+            await axios.get('organizations/members/requests/approve/' + data)
+            .then(
+                response => {
+                    this.$notify({
+                        type: "success",
+                        title: response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                    location.reload();
+                }
+            ).catch (
+                error => {
+                    this.$notify({
+                        type: "error",
+                        title: error.response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                }
+            )
+        }
+    },
+
+    created() {
+        this.loadMyCard();
+    },
 }
 </script>

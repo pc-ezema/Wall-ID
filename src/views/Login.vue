@@ -11,7 +11,7 @@
                                 <h3>Login</h3>
                                 <p>Enter your Wall-ID details to continue.</p>
                             </div>
-                            <div v-if="message" id="alerttopright" class="alert-timeout alert alert-danger alert-dismissible fade show" role="alert">
+                            <div v-if="message" id="alerttopright" class="alert-timeout alert alert-success alert-dismissible fade show" role="alert">
                                 {{ message }}
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
@@ -31,7 +31,8 @@
 
                                 <!-- Submit Button Here-->
                                 <div class="signup-btn-div text-center">
-                                    <input type="submit" value="Login" class="submit-form">
+                                    <input v-if="$wait.is('processing')" value="Login..." class="submit-form text-center" >
+                                    <input v-else type="submit" value="Login" class="submit-form">
                                 </div>
 
                                 <!-- Forgot Password Here -->
@@ -73,18 +74,23 @@ export default {
 
     methods: {
         async init_login() {
+            this.$wait.start("processing");
+            this.$Progress.start();
+
             if (this.login.email == ''|| this.login.password == '') {
-                this.error = "Please enter all the needed fields."
-                this.login = ""
+                this.error = "Please enter all the needed fields.";
+                this.isLoading = false;
                 return
             }
-
+            
             await axios.post('auth/login', this.login)
             .then(
                 response => {
                     this.error = "";
                     this.message = response.data.message;
-                    
+                    this.$wait.end("processing");
+                    this.$Progress.finish();
+
                     localStorage.setItem('token', response.data.data.tokens.access_token);
                 
                     this.$store.dispatch('user', response.data.data.user);
@@ -103,8 +109,11 @@ export default {
                 }
             ).catch (
                 error => {
+                    localStorage.removeItem('token')
                     this.message = "";
                     this.error = error.response.data.message;
+                    this.$wait.end("processing");
+                    this.$Progress.fail();
                 }
             )
         }
