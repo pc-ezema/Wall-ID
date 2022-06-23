@@ -87,9 +87,6 @@ import axios from 'axios';
 
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
-    mounted() {
-        window.scrollTo(0, 0)
-    },
 
     data() {
         return {
@@ -146,6 +143,11 @@ export default {
     
     created() {
         this.loadOrganizations();
+    },
+
+    mounted() {
+        this.loadOrganizations();
+        window.scrollTo(0, 0)
     },
 }
 </script>

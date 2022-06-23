@@ -29,15 +29,15 @@
                         <h5>Please input ID card details</h5>
                    </div>
                    <div class="col-lg-11 mt-3">
-                        <form>
+                        <form @submit.prevent="createID()">
                             <div class="row">
                                 <div class="col-lg-12 mb-3">
                                     <label>Holders Full Name</label>
-                                    <input type="text" class="input" placeholder="Holders Full Name">
+                                    <input type="text" v-model="id.name" class="input" placeholder="Holders Full Name" required>
                                 </div>
                                 <div class="col-lg-6 mb-3">
                                     <label>Date Joined</label>
-                                    <input type="date" class="input">
+                                    <input type="date" v-model="id.issued_date" class="input" required>
                                 </div>
                                 <div class="col-lg-12 mb-3">
                                     <label>Select ID Image</label>
@@ -48,7 +48,7 @@
                                                 <img src="" alt="">
                                             </div>
                                             <div class="controls" style="display: none;">
-                                                <input type="file" name="contact_image_1"/>
+                                                <input type="file" @change="onFileChange" name="contact_image_1" required/>
                                             </div>
                                         </div>
                                     </div>
@@ -79,8 +79,82 @@
 import DashboardSidebar from './DashboardSidebar.vue'
 import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
+import axios from 'axios';
+
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+    
+    data() {
+        return {
+            id: {
+                name: "",
+                issued_date: "",
+                passport: ""
+            }
+        }
+    },
+
+    methods: {
+        async createID() {
+            let id = this.$route.params.id;
+
+            const fd = new FormData();
+            fd.append("organization_id", id);
+            fd.append("name", this.id.name);
+            fd.append("issued_date", this.id.issued_date);
+            fd.append("passport", this.id.passport);
+
+            // this.$wait.start("processing");
+            this.$Progress.start();
+            
+            await axios.post('id-card-management/store', fd)
+            .then(
+                response => {
+                    this.$wait.end("processing");
+                    this.$Progress.finish();
+                    this.$notify({
+                        type: "success",
+                        title: response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                    setTimeout(() => {
+                        this.$router.push('/individual-dashboard/pending-cards');
+                    }, 800);
+                }
+            ).catch (
+                error => {
+                    console.log(error)
+                    if (error.response.status == 401) {
+                        this.$wait.end("processing");
+                        this.$Progress.fail();
+                        for (let i in error.response.data.error) {
+                            this.$notify({
+                                type: "error",
+                                title: error.response.data.error[i][0],
+                                duration: 5000,
+                                speed: 1000,
+                            });
+                        } 
+                    } else {
+                        this.$wait.end("processing");
+                        this.$Progress.fail();
+                        this.$notify({
+                            type: "error",
+                            title: error.response.data.message,
+                            duration: 5000,
+                            speed: 1000,
+                        });
+                    }
+                }
+            )
+        },
+
+        onFileChange(e){
+            this.id.passport = e.target.files[0];
+        }
+    },
+
     mounted() {
         window.scrollTo(0, 0)
 

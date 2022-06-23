@@ -146,6 +146,17 @@ export default {
     },
 
     methods: {
+        makeid(length) {
+          let result = '';
+          const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+          const charactersLength = characters.length;
+          for (var i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() *
+                charactersLength));
+          }
+          return result;
+        },
+
         async init_register() {
           this.$wait.start("processing");
           this.$Progress.start();
@@ -181,31 +192,33 @@ export default {
             response => {
               this.error = "";
               this.message = response.data.message;
-              this.register = "";
+              // this.register = "";
               this.password_confirmation = "";
               this.$wait.end("processing");
               this.$Progress.finish();
+
+              // go to verification page
+              setTimeout(() => {
+                this.$router.push('/email_verification/' + this.makeid(200) + "/" + this.register.email)
+              }, 1500);
             }
           ).catch (
             error => {
-                if (error.response.status == 422) {
-                  this.message = "";
-                  this.error = "";
-                  this.notifmsg = error.response.data.error;
-                  this.$wait.end("processing");
-                  this.$Progress.fail();
-                } else {
-                  this.message = "";
-                  this.notifmsg = "";
-                  this.error = error.response.data.message;
-                  this.$wait.end("processing");
-                  this.$Progress.fail();
-                }
+              if (error.response.status == 422) {
+                this.message = "";
+                this.error = "";
+                this.notifmsg = error.response.data.error;
+                this.$wait.end("processing");
+                this.$Progress.fail();
+              } else {
+                this.message = "";
+                this.notifmsg = "";
+                this.error = error.response.data.message;
+                this.$wait.end("processing");
+                this.$Progress.fail();
+              }
             }
           )
-
-          // this.$router.push('/login');
-
         }
     },
 

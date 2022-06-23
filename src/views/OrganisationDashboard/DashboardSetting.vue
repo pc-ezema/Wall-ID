@@ -77,6 +77,16 @@ import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+    // data() {
+    //     return {
+    //         name: JSON.parse(localStorage.getItem("user")),
+    //         email: JSON.parse(localStorage.getItem("user")).firstname,
+    //         password: JSON.parse(localStorage.getItem("user")).lastname,
+    //         phone: JSON.parse(localStorage.getItem("user")).phone_no,
+    //         type: JSON.parse(localStorage.getItem("user")).company_name,
+    //         image: JSON.parse(localStorage.getItem("user")).img_url,
+    //     };
+    // },
     mounted() {
         window.scrollTo(0, 0)
     }

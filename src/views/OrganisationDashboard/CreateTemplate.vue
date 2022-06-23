@@ -115,21 +115,17 @@ export default {
     },
 
     methods: {
-        createTemplate() {
+        async createTemplate() {
             const fd = new FormData();
-            fd.append("background_color", this.template.background_color);
-            fd.append("text_color", this.template.text_color);
+            fd.append("background_color", this.template.background_color.slice(1));
+            fd.append("text_color", this.template.text_color.slice(1));
             fd.append("role", this.template.role);
             fd.append("logo", this.logo);
 
             this.$wait.start("processing");
             this.$Progress.start();
             
-            axios.post('id-card/templates/add', fd, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
+            await axios.post('id-card/templates/add', fd)
             .then(
                 response => {
                     this.$wait.end("processing");

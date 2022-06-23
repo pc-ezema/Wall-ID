@@ -100,15 +100,9 @@ export default {
         }
     },
 
-    mounted() {
-        window.scrollTo(0, 0);
-    },
-
     methods: {
         displayOrganization() {
             let username = this.$route.params.username;
-
-            console.log(username);
 
             axios.get('users/organization/get', {
                 params: {
@@ -165,5 +159,9 @@ export default {
         this.displayOrganization();
     },
 
+    mounted() {
+        this.displayOrganization();
+        window.scrollTo(0, 0);
+    },
 }
 </script>

@@ -26,13 +26,50 @@
                <!--Boxes Section-->
                <div class="row justify-content-center mt-3 secForm">
                    <div class="col-lg-11 filterSelect">
-                        <select>
+                        <select @change="onChange($event)" v-model="key">
                             <option hidden>Filter</option>
-                            <option>Individual</option>
-                            <option>Organization</option>
+                            <option value="Individual">Individual</option>
+                            <option value="Organization">Organization</option>
                         </select>
                    </div>
-                   <div class="col-lg-11 mt-3">
+                   <div v-if="organization" class="col-lg-11 mt-3">
+                     <div class="white_card card_height_100 mb_30">
+                        <div class="white_card_body">
+                            <div class="QA_section">
+                                <div class="QA_table mb_30">
+                                    <table class="table lms_table_active">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">ID Number</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Issued Date</th>
+                                                <th scope="col">Role</th>
+                                                <th scope="col">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody v-if="!mypendingidcards || !mypendingidcards.length">
+                                            <tr>
+                                                <td class="align-enter text-dark font-13" colspan="6">No Pending ID Card From Organization.</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody v-else>
+                                            <tr v-for="(row, index) in mypendingidcards" v-bind:key="index">
+                                                <th scope="row">{{ index + 1 }}</th>
+                                                <td>{{ row.id_card_number }}</td>
+                                                <td>{{ row.name }}</td>
+                                                <td>{{ row.issued_date }}</td>
+                                                <td>{{ row.role }}</td>
+                                                <td><a class="a-pending">{{ row.status }}</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   </div>
+                   <div v-if="individual" class="col-lg-11 mt-3">
                      <div class="white_card card_height_100 mb_30">
                         <div class="white_card_body">
                             <div class="QA_section">
@@ -54,8 +91,8 @@
                                             </tr>
                                         </tbody>
                                         <tbody v-else>
-                                            <tr v-for="row in mypendingidcards" v-bind:key="row.id">
-                                                <th scope="row">{{ row.id }}</th>
+                                            <tr v-for="(row, index) in mypendingidcards" v-bind:key="index">
+                                                <th scope="row">{{ index + 1 }}</th>
                                                 <td>{{ row.id_card_number }}</td>
                                                 <td>{{ row.name }}</td>
                                                 <td>{{ row.issued_date }}</td>
@@ -99,10 +136,44 @@ export default {
         return {
             pagination: {},
             mypendingidcards: [],
+            organization: false,
+            individual: true,
         }
     },
 
     methods: {
+        onChange(event) {
+            if(this.key == 'Individual') {
+                this.organization = false;
+                this.individual = true
+                axios.get('id-card-management/pending/id-card/individual')
+                .then(
+                    response => {
+                        this.mypendingidcards = response.data.data;
+                    }
+                ).catch (
+                    error => {
+                        console.log(error);
+                    }
+                )
+            }
+
+            if(this.key == 'Organization') {
+                this.individual = false;
+                this.organization = true;
+                axios.get('id-card-management/pending/id-card/organization')
+                .then(
+                    response => {
+                        this.mypendingidcards = response.data.data;
+                    }
+                ).catch (
+                    error => {
+                        console.log(error);
+                    }
+                )
+            }
+        },
+
         prepPagination(data) {
             this.pagination = {
                 data: data.data,
@@ -117,7 +188,7 @@ export default {
             };
         },
 
-        loadMyCard(page = 1) {
+        loadIndPendingCard(page = 1) {
             axios.get('id-card-management/pending/id-card/individual' + "?page=" + page)
             .then(
                 response => {
@@ -133,10 +204,11 @@ export default {
     },
 
     created() {
-        this.loadMyCard();
+        this.loadIndPendingCard();
     },
 
     mounted() {
+        this.loadIndPendingCard();
         window.scrollTo(0, 0)
     }
 }

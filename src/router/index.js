@@ -9,6 +9,8 @@ import ForgotPassword from '../views/ForgotPassword.vue'
 import SignupOption from '../views/SignupOption.vue'
 import SignupIndividual from '../views/SignupIndividual.vue'
 import SignupOrganisation from '../views/SignupOrganisation.vue'
+import EmailVerification from '../views/EmailVerification.vue'
+import AccountVerified from '../views/AccountVerified.vue'
 import Page404 from '../views/Page404.vue'
 
 // Individual Dashboard
@@ -161,6 +163,24 @@ const routes = [
       middleware: guest
     }
   },
+  {
+    path: "/email_verification/:random/:email",
+    name: "EmailVerification",
+    component: EmailVerification,
+    meta: {
+      title: 'Email Verification | WALLID',
+      middleware: guest
+    }
+  },
+  {
+    path: "/account/verified",
+    name: "AccountVerified",
+    component: AccountVerified,
+    meta: {
+      title: 'Account Verified Successfully | WALLID',
+      middleware: guest
+    }
+  },
   {path: '/:catchAll(.*)', name: 'Page404', component: Page404,
     meta: {
       title: 'Page Not Found | WALLID',
@@ -202,13 +222,13 @@ const routes = [
       middleware: auth
     }
   },
-  {path: '/individual-dashboard/organisation-details', name: 'IndividualOrganisationDetails', component: IndividualOrganisationDetails,
+  {path: '/individual-dashboard/organisation-details/:username', name: 'IndividualOrganisationDetails', component: IndividualOrganisationDetails,
      meta: {
        title: 'Organisation Details - Individual Dashboard | WALLID',
        middleware: auth
      }
  },
-  {path: '/individual-dashboard/create-id', name: 'IndividualCreateID', component: IndividualCreateID,
+  {path: '/individual-dashboard/create-id/:id', name: 'IndividualCreateID', component: IndividualCreateID,
      meta: {
        title: 'Create ID - Individual Dashboard | WALLID',
        middleware: auth

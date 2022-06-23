@@ -29,15 +29,54 @@
                         <h5>All Membership</h5>
                    </div>
                    <div class="col-lg-11 filterSelect">
-                        <select>
+                       <select @change="onChange($event)" v-model="key">
                             <option>Filter</option>
-                            <option>Pending</option>
-                            <option>Declined</option>
-                            <option>Activated</option>
-                            <option>Deactivated</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Declined">Declined</option>
+                            <option value="Activated">Activated</option>
+                            <option value="Deactivated">Deactivated</option>
                         </select>
                    </div>
-                   <div class="col-lg-11 mt-3">
+                   <div v-if="approvedMember" class="col-lg-11 mt-3">
+                     <div class="white_card card_height_100 mb_30">
+                        <div class="white_card_body">
+                            <div class="QA_section">
+                                <div class="QA_table mb_30">
+                                    <table class="table lms_table_active">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Phone</th>
+                                                <th scope="col">Role</th>
+                                                <th scope="col">Date Requested</th>
+                                                <th scope="col">Membership Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody v-if="!membership || !membership.length">
+                                            <tr>
+                                                <td class="align-enter text-dark font-13" colspan="5">No Approved Member</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody v-else>
+                                            <tr v-for="(row, index) in membership" v-bind:key="index">
+                                                <th scope="row">{{ index + 1 }}</th>
+                                                <td>{{ row.individual.firstname }} {{row.individual.lastname}}</td>
+                                                <td>{{row.individual.phone}}</td>
+                                                <td>{{ row.role }}</td>
+                                                <td>{{ new Date(row.individual.created_at).toLocaleString() }}</td>
+                                                <td>
+                                                    <span class="badge" style="background: green;">{{ row.status }}</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   </div>
+                   <div v-if="pendingMember" class="col-lg-11 mt-3">
                      <div class="white_card card_height_100 mb_30">
                         <div class="white_card_body">
                             <div class="QA_section">
@@ -60,13 +99,15 @@
                                             </tr>
                                         </tbody>
                                         <tbody v-else>
-                                            <tr v-for="row in membership" v-bind:key="row.id">
-                                                <th scope="row">{{ row.id }}</th>
+                                            <tr v-for="(row, index) in membership" v-bind:key="index">
+                                                <th scope="row">{{ index + 1 }}</th>
                                                 <td>{{ row.individual.firstname }} {{row.individual.lastname}}</td>
                                                 <td>{{row.individual.phone}}</td>
                                                 <td>{{ row.role }}</td>
                                                 <td>{{ new Date(row.individual.created_at).toLocaleString() }}</td>
-                                                <td><a class="text-danger">{{ row.status }}</a></td>
+                                                <td>
+                                                    <span class="badge" style="background: red;">{{ row.status }}</span>
+                                                </td>
                                                 <td>
                                                    <div class="action_btns d-flex">
                                                       <a href="javascript:void(0)" @click="approveMember(row.id)" title="Approve" class="action_btn"> <i class="bi bi-check-circle"></i> </a>
@@ -109,14 +150,53 @@ export default {
         return {
             pagination: {},
             membership: [],
+            approvedMember: false,
+            pendingMember: true,
+            key: ""
         }
     },
     
     mounted() {
+        this.loadMyCard();
         window.scrollTo(0, 0)
     },
 
     methods: {
+        onChange(event) {
+            console.log(event.target.value);
+            if(this.key == 'Activated') {
+                this.pendingMember = false;
+                this.approvedMember = true
+                axios.get('organizations/members/active')
+                .then(
+                    response => {
+                        this.prepPagination(response.data);
+                        this.membership = response.data.data;
+                    }
+                ).catch (
+                    error => {
+                        console.log(error);
+                    }
+                )
+            }
+
+            if(this.key == 'Pending') {
+                this.approvedMember = false;
+                this.pendingMember = true;
+                axios.get('organizations/members/requests/get')
+                .then(
+                    response => {
+                        this.prepPagination(response.data);
+                        this.membership = response.data.data;
+                    }
+                ).catch (
+                    error => {
+                        console.log(error);
+                    }
+                )
+            }
+        },
+
         prepPagination(data) {
             this.pagination = {
                 data: data.data,
@@ -132,6 +212,7 @@ export default {
         },
 
         loadMyCard(page = 1) {
+            this.approvedMember = false;
             axios.get('organizations/members/requests/get' + "?page=" + page)
             .then(
                 response => {
@@ -155,7 +236,7 @@ export default {
                         duration: 5000,
                         speed: 1000,
                     });
-                    location.reload();
+                    this.loadMyCard();
                 }
             ).catch (
                 error => {

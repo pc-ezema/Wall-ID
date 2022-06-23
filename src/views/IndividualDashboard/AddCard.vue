@@ -41,7 +41,7 @@
                                     <!-- <p>Search Result <span>(1)</span></p> -->
                                 </div>
                                 <div class="mb-2" v-for="row in resultQuery" v-bind:key="row.id">
-                                    <router-link to="/individual-dashboard/organisation-details">
+                                    <router-link :to="'/individual-dashboard/organisation-details/' + row.username">
                                         <div class="resultDivDisplay">
                                             <div class="resultPicture">
                                                 <div class="pictureDiv">
@@ -88,9 +88,6 @@ import axios from 'axios'
 
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
-    mounted() {
-        window.scrollTo(0, 0)
-    },
 
     data() {
         return {
@@ -136,8 +133,6 @@ export default {
                 response => {
                     this.prepPagination(response.data);
                     this.search = response.data.data;
-
-                    // console.log(response.data.data);
                 }
             ).catch (
                 error => {
@@ -150,5 +145,10 @@ export default {
     created() {
         this.loadOrganizations();
     },
+
+    mounted() {
+        this.loadOrganizations();
+        window.scrollTo(0, 0)
+    }
 }
 </script>

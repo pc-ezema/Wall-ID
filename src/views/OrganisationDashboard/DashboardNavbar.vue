@@ -57,7 +57,7 @@
                               </div>
                               <div class="profile_info_details">
                                  <router-link to="/organisation-dashboard/my-profile"><a>My Profile</a></router-link>
-                                 <router-link to="/organisation-dashboard/my-wallet"><a>My Wallet</a></router-link>
+                                 <!-- <router-link to="/organisation-dashboard/my-wallet"><a>My Wallet</a></router-link> -->
                                  <router-link to="/organisation-dashboard/settings"><a>Settings</a></router-link>
                                  <a href="javascript:void(0)" @click="logoutClick">Log Out</a>
                               </div>

@@ -55,13 +55,20 @@
                                             </tr>
                                         </tbody>
                                         <tbody v-else>
-                                            <tr v-for="row in membership" v-bind:key="row.id">
-                                                <th scope="row">{{ row.id }}</th>
+                                            <tr v-for="(row, index) in membership" v-bind:key="index">
+                                                <th scope="row">{{ index + 1 }}</th>
                                                 <td>{{ row.organization.name }}</td>
                                                 <td>{{ row.organization.phone }}</td>
                                                 <td>{{ row.role }}</td>
                                                 <td>{{ new Date(row.created_at).toLocaleString() }}</td>
-                                                <td><a class="a-approved">{{ row.status }}</a></td>
+                                                <td>
+                                                    <div v-if="row.status == 'approved'">
+                                                        <span class="badge" style="background: green;">{{ row.status }}</span>
+                                                    </div>
+                                                    <div v-else>
+                                                        <span class="badge" style="background: red;">{{ row.status }}</span>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -118,7 +125,7 @@ export default {
             };
         },
 
-        loadMyCard(page = 1) {
+        loadMyCard() {
             axios.get('individuals/organizations/join-requests')
             .then(
                 response => {
@@ -138,6 +145,7 @@ export default {
     },
 
     mounted() {
+        this.loadMyCard();
         window.scrollTo(0, 0)
     }
 }

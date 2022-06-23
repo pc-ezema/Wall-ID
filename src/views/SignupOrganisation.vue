@@ -119,6 +119,17 @@ export default {
     },
 
     methods: {
+        makeid(length) {
+          let result = '';
+          const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+          const charactersLength = characters.length;
+          for (var i = 0; i < length; i++) {
+            result += characters.charAt(Math.floor(Math.random() *
+                charactersLength));
+          }
+          return result;
+        },
+
         async init_register() {
             this.$wait.start("processing");
             this.$Progress.start();
@@ -151,13 +162,18 @@ export default {
             })
             .then(
                 response => {
-                this.error = "";
-                this.message = response.data.message;
-                this.register = "";
-                this.password_confirmation = "";
-                this.access_type = "";
-                this.$wait.end("processing");
-                this.$Progress.finish();
+                    this.error = "";
+                    this.message = response.data.message;
+                    this.register = "";
+                    this.password_confirmation = "";
+                    this.access_type = "";
+                    this.$wait.end("processing");
+                    this.$Progress.finish();
+                    
+                    // go to verification page
+                    setTimeout(() => {
+                        this.$router.push('/email_verification/' + this.makeid(200) + "/" + this.register.email)
+                    }, 1500);
                 }
             ).catch (
                 error => {
@@ -175,9 +191,6 @@ export default {
                     }
                 }
             )
-
-            // this.$router.push('/login');
-
         }
     },
 
