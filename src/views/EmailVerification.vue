@@ -3,8 +3,8 @@
 
     <section class="login-area">
         <div class="row m-0">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-4">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6">
                 <div class="login-content">
                     <div class="login-form">
                         <div class="col-lg-12 text-center">
@@ -30,7 +30,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4"></div>
+            <div class="col-lg-3"></div>
         </div>
     </section>
 

@@ -29,14 +29,90 @@
                         <h5>All your members with IDs</h5>
                    </div>
                    <div class="col-lg-11 filterSelect">
-                        <select>
+                        <select @change="onChange($event)" v-model="key">
                             <option hidden>Filter</option>
-                            <option>Approved</option>
-                            <option>Declined</option>
-                            <option>Pending</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Declined">Declined</option>
+                            <option value="Pending">Pending</option>
                         </select>
                    </div>
-                   <div class="col-lg-11 mt-3">
+                   <div v-if="approvedcards" class="col-lg-11 mt-3">
+                     <div class="white_card card_height_100 mb_30">
+                        <div class="white_card_body">
+                            <div class="QA_section">
+                                <div class="QA_table mb_30">
+                                    <table class="table lms_table_active">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Image</th>
+                                                <th scope="col">Card Template</th>
+                                                <th scope="col">Date Created</th>
+                                                <th scope="col">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody v-if="!memberid || !memberid.length">
+                                            <tr>
+                                                <td class="align-enter text-dark font-13" colspan="7">No Approved ID Card</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody v-else>
+                                            <tr v-for="(row, index) in memberid" v-bind:key="index">
+                                                <th scope="row">{{ index + 1 }}</th>
+                                                <td>{{ row.name }}</td>
+                                                <td><img :src="`https://wall.victornwadinobi.com${row.path}`"></td>
+                                                <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView">View Card</button></td>
+                                                <td>{{ new Date(row.issued_date).toLocaleString() }}</td>
+                                                <td><a class="a-approved">{{row.status}}</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   </div>
+                   <div v-if="declinedcards" class="col-lg-11 mt-3">
+                     <div class="white_card card_height_100 mb_30">
+                        <div class="white_card_body">
+                            <div class="QA_section">
+                                <div class="QA_table mb_30">
+                                    <table class="table lms_table_active">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Image</th>
+                                                <th scope="col">Card Template</th>
+                                                <th scope="col">Date Created</th>
+                                                <th scope="col">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody v-if="!memberid || !memberid.length">
+                                            <tr>
+                                                <td class="align-enter text-dark font-13" colspan="7">No Declined ID Card</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody v-else>
+                                            <tr v-for="(row, index) in memberid" v-bind:key="index">
+                                                <th scope="row">{{ index + 1 }}</th>
+                                                <td>{{ row.name }}</td>
+                                                <td><img :src="`http://localhost:8000${row.path}`"></td>
+                                                <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView">View Card</button></td>
+                                                <td>{{ new Date(row.issued_date).toLocaleString() }}</td>
+                                                <td><a class="a-pending">{{row.status}}</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   </div>
+                   <div v-if="pendingcards" class="col-lg-11 mt-3">
                      <div class="white_card card_height_100 mb_30">
                         <div class="white_card_body">
                             <div class="QA_section">
@@ -53,44 +129,25 @@
                                                 <th scope="col">Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody v-if="!memberid || !memberid.length">
                                             <tr>
-                                                <th scope="row">1</th>
-                                                <td>Name Surname</td>
-                                                <td><img src="@/assets/img/dp.jpg"></td>
-                                                <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView">View Card</button></td>
-                                                <td>09-May-2022</td>
-                                                <td><a class="a-approved">Approved</a></td>
-                                                <td>
-                                                   <div class="action_btns d-flex">
-                                                      <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a>
-                                                  </div>
-                                                </td>
+                                                <td class="align-enter text-dark font-13" colspan="7">No Pending ID Card</td>
                                             </tr>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Name Surname</td>
-                                                <td><img src="@/assets/img/dp.jpg"></td>
+                                        </tbody>
+                                        <tbody v-else>
+                                            <tr v-for="(row, index) in memberid" v-bind:key="index">
+                                                <th scope="row">{{ index + 1 }}</th>
+                                                <td>{{ row.name }}</td>
+                                                <td><img :src="`http://localhost:8000${row.path}`"></td>
                                                 <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView">View Card</button></td>
-                                                <td>09-May-2022</td>
-                                                <td><a class="a-pending">Pending</a></td>
+                                                <td>{{ new Date(row.issued_date).toLocaleString() }}</td>
+                                                <td><a class="a-pending">{{row.status}}</a></td>
                                                 <td>
-                                                   <div class="action_btns d-flex">
-                                                      <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a>
-                                                  </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Name Surname</td>
-                                                <td><img src="@/assets/img/dp.jpg"></td>
-                                                <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView">View Card</button></td>
-                                                <td>09-May-2022</td>
-                                                <td><a class="a-declined">Declined</a></td>
-                                                <td>
-                                                   <div class="action_btns d-flex">
-                                                      <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a>
-                                                  </div>
+                                                    <div class="action_btns d-flex">
+                                                      <a href="javascript:void(0)" @click="approveIDCard(row.id)" title="Approve" class="action_btn"> <i class="bi bi-patch-check"></i> </a>
+                                                    
+                                                      <a href="javascript:void(0)" @click="declineIDCard(row.id)" title="Decline" class="action_btn"> <i class="bi bi-x-circle"></i> </a>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -127,28 +184,28 @@
                 </div>
                 <div class="modal-body">
                     <div 
-                       class="cardTemplate modalCardTemplate" 
-                       style="
+                    class="cardTemplate modalCardTemplate" 
+                    style="
                         background-color: #a100ff;
                         width: 330px;
                         height: 200px;
                         border-radius: 5px;
                         padding: 20px 15px;
-                       "
-                       >
-                           <div class="cardLogo">
-                               <img src="@/assets/img/image.png">
-                           </div>
-                           <div class="cardContent">
-                               <p style="color: #ffffff !important">Holder's Name:</p>
-                               <p style="color: #ffffff !important">Job Role:</p>
-                               <p style="color: #ffffff !important">ID No:</p>
-                               <p style="color: #ffffff !important">Join Date:</p>
-                           </div>
-                           <div class="cardImage">
-                               <img src="@/assets/img/image2.png">
-                           </div>
-                           <div class="clear"></div>
+                    "
+                    >
+                        <div class="cardLogo">
+                            <img src="@/assets/img/image.png">
+                        </div>
+                        <div class="cardContent">
+                            <p style="color: #ffffff !important">Holder's Name:</p>
+                            <p style="color: #ffffff !important">Job Role:</p>
+                            <p style="color: #ffffff !important">ID No:</p>
+                            <p style="color: #ffffff !important">Join Date:</p>
+                        </div>
+                        <div class="cardImage">
+                            <img src="@/assets/img/image2.png">
+                        </div>
+                        <div class="clear"></div>
                         </div>
                 </div>
             </div>
@@ -162,9 +219,172 @@
 import DashboardSidebar from './DashboardSidebar.vue'
 import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
+import axios from 'axios';
+
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+    
+    data() {
+        return {
+            pagination: {},
+            memberid: [],
+            pendingcards: true,
+            approvedcards: false,
+            declinedcards: false,
+            key: ""
+        }
+    },
+    
+    methods: {
+        onChange(event) {
+            if(this.key == 'Approved') {
+                this.pendingcards = false;
+                this.approvedcards = true;
+                this.declinedcards = false;
+
+                axios.get('id-card-management/organization/approved/id-card')
+                .then(
+                    response => {
+                        this.prepPagination(response.data);
+                        this.memberid = response.data.data;
+                    }
+                ).catch (
+                    error => {
+                        console.log(error);
+                    }
+                )
+            }
+
+            if(this.key == 'Pending') {
+                this.pendingcards = true;
+                this.approvedcards = false;
+                this.declinedcards = false;
+                axios.get('id-card-management/organization/pending/id-card')
+                .then(
+                    response => {
+                        this.prepPagination(response.data);
+                        this.memberid = response.data.data;
+                    }
+                ).catch (
+                    error => {
+                        console.log(error);
+                    }
+                )
+            }
+
+            if(this.key == 'Declined') {
+                this.pendingcards = false;
+                this.approvedcards = false;
+                this.declinedcards = true;
+                axios.get('id-card-management/organization/declined/id-card')
+                .then(
+                    response => {
+                        this.prepPagination(response.data);
+                        this.memberid = response.data.data;
+                    }
+                ).catch (
+                    error => {
+                        console.log(error);
+                    }
+                )
+            }
+        },
+
+        prepPagination(data) {
+            this.pagination = {
+                data: data.data,
+                current_page: data.meta.current_page,
+                first_item: data.meta.first_item,
+                last_item: data.meta.last_item,
+                last_page: data.meta.last_page,
+                next_page_url: data.meta.next_page_url,
+                per_page: data.meta.per_page,
+                previous_page_url: data.meta.previous_page_url,
+                total: data.meta.total,
+            };
+        },
+
+        loadPendingCards(page = 1) {
+            this.approvedcards = false;
+            this.declinedcards = false;
+
+            axios.get('id-card-management/organization/pending/id-card' + "?page=" + page)
+            .then(
+                response => {
+                    this.prepPagination(response.data);
+                    this.memberid = response.data.data;
+                }
+            ).catch (
+                error => {
+                    console.log(error);
+                }
+            )
+        },
+
+        async approveIDCard(data){
+            this.$Progress.start();
+            await axios.post('id-card-management/organization/process/id-card/' + data, {
+                status: 'Approved'
+            }).then(
+                response => {
+                    this.$Progress.finish();
+                    this.$notify({
+                        type: "success",
+                        title: response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                    this.loadMembershipCards();
+                }
+            ).catch (
+                error => {
+                    this.$Progress.fail();
+                    this.$notify({
+                        type: "error",
+                        title: error.response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                }
+            )
+        },
+
+        async declineIDCard(data){
+            this.$Progress.start();
+            await axios.post('id-card-management/organization/process/id-card/' + data, {
+                status: 'Declined'
+            }).then(
+                response => {
+                    this.$Progress.finish();
+                    this.$notify({
+                        type: "success",
+                        title: response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                    this.loadMembershipCards();
+                }
+            ).catch (
+                error => {
+                    this.$Progress.fail();
+                    this.$notify({
+                        type: "error",
+                        title: error.response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                }
+            )
+        }
+
+    },
+
+    created() {
+        this.loadPendingCards();
+    },
+
     mounted() {
+        this.loadPendingCards();
         window.scrollTo(0, 0)
     }
 }

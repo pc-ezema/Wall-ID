@@ -154,13 +154,8 @@ export default {
             pendingMember: true,
             key: ""
         }
-    },
+    },  
     
-    mounted() {
-        this.loadMyCard();
-        window.scrollTo(0, 0)
-    },
-
     methods: {
         onChange(event) {
             console.log(event.target.value);
@@ -254,5 +249,11 @@ export default {
     created() {
         this.loadMyCard();
     },
+    
+    mounted() {
+        this.loadMyCard();
+        window.scrollTo(0, 0)
+    },
+
 }
 </script>
