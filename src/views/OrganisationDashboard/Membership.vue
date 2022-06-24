@@ -61,10 +61,10 @@
                                         <tbody v-else>
                                             <tr v-for="(row, index) in membership" v-bind:key="index">
                                                 <th scope="row">{{ index + 1 }}</th>
-                                                <td>{{ row.individual.firstname }} {{row.individual.lastname}}</td>
-                                                <td>{{row.individual.phone}}</td>
-                                                <td>{{ row.role }}</td>
-                                                <td>{{ new Date(row.individual.created_at).toLocaleString() }}</td>
+                                                <td>{{ row.membership_request_details.individual.firstname }} {{row.individual.lastname}}</td>
+                                                <td>{{row.membership_request_details.individual.phone}}</td>
+                                                <td>{{ row.membership_request_details.role }}</td>
+                                                <td>{{ new Date(row.created_at).toLocaleString() }}</td>
                                                 <td>
                                                     <span class="badge" style="background: green;">{{ row.status }}</span>
                                                 </td>
