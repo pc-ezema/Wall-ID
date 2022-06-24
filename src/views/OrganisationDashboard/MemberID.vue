@@ -99,7 +99,7 @@
                                             <tr v-for="(row, index) in memberid" v-bind:key="index">
                                                 <th scope="row">{{ index + 1 }}</th>
                                                 <td>{{ row.name }}</td>
-                                                <td><img :src="`http://localhost:8000${row.path}`"></td>
+                                                <td><img :src="`https://wall.victornwadinobi.com${row.path}`"></td>
                                                 <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView">View Card</button></td>
                                                 <td>{{ new Date(row.issued_date).toLocaleString() }}</td>
                                                 <td><a class="a-pending">{{row.status}}</a></td>
@@ -138,7 +138,7 @@
                                             <tr v-for="(row, index) in memberid" v-bind:key="index">
                                                 <th scope="row">{{ index + 1 }}</th>
                                                 <td>{{ row.name }}</td>
-                                                <td><img :src="`http://localhost:8000${row.path}`"></td>
+                                                <td><img :src="`https://wall.victornwadinobi.com${row.path}`"></td>
                                                 <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView">View Card</button></td>
                                                 <td>{{ new Date(row.issued_date).toLocaleString() }}</td>
                                                 <td><a class="a-pending">{{row.status}}</a></td>
