@@ -8,8 +8,8 @@
                 <div class="login-content">
                     <div class="login-form">
                         <div class="col-lg-12 text-center">
-                            <h3>Forgot Password</h3>
-                            <p>Please enter your email to reset your password</p>
+                            <h3>Reset Password</h3>
+                            <p>Please enter the code sent to your email to reset your password</p>
                         </div>
                         <div v-if="message" id="alerttopright" class="alert-timeout alert alert-success alert-dismissible fade show" role="alert">
                             {{ message }}
@@ -17,22 +17,27 @@
                         </div>
                         <error v-if="error" :error="error" />
 
-                        <form class="form-form-div"  @submit.prevent="resetPasswordEmail()">
+                        <form class="form-form-div"  @submit.prevent="resetPassword()">
                             <!-- Email Here -->
                             <div>
-                                <label for="full name">Email</label>
-                                <input type="email" v-model="email" placeholder="Enter email" required>
+                                <label for="code">Code</label>
+                                <input type="text" v-model="code" placeholder="Enter Code" required>
+                            </div>
+
+                            <div>
+                                <label for="password">Password</label>
+                                <input type="password" v-model="password" placeholder="Enter Password" required>
+                            </div>
+
+                            <div>
+                                <label for="re-password">Re-Enter Password</label>
+                                <input type="password" v-model="password_confirmation" placeholder="Enter Password Confirmation" required>
                             </div>
 
                             <!-- Submit Button Here-->
                             <div class="signup-btn-div text-center">
-                                <input v-if="$wait.is('processing')" value="Sending Reset Password Code..." class="submit-form text-center" >
-                                <input v-else type="submit" value="Send email" class="submit-form">
-                            </div>
-
-                            <!-- Forgot Password Here -->
-                            <div class="forgot-password">
-                                <p>Remenber Password? <router-link :to="{name: 'Login'}"><a>Login</a></router-link></p>
+                                <input v-if="$wait.is('processing')" value="Reset Password Code..." class="submit-form text-center" >
+                                <input v-else type="submit" value="Reset Password" class="submit-form">
                             </div>
                         </form>
                     </div>
@@ -55,19 +60,31 @@ export default {
 
     data() {
         return {
-            email: "",
+            code: "",
+            password: "",
+            password_confirmation: "",
             error: "",
             message: ""
         }
     },
 
     methods: {
-        async resetPasswordEmail() {
+        async resetPassword() {
             this.$wait.start("processing");
             this.$Progress.start();
 
-            await axios.post('auth/password/email', { 
-                email: this.email
+            if (this.password_confirmation !== this.password) {
+                this.message = "";
+                this.error = "Confirm password doesn't match with actual password."
+                this.$wait.end("processing");
+                this.$Progress.fail();
+                return
+            }
+
+            await axios.post('auth/password/reset', { 
+                code: this.code,
+                password: this.password,
+                password_confirmation: this.password_confirmation
             })
             .then(
                 response => {
@@ -76,9 +93,9 @@ export default {
                     this.$wait.end("processing");
                     this.$Progress.finish();
 
-                    //  go to reset password page
+                    //  go to login page
                     setTimeout(() => {
-                        this.$router.push('/reset-password');
+                        this.$router.push('/login');
                     }, 2000);
                 }
             ).catch (

@@ -6,6 +6,7 @@ import Faq from '../views/Faq.vue'
 import Contact from '../views/Contact.vue'
 import Login from '../views/Login.vue'
 import ForgotPassword from '../views/ForgotPassword.vue'
+import ResetPassword from '../views/ResetPassword.vue'
 import SignupOption from '../views/SignupOption.vue'
 import SignupIndividual from '../views/SignupIndividual.vue'
 import SignupOrganisation from '../views/SignupOrganisation.vue'
@@ -142,6 +143,12 @@ const routes = [
   {path: '/forgot-password', name: 'ForgotPassword', component: ForgotPassword,
     meta: {
       title: 'Forgot Password | WALLID',
+      middleware: guest
+    }
+  },
+  {path: '/reset-password', name: 'ResetPassword', component: ResetPassword,
+    meta: {
+      title: 'Reset Password | WALLID',
       middleware: guest
     }
   },

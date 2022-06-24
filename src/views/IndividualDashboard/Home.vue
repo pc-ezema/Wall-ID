@@ -14,7 +14,8 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="dashboard_header_title">
-                                        <h3>{{ getTime() }}, {{ user.details.firstname }} {{ user.details.lastname }}!</h3>                                        
+                                        <h3>{{ getTime() }}, {{ user.details.firstname }} {{ user.details.lastname }}!
+                                        <span style="float: right;">{{ user.details.id_card_number }}</span></h3>                                        
                                     </div>
                                 </div>
                             </div>
