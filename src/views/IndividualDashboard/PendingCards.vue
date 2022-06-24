@@ -32,6 +32,7 @@
                             <option value="Organization">Organization</option>
                         </select>
                    </div>
+                   
                    <div v-if="organization" class="col-lg-11 mt-3">
                      <div class="white_card card_height_100 mb_30">
                         <div class="white_card_body">

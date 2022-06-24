@@ -36,7 +36,7 @@
 
                             <!-- Submit Button Here-->
                             <div class="signup-btn-div text-center">
-                                <input v-if="$wait.is('processing')" value="Reset Password Code..." class="submit-form text-center" >
+                                <input v-if="$wait.is('processing')" value="Resetting Password..." class="submit-form text-center" >
                                 <input v-else type="submit" value="Reset Password" class="submit-form">
                             </div>
                         </form>

@@ -55,7 +55,7 @@
                                         <input type="text" placeholder="Enter Role" required v-model="role" />
                                         <span>If your role is not available, please contact your organisation.</span>
                                         <div class="txtCnt mt-5">
-                                            <button v-if="$wait.is('processing')" type="button">Request Processing</button>
+                                            <button v-if="$wait.is('processing')" type="button">Request Processing...</button>
                                             <button v-else type="submit">Send Request</button>
                                         </div>
                                     </form>

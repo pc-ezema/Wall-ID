@@ -55,7 +55,7 @@
                                         </thead>
                                         <tbody v-if="!membership || !membership.length">
                                             <tr>
-                                                <td class="align-enter text-dark font-13" colspan="5">No Approved Member</td>
+                                                <td class="align-enter text-dark font-13" colspan="6">No Approved Member</td>
                                             </tr>
                                         </tbody>
                                         <tbody v-else>
@@ -95,7 +95,7 @@
                                         </thead>
                                         <tbody v-if="!membership || !membership.length">
                                             <tr>
-                                                <td class="align-enter text-dark font-13" colspan="5">No Pending Memebership Request</td>
+                                                <td class="align-enter text-dark font-13" colspan="7">No Pending Membership Request</td>
                                             </tr>
                                         </tbody>
                                         <tbody v-else>
