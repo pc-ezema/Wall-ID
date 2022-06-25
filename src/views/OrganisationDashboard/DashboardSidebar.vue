@@ -122,7 +122,7 @@
             <!--Log Out-->
             <li class="">
                 <router-link to="#" class="menuRouter">
-                    <a aria-expanded="false">
+                    <a aria-expanded="false" href="javascript:void(0)" @click="logoutClick">
                     <div class="nav_icon_small">
                         <img src="@/assets/img/dashAssets/menu-logout.png">
                     </div>
@@ -136,3 +136,14 @@
       </nav>
 </template>
 <style scoped src="@/assets/css/styleDashboard.css"></style>
+<script>
+    export default {
+        methods: {
+            logoutClick() {
+                localStorage.removeItem('token');
+                this.$store.dispatch('user', null);
+                this.$router.push('/');
+            }
+        },
+    }
+</script>

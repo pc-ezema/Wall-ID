@@ -48,6 +48,7 @@
                                                 <th scope="col">ID</th>
                                                 <th scope="col">ID Number</th>
                                                 <th scope="col">Name</th>
+                                                <th scope="col">Card Template</th>
                                                 <th scope="col">Issued Date</th>
                                                 <th scope="col">Role</th>
                                                 <th scope="col">Status</th>
@@ -55,7 +56,7 @@
                                         </thead>
                                         <tbody v-if="!myidcards || !myidcards.length">
                                             <tr>
-                                                <td class="align-enter text-dark font-13" colspan="6">No Approved ID Card.</td>
+                                                <td class="align-enter text-dark font-13" colspan="7">No Approved ID Card.</td>
                                             </tr>
                                         </tbody>
                                         <tbody v-else>
@@ -63,23 +64,11 @@
                                                 <th scope="row">{{ row.id }}</th>
                                                 <td>{{ row.id_card_number }}</td>
                                                 <td>{{ row.name }}</td>
+                                                <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView" @click="sendInfo(row)">View Card</button></td>
                                                 <td>{{ row.issued_date }}</td>
                                                 <td>{{ row.role }}</td>
                                                 <td><a class="a-approved">{{ row.status }}</a></td>
                                             </tr>
-                                            <!-- <tr>
-                                                <th scope="row">2</th>
-                                                <td>Name Surname</td>
-                                                <td>Name Surname</td>
-                                                <td>2022-03-15</td>
-                                                <td><a class="a-pending">Pending</a></td>
-                                                <td>
-                                                   <div class="action_btns d-flex">
-                                                      <a href="#" title="View" class="action_btn"> <i class="bi bi-eye-fill"></i> </a>
-                                                      <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a>
-                                                  </div>
-                                                </td>
-                                            </tr> -->
                                         </tbody>
                                     </table>
                                 </div>
@@ -100,6 +89,46 @@
          <i class="ti-angle-up"></i>
          </a>
       </div>
+
+      <!--Box 1-->
+    <div class="modal fade" id="modalView" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content viewCardModal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">ID Card</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div 
+                    class="cardTemplate modalCardTemplate" 
+                    :style="{
+                        'background-color': this.selectedCard.background_color,
+                        'width': '330px',
+                        'height': '200px',
+                        'border-radius': '5px',
+                        'padding': '20px 15px'
+                    }"
+                    >
+                        <div class="cardLogo">
+                            <img v-bind:src="this.baseURL + this.selectedCard.cardLogo">
+                        </div>
+                        <div class="cardContent">
+                            <p :style="{'color': this.selectedCard.text_color + '!important'}">Holder's Name: {{ this.selectedCard.name}}</p>
+                            <p :style="{'color': this.selectedCard.text_color + '!important'}">Job Role: {{ this.selectedCard.role }}</p>
+                            <p :style="{'color': this.selectedCard.text_color + '!important'}">ID No: {{ this.selectedCard.id_card_number }}</p>
+                            <p :style="{'color': this.selectedCard.text_color + '!important'}">Join Date: {{ this.selectedCard.issued_date }}</p>
+                        </div>
+                        <div class="cardImage">
+                            <img v-bind:src="this.baseURL + this.selectedCard.cardImage">
+                        </div>
+                        <div class="clear"></div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
@@ -116,8 +145,19 @@ export default {
 
     data() {
         return {
+            baseURL: axios.defaults.baseURL.slice(0, -5),
             pagination: {},
             myidcards: [],
+            selectedCard: {
+                name: "",
+                role: "",
+                id_card_number: "",
+                issued_date: "",
+                background_color: "",
+                text_color: "",
+                cardLogo: "",
+                cardImage: ""
+            }
         }
     },
 
@@ -136,14 +176,12 @@ export default {
             };
         },
 
-        loadMyCard(page = 1) {
-            axios.get('id-card-management' + "?page=" + page)
+        loadMyCard() {
+            axios.get('id-card-management')
             .then(
                 response => {
                     this.prepPagination(response.data);
                     this.myidcards = response.data.data;
-
-                    console.log(this.myidcards);
                 }
             ).catch (
                 error => {
@@ -151,6 +189,17 @@ export default {
                 }
             )
         },
+
+        sendInfo(row) {
+            this.selectedCard.name = row.name;
+            this.selectedCard.role = row.role;
+            this.selectedCard.id_card_number = row.id_card_number;
+            this.selectedCard.issued_date = row.issued_date;
+            this.selectedCard.background_color = row.template.background_color;
+            this.selectedCard.text_color = row.template.text_color;
+            this.selectedCard.cardLogo = row.template.path;
+            this.selectedCard.cardImage = row.path;
+        }
     },
 
     created() {

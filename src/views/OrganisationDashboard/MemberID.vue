@@ -61,8 +61,8 @@
                                             <tr v-for="(row, index) in memberid" v-bind:key="index">
                                                 <th scope="row">{{ index + 1 }}</th>
                                                 <td>{{ row.name }}</td>
-                                                <td><img :src="`https://wall.victornwadinobi.com${row.path}`"></td>
-                                                <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView">View Card</button></td>
+                                                <td><img :src="this.baseURL + row.path"></td>
+                                                <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView" @click="sendInfo(row)">View Card</button></td>
                                                 <td>{{ new Date(row.issued_date).toLocaleString() }}</td>
                                                 <td><a class="a-approved">{{row.status}}</a></td>
                                             </tr>
@@ -99,8 +99,8 @@
                                             <tr v-for="(row, index) in memberid" v-bind:key="index">
                                                 <th scope="row">{{ index + 1 }}</th>
                                                 <td>{{ row.name }}</td>
-                                                <td><img :src="`https://wall.victornwadinobi.com${row.path}`"></td>
-                                                <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView">View Card</button></td>
+                                                <td><img :src="this.baseURL + row.path"></td>
+                                                <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView" @click="sendInfo(row)">View Card</button></td>
                                                 <td>{{ new Date(row.issued_date).toLocaleString() }}</td>
                                                 <td><a class="a-pending">{{row.status}}</a></td>
                                             </tr>
@@ -138,8 +138,8 @@
                                             <tr v-for="(row, index) in memberid" v-bind:key="index">
                                                 <th scope="row">{{ index + 1 }}</th>
                                                 <td>{{ row.name }}</td>
-                                                <td><img :src="`https://wall.victornwadinobi.com${row.path}`"></td>
-                                                <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView">View Card</button></td>
+                                                <td><img :src="this.baseURL + row.path"></td>
+                                                <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView" @click="sendInfo(row)">View Card</button></td>
                                                 <td>{{ new Date(row.issued_date).toLocaleString() }}</td>
                                                 <td><a class="a-pending">{{row.status}}</a></td>
                                                 <td>
@@ -185,25 +185,25 @@
                 <div class="modal-body">
                     <div 
                     class="cardTemplate modalCardTemplate" 
-                    style="
-                        background-color: #a100ff;
-                        width: 330px;
-                        height: 200px;
-                        border-radius: 5px;
-                        padding: 20px 15px;
-                    "
+                    :style="{
+                        'background-color': this.selectedCard.background_color,
+                        'width': '330px',
+                        'height': '200px',
+                        'border-radius': '5px',
+                        'padding': '20px 15px'
+                    }"
                     >
                         <div class="cardLogo">
-                            <img src="@/assets/img/image.png">
+                            <img v-bind:src="this.baseURL + this.selectedCard.cardLogo">
                         </div>
                         <div class="cardContent">
-                            <p style="color: #ffffff !important">Holder's Name:</p>
-                            <p style="color: #ffffff !important">Job Role:</p>
-                            <p style="color: #ffffff !important">ID No:</p>
-                            <p style="color: #ffffff !important">Join Date:</p>
+                            <p :style="{'color': this.selectedCard.text_color + '!important'}">Holder's Name: {{ this.selectedCard.name}}</p>
+                            <p :style="{'color': this.selectedCard.text_color + '!important'}">Job Role: {{ this.selectedCard.role }}</p>
+                            <p :style="{'color': this.selectedCard.text_color + '!important'}">ID No: {{ this.selectedCard.id_card_number }}</p>
+                            <p :style="{'color': this.selectedCard.text_color + '!important'}">Join Date: {{ this.selectedCard.issued_date }}</p>
                         </div>
                         <div class="cardImage">
-                            <img src="@/assets/img/image2.png">
+                            <img v-bind:src="this.baseURL + this.selectedCard.cardImage">
                         </div>
                         <div class="clear"></div>
                         </div>
@@ -226,12 +226,23 @@ export default {
     
     data() {
         return {
+            baseURL: axios.defaults.baseURL.slice(0, -5),
             pagination: {},
             memberid: [],
             pendingcards: true,
             approvedcards: false,
             declinedcards: false,
-            key: ""
+            key: "",
+            selectedCard: {
+                name: "",
+                role: "",
+                id_card_number: "",
+                issued_date: "",
+                background_color: "",
+                text_color: "",
+                cardLogo: "",
+                cardImage: ""
+            }
         }
     },
     
@@ -304,11 +315,11 @@ export default {
             };
         },
 
-        loadPendingCards(page = 1) {
+        loadPendingCards() {
             this.approvedcards = false;
             this.declinedcards = false;
 
-            axios.get('id-card-management/organization/pending/id-card' + "?page=" + page)
+            axios.get('id-card-management/organization/pending/id-card')
             .then(
                 response => {
                     this.prepPagination(response.data);
@@ -334,7 +345,7 @@ export default {
                         duration: 5000,
                         speed: 1000,
                     });
-                    this.loadMembershipCards();
+                    this.loadPendingCards();
                 }
             ).catch (
                 error => {
@@ -362,7 +373,7 @@ export default {
                         duration: 5000,
                         speed: 1000,
                     });
-                    this.loadMembershipCards();
+                    this.loadPendingCards();
                 }
             ).catch (
                 error => {
@@ -375,6 +386,17 @@ export default {
                     });
                 }
             )
+        },
+
+        sendInfo(row) {
+            this.selectedCard.name = row.name;
+            this.selectedCard.role = row.role;
+            this.selectedCard.id_card_number = row.id_card_number;
+            this.selectedCard.issued_date = row.issued_date;
+            this.selectedCard.background_color = row.template.background_color;
+            this.selectedCard.text_color = row.template.text_color;
+            this.selectedCard.cardLogo = row.template.path;
+            this.selectedCard.cardImage = row.path;
         }
 
     },

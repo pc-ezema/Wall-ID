@@ -104,7 +104,7 @@ export default {
             fd.append("issued_date", this.id.issued_date);
             fd.append("passport", this.id.passport);
 
-            // this.$wait.start("processing");
+            this.$wait.start("processing");
             this.$Progress.start();
             
             await axios.post('id-card-management/store', fd)

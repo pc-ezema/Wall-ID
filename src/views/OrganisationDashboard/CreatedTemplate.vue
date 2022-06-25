@@ -55,43 +55,8 @@
                                             <tr v-for="(row, index) in template" v-bind:key="index">
                                                 <th scope="row">{{ index + 1 }}</th>
                                                 <td>{{ row.role }}</td>
-                                                <td><img v-bind:src="`https://wall.victornwadinobi.com${row.path}`"></td>
-                                                <td><button class="viewCardBtn" data-toggle="modal" :data-target="'#viewTemplate'+row.id">View Card</button></td>
-                                                <!--Box 1-->
-                                                <div class="modal fade" :id="'viewTemplate'+row.id" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                                        <div class="modal-content viewCardModal">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLongTitle">ID Card</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div 
-                                                                class="cardTemplate modalCardTemplate" 
-                                                                :style="{ 'width' : '330px', 'height' : '200px', 'border-radius' : '5px', 'padding': '20px 15px', 'background-color': row.background_color }">
-                                                                    <div class="cardLogo">
-                                                                        <img v-bind:src="`https://wall.victornwadinobi.com${row.path}`">
-                                                                    </div>
-                                                                    <div class="cardContent">
-                                                                        <p :style="{'color': row.text_color + '!important'}">Holder's Name:</p>
-                                                                        <p :style="{'color': row.text_color + '!important'}">Job Role:</p>
-                                                                        <p :style="{'color': row.text_color + '!important'}">ID No:</p>
-                                                                        <p :style="{'color': row.text_color + '!important'}">Join Date:</p>
-                                                                    </div>
-                                                                    <div class="cardImage">
-                                                                        <img src="@/assets/img/image2.png">
-                                                                    </div>
-                                                                    <div class="clear"></div>
-                                                                    </div>
-                                                                    <div class="col-lg-12 mt-4 text-center">
-                                                                        <a href="/organisation-dashboard/edit-template" class="editTemplateBtn">Edit Template</a>
-                                                                    </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div> 
+                                                <td><img v-bind:src="this.baseURL + row.path"></td>
+                                                <td><button class="viewCardBtn" data-toggle="modal" data-target="#viewTemplate" @click="sendInfo(row)">View Card</button></td> 
                                                 <td>{{ new Date(row.created_at).toLocaleString() }}</td>
                                                 <td>
                                                    <div class="action_btns d-flex">
@@ -121,6 +86,42 @@
          </a>
       </div>
 
+      <!--Box 1-->
+    <div class="modal fade" id="viewTemplate" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content viewCardModal">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">ID Card</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div 
+                    class="cardTemplate modalCardTemplate" 
+                    :style="{ 'width' : '330px', 'height' : '200px', 'border-radius' : '5px', 'padding': '20px 15px', 'background-color': this.selectedTemplate.background_color }">
+                        <div class="cardLogo">
+                            <img v-bind:src="this.baseURL + this.selectedTemplate.cardLogo">
+                        </div>
+                        <div class="cardContent">
+                            <p :style="{'color': this.selectedTemplate.text_color + '!important'}">Holder's Name:</p>
+                            <p :style="{'color': this.selectedTemplate.text_color + '!important'}">Job Role:</p>
+                            <p :style="{'color': this.selectedTemplate.text_color + '!important'}">ID No:</p>
+                            <p :style="{'color': this.selectedTemplate.text_color + '!important'}">Join Date:</p>
+                        </div>
+                        <div class="cardImage">
+                            <img src="@/assets/img/image2.png">
+                        </div>
+                        <div class="clear"></div>
+                        </div>
+                        <div class="col-lg-12 mt-4 text-center">
+                            <a href="/organisation-dashboard/edit-template" class="editTemplateBtn">Edit Template</a>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
@@ -139,7 +140,14 @@ export default {
 
     data() {
         return {
-            template: []
+            baseURL: axios.defaults.baseURL.slice(0, -5),
+            template: [],
+            selectedTemplate: {
+                id: "",
+                background_color: "",
+                text_color: "",
+                cardLogo: ""
+            }
         }
     },
 
@@ -197,6 +205,13 @@ export default {
                     });
                 }
             )
+        },
+
+        sendInfo(row) {
+            this.selectedTemplate.id = row.id;
+            this.selectedTemplate.background_color = row.background_color;
+            this.selectedTemplate.text_color = row.text_color;
+            this.selectedTemplate.cardLogo = row.path;
         }
     },
 
