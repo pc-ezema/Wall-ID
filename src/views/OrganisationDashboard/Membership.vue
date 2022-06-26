@@ -63,7 +63,7 @@
                                                 <th scope="row">{{ index + 1 }}</th>
                                                 <td>{{ row.individual.firstname }} {{row.individual.lastname}}</td>
                                                 <td>{{row.individual.phone}}</td>
-                                                <td>{{ row.role }}</td>
+                                                <td>{{ row.role ?? row.membership_request_details.role}}</td>
                                                 <td>{{ new Date(row.created_at).toLocaleString() }}</td>
                                                 <td>
                                                     <span class="badge" style="background: green;">{{ row.status }}</span>
