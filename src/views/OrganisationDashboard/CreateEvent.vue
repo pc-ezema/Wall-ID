@@ -7,21 +7,21 @@
          <!--Main Content-->
          <div class="main_content_iner overly_inner ">
             <div class="container-fluid p-0 ">
-               <!--Breadcrumb-->
-               <div class="row">
-                   <div class="col-12">
-                        <div class="dashboard_header mb-3">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="dashboard_header_title">
-                                        <h3>Create Event</h3>
-                                        <p><router-link to="/organisation-dashboard/event-management"><a><i class="bi bi-arrow-left"></i> Event Management</a></router-link></p>
+                <!--Breadcrumb-->
+                <div class="row">
+                    <div class="col-12">
+                            <div class="dashboard_header mb-3">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="dashboard_header_title">
+                                            <h3>Create Event</h3>
+                                            <p><router-link to="/organisation-dashboard/event-management"><a><i class="bi bi-arrow-left"></i> Event Management</a></router-link></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-               </div>
+                </div>
 
                <!--Boxes Section-->
                <div class="row justify-content-center mt-3 secForm">

@@ -23,42 +23,46 @@
                     </div>
                </div>
 
-               <!--Boxes Section-->
-               <div class="row justify-content-center mt-3 secForm">
-                   <div class="col-lg-11 secFormHead">
-                        <h5>Please input verifier details</h5>
-                   </div>
-                   <div class="col-lg-11 mt-3">
-                        <form>
-                            <div class="row justify-content-center">
-                               <!--Name-->
-                               <div class="col-lg-6 mb-3">
-                                 <label>Name</label>
-                                 <input type="text" class="input" placeholder="Enter name">
+                <!--Boxes Section-->
+                <div class="row justify-content-center mt-1 secForm">
+                    <div class="col-lg-11 mt-3">
+                        <div class="row">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label class="mb-1">Search for Member</label>
+                                            <input type="text" v-model="searchQuery" class="input searchInput" placeholder="Search for member">
+                                            <!-- <button type="submit" class="searchButton"><i class="bi bi-search"></i></button> -->
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="col-lg-12 mt-2">
+                                    <div class="searchResult mb-2">
+                                        <!-- <p>Search Result <span>(1)</span></p> -->
+                                    </div>
+                                    <div class="mb-2" v-for="row in resultQuery" v-bind:key="row.id">
+                                        <router-link :to="'/organisation-dashboard/add-verifier/' + row.id + '/' + row.individual.user.id">
+                                            <div class="resultDivDisplay">
+                                                <div class="resultPicture">
+                                                    <div class="pictureDiv">
+                                                        <img src="@/assets/img/dp.jpg">
+                                                    </div>
+                                                </div>
+                                                <div class="resultContent">
+                                                    <p>Name</p>
+                                                    <h5>{{row.individual.firstname}} {{row.individual.lastname}}</h5>
+                                                    <p>Email</p>
+                                                    <h5>{{row.individual.user.email}}</h5>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>
+                                        </router-link>
+                                    </div>
                                 </div>
-                                <!--Username-->
-                                <div class="col-lg-6 mb-3">
-                                    <label>Username</label>
-                                    <input type="text" class="input" placeholder="Enter username">
-                                </div>
-                                <!--Phone number-->
-                                <div class="col-lg-6 mb-3">
-                                    <label>Phone Number</label>
-                                    <input type="tel" class="input" placeholder="Enter phone number">
-                                </div>
-                                <!--Date joined-->
-                                <div class="col-lg-6 mb-3">
-                                    <label>Date Joined</label>
-                                    <input type="date" class="input" value="2022-04-01" min="2022-04-01">
-                                </div>
-                                <!--Button-->
-                                <div class="col-lg-3 text-center mb-3">
-                                    <button type="submit" class="button">Create Verifier</button>
-                                </div>
-                            </div>
-                        </form>
-                   </div>
-               </div>
+                        </div>
+                            
+                    </div>
+                </div>
             </div>
          </div>
 
@@ -74,12 +78,72 @@
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
+<style scoped src="@/assets/css/styleDashboardSupport.css"></style>
 <script>
-import DashboardSidebar from './DashboardSidebar.vue'
+import DashboardSidebar from './DashboardSidebar.vue';
 import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
+import axios from 'axios';
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+    
+    data() {
+        return {
+            pagination: "",
+            search: [],
+            searchQuery: null
+        }
+    },
+    
+    computed: {
+        resultQuery() {
+            if (this.searchQuery) {
+                return this.search.filter(item => {
+                return this.searchQuery
+                    .toLowerCase()
+                    .split(" ")
+                    .every(v => item.individual.firstname.toLowerCase().includes(v));
+                });
+            } else {
+                return this.search;
+            }
+        }
+    },
+
+    methods: {
+        prepPagination(data) {
+            this.pagination = {
+                data: data.data,
+                current_page: data.meta.current_page,
+                first_item: data.meta.first_item,
+                last_item: data.meta.last_item,
+                last_page: data.meta.last_page,
+                next_page_url: data.meta.next_page_url,
+                per_page: data.meta.per_page,
+                previous_page_url: data.meta.previous_page_url,
+                total: data.meta.total,
+            };
+        },
+
+        loadMembers(page = 1) {
+            axios.get('organizations/members')
+            .then(
+                response => {
+                    this.prepPagination(response.data);
+                    this.search = response.data.data;
+                }
+            ).catch (
+                error => {
+                    console.log(error);
+                }
+            )
+        },
+    },
+    
+    created() {
+        this.loadMembers();
+    },
+
     mounted() {
         window.scrollTo(0, 0)
     }

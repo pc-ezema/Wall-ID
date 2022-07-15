@@ -23,46 +23,46 @@
                     </div>
                </div>
 
-               <!--Boxes Section-->
-               <div class="row justify-content-center mt-1 secForm">
-                   <div class="col-lg-11 mt-3">
-                       <div class="row">
-                            <form>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <label class="mb-1">Search for organisation</label>
-                                        <input type="text" v-model="searchQuery" class="input searchInput" placeholder="Search for organisation">
-                                        <!-- <button type="submit" class="searchButton"><i class="bi bi-search"></i></button> -->
+                <!--Boxes Section-->
+                <div class="row justify-content-center mt-1 secForm">
+                    <div class="col-lg-11 mt-3">
+                        <div class="row">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <label class="mb-1">Search for organisation</label>
+                                            <input type="text" v-model="searchQuery" class="input searchInput" placeholder="Search for organisation">
+                                            <!-- <button type="submit" class="searchButton"><i class="bi bi-search"></i></button> -->
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="col-lg-12 mt-2">
+                                    <div class="searchResult mb-2">
+                                        <!-- <p>Search Result <span>(1)</span></p> -->
+                                    </div>
+                                    <div class="mb-2" v-for="row in resultQuery" v-bind:key="row.id">
+                                        <router-link :to="'/individual-dashboard/choose-organisation/' + row.username">
+                                            <div class="resultDivDisplay">
+                                                <div class="resultPicture">
+                                                    <div class="pictureDiv">
+                                                        <img src="@/assets/img/dp.jpg">
+                                                    </div>
+                                                </div>
+                                                <div class="resultContent">
+                                                    <p>Name</p>
+                                                    <h5>{{row.details.name}}</h5>
+                                                    <p>Email</p>
+                                                    <h5>{{row.email}}</h5>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>
+                                        </router-link>
                                     </div>
                                 </div>
-                            </form>
-                            <div class="col-lg-12 mt-2">
-                                <div class="searchResult mb-2">
-                                    <!-- <p>Search Result <span>(1)</span></p> -->
-                                </div>
-                                <div class="mb-2" v-for="row in resultQuery" v-bind:key="row.id">
-                                    <router-link :to="'/individual-dashboard/choose-organisation/' + row.username">
-                                        <div class="resultDivDisplay">
-                                            <div class="resultPicture">
-                                                <div class="pictureDiv">
-                                                    <img src="@/assets/img/dp.jpg">
-                                                </div>
-                                            </div>
-                                            <div class="resultContent">
-                                                <p>Name</p>
-                                                <h5>{{row.details.name}}</h5>
-                                                <p>Email</p>
-                                                <h5>{{row.email}}</h5>
-                                            </div>
-                                            <div class="clear"></div>
-                                        </div>
-                                    </router-link>
-                                </div>
-                            </div>
-                       </div>
-                        
-                   </div>
-               </div>
+                        </div>
+                            
+                    </div>
+                </div>
             </div>
          </div>
 

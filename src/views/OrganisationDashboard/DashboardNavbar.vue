@@ -49,7 +49,8 @@
                            </li>
                         </div>
                         <div class="profile_info">
-                           <img src="@/assets/img/client_img.png" alt="#">
+                           <img v-if="user.details.image" v-bind:src="this.baseURL + user.details.image" alt="Profile Picture">
+                           <img v-else src="@/assets/img/client_img.png" alt="#">
                            <div class="profile_info_iner">
                               <div class="profile_author_name">
                                  <p>Organisation</p>
@@ -73,8 +74,15 @@
 <style scoped src="@/assets/css/styleDashboard.css"></style>
 <script>
 import {mapGetters} from 'vuex';
+import axios from 'axios'
 
 export default {
+   data() {
+      return {
+         baseURL: axios.defaults.baseURL.slice(0, -5)
+      }
+   },
+
    computed: {
       ...mapGetters(['user'])
    },

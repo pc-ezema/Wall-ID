@@ -24,7 +24,7 @@
 
                <!--Boxes Section-->
                <div class="row justify-content-center mb-5">
-                   <router-link to="/individual-dashboard/add-card" class="innerSerBox innerSerBox2">
+                    <router-link to="/individual-dashboard/add-card" class="innerSerBox innerSerBox2">
                         <a>
                             <div class="text-center">
                                 <img src="@/assets/img/dashAssets/innerSerBox2.png" draggable="false">

@@ -30,10 +30,11 @@
                    </div>
                    <div class="col-lg-11 filterSelect">
                         <select @change="onChange($event)" v-model="key">
-                            <option hidden>Filter</option>
+                            <option>Filter</option>
                             <option value="Approved">Approved</option>
                             <option value="Declined">Declined</option>
-                            <option value="Pending">Pending</option>
+                            <option value="PendingInd">Pending</option>
+                            <!-- <option value="PendingOrg">Pending By Organization</option> -->
                         </select>
                    </div>
                    <div v-if="approvedcards" class="col-lg-11 mt-3">
@@ -112,7 +113,7 @@
                         </div>
                     </div>
                    </div>
-                   <div v-if="pendingcards" class="col-lg-11 mt-3">
+                   <div v-if="pendingcardsInd" class="col-lg-11 mt-3">
                      <div class="white_card card_height_100 mb_30">
                         <div class="white_card_body">
                             <div class="QA_section">
@@ -158,6 +159,52 @@
                         </div>
                     </div>
                    </div>
+                   <!-- <div v-if="pendingcardsOrg" class="col-lg-11 mt-3">
+                     <div class="white_card card_height_100 mb_30">
+                        <div class="white_card_body">
+                            <div class="QA_section">
+                                <div class="QA_table mb_30">
+                                    <table class="table lms_table_active">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Image</th>
+                                                <th scope="col">Card Template</th>
+                                                <th scope="col">Date Created</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody v-if="!memberid || !memberid.length">
+                                            <tr>
+                                                <td class="align-enter text-dark font-13" colspan="7">No Pending ID Card</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody v-else>
+                                            <tr v-for="(row, index) in memberid" v-bind:key="index">
+                                                <th scope="row">{{ index + 1 }}</th>
+                                                <td>{{ row.name }}</td>
+                                                <td><img :src="this.baseURL + row.path"></td>
+                                                <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView" @click="sendInfo(row)">View Card</button></td>
+                                                <td>{{ new Date(row.issued_date).toLocaleString() }}</td>
+                                                <td><a class="a-pending">{{row.status}}</a></td>
+                                                <td>
+                                                    <div class="action_btns d-flex">
+                                                      <a href="javascript:void(0)" @click="approveIDCard(row.id)" title="Approve" class="action_btn"> <i class="bi bi-patch-check"></i> </a>
+                                                    
+                                                      <a href="javascript:void(0)" @click="declineIDCard(row.id)" title="Decline" class="action_btn"> <i class="bi bi-x-circle"></i> </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                   </div> -->
                </div>
             </div>
          </div>
@@ -166,51 +213,51 @@
       </section>
       
 
-      <div id="back-top" style="display: none;">
-         <a title="Go to Top" href="#">
-         <i class="ti-angle-up"></i>
-         </a>
-      </div>
+        <div id="back-top" style="display: none;">
+            <a title="Go to Top" href="#">
+            <i class="ti-angle-up"></i>
+            </a>
+        </div>
 
-      <!--Box 1-->
-    <div class="modal fade" id="modalView" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content viewCardModal">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">ID Card</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div 
-                    class="cardTemplate modalCardTemplate" 
-                    :style="{
-                        'background-color': this.selectedCard.background_color,
-                        'width': '330px',
-                        'height': '200px',
-                        'border-radius': '5px',
-                        'padding': '20px 15px'
-                    }"
-                    >
-                        <div class="cardLogo">
-                            <img v-bind:src="this.baseURL + this.selectedCard.cardLogo">
-                        </div>
-                        <div class="cardContent">
-                            <p :style="{'color': this.selectedCard.text_color + '!important'}">Holder's Name: {{ this.selectedCard.name}}</p>
-                            <p :style="{'color': this.selectedCard.text_color + '!important'}">Job Role: {{ this.selectedCard.role }}</p>
-                            <p :style="{'color': this.selectedCard.text_color + '!important'}">ID No: {{ this.selectedCard.id_card_number }}</p>
-                            <p :style="{'color': this.selectedCard.text_color + '!important'}">Join Date: {{ this.selectedCard.issued_date }}</p>
-                        </div>
-                        <div class="cardImage">
-                            <img v-bind:src="this.baseURL + this.selectedCard.cardImage">
-                        </div>
-                        <div class="clear"></div>
-                        </div>
+        <!--Box 1-->
+        <div class="modal fade" id="modalView" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content viewCardModal">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">ID Card</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div 
+                        class="cardTemplate modalCardTemplate" 
+                        :style="{
+                            'background-color': this.selectedCard.background_color,
+                            'width': '330px',
+                            'height': '200px',
+                            'border-radius': '5px',
+                            'padding': '20px 15px'
+                        }"
+                        >
+                            <div class="cardLogo">
+                                <img v-bind:src="this.baseURL + this.selectedCard.cardLogo">
+                            </div>
+                            <div class="cardContent">
+                                <p :style="{'color': this.selectedCard.text_color + '!important'}">Holder's Name: {{ this.selectedCard.name}}</p>
+                                <p :style="{'color': this.selectedCard.text_color + '!important'}">Job Role: {{ this.selectedCard.role }}</p>
+                                <p :style="{'color': this.selectedCard.text_color + '!important'}">ID No: {{ this.selectedCard.id_card_number }}</p>
+                                <p :style="{'color': this.selectedCard.text_color + '!important'}">Join Date: {{ this.selectedCard.issued_date }}</p>
+                            </div>
+                            <div class="cardImage">
+                                <img v-bind:src="this.baseURL + this.selectedCard.cardImage">
+                            </div>
+                            <div class="clear"></div>
+                            </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
@@ -229,10 +276,11 @@ export default {
             baseURL: axios.defaults.baseURL.slice(0, -5),
             pagination: {},
             memberid: [],
-            pendingcards: true,
+            pendingcardsInd: true,
+            pendingcardsOrg: false,
             approvedcards: false,
             declinedcards: false,
-            key: "",
+            key: "Filter",
             selectedCard: {
                 name: "",
                 role: "",
@@ -249,7 +297,8 @@ export default {
     methods: {
         onChange(event) {
             if(this.key == 'Approved') {
-                this.pendingcards = false;
+                this.pendingcardsInd = false;
+                this.pendingcardsOrg = false;
                 this.approvedcards = true;
                 this.declinedcards = false;
 
@@ -266,8 +315,9 @@ export default {
                 )
             }
 
-            if(this.key == 'Pending') {
-                this.pendingcards = true;
+            if(this.key == 'PendingInd') {
+                this.pendingcardsInd = true;
+                this.pendingcardsOrg = false;
                 this.approvedcards = false;
                 this.declinedcards = false;
                 axios.get('id-card-management/organization/pending/id-card')
@@ -282,9 +332,28 @@ export default {
                     }
                 )
             }
-
+            
+            if(this.key == 'PendingOrg') {
+                this.pendingcardsInd = true;
+                this.pendingcardsOrg = false;
+                this.approvedcards = false;
+                this.declinedcards = false;
+                axios.get('id-card-management/organization/pending/id-card')
+                .then(
+                    response => {
+                        this.prepPagination(response.data);
+                        this.memberid = response.data.data;
+                    }
+                ).catch (
+                    error => {
+                        console.log(error);
+                    }
+                )
+            }
+            
             if(this.key == 'Declined') {
-                this.pendingcards = false;
+                this.pendingcardsInd = false;
+                this.pendingcardsOrg = false;
                 this.approvedcards = false;
                 this.declinedcards = true;
                 axios.get('id-card-management/organization/declined/id-card')

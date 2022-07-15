@@ -27,7 +27,7 @@
                    <div class="col-lg-10 mb-4">
                         <div class="profile-img">
                             <img v-if="!user.details.image" src="@/assets/img/dp.jpg">
-                            <img v-else :src="user.details.image">
+                            <img v-else :src="this.baseURL + user.details.image" alt="Profile Picture">
                         </div>
                    </div>
                    <div class="col-lg-10 mb-4">
@@ -75,10 +75,17 @@ import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
 
 import {mapGetters} from 'vuex';
+import axios from 'axios'
 
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
     
+    data() {
+        return {
+          baseURL: axios.defaults.baseURL.slice(0, -5)
+        }
+    },
+
     computed: {
         ...mapGetters(['user'])
     },

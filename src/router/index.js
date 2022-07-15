@@ -43,6 +43,7 @@ import IndividualMembershipSubscriptionHistory from '../views/IndividualDashboar
 // verification
 import IndividualVerificationRequest from '../views/IndividualDashboard/VerificationRequest.vue'
 import IndividualOrganisationVerifier from '../views/IndividualDashboard/OrganisationVerifier.vue'
+import IndividualViewVerificationRequest from '../views/IndividualDashboard/ViewVerificationRequest.vue'
 // my wallet
 /*
 import IndividualMyWallet from '../views/IndividualDashboard/MyWallet.vue'
@@ -59,6 +60,8 @@ import OrganisationDashboardSetting from '../views/OrganisationDashboard/Dashboa
 //id card management
 import OrganisationIDCardManagement from '../views/OrganisationDashboard/IDCardManagement.vue'
 import OrganisationCreateTemplate from '../views/OrganisationDashboard/CreateTemplate.vue'
+import OrganisationAddCard from '../views/OrganisationDashboard/AddCard.vue'
+import OrganisationCreateCard from '../views/OrganisationDashboard/CreateCard.vue'
 import OrganisationCreatedTemplate from '../views/OrganisationDashboard/CreatedTemplate.vue'
 import OrganisationEditTemplate from '../views/OrganisationDashboard/EditTemplate.vue'
 import OrganisationMemberID from '../views/OrganisationDashboard/MemberID.vue'
@@ -77,6 +80,7 @@ import OrganisationMembershipSubscriptionHistory from '../views/OrganisationDash
 // verification
 import OrganisationVerification from '../views/OrganisationDashboard/Verification.vue'
 import OrganisationCreateVerifier from '../views/OrganisationDashboard/CreateVerifier.vue'
+import OrganisationAddVerifier from '../views/OrganisationDashboard/AddVerifier.vue'
 import OrganisationViewVerifier from '../views/OrganisationDashboard/ViewVerifier.vue'
 import OrganisationPendingRequest from '../views/OrganisationDashboard/PendingRequest.vue'
 // my wallet
@@ -234,13 +238,13 @@ const routes = [
        title: 'Organisation Details - Individual Dashboard | WALLID',
        middleware: auth
      }
- },
+  },
   {path: '/individual-dashboard/create-id/:id', name: 'IndividualCreateID', component: IndividualCreateID,
      meta: {
        title: 'Create ID - Individual Dashboard | WALLID',
        middleware: auth
     }
-   },
+  },
   {path: '/individual-dashboard/my-cards', name: 'IndividualMyCards', component: IndividualMyCards,
     meta: {
       title: 'My Cards - Individual Dashboard | WALLID',
@@ -340,7 +344,13 @@ const routes = [
       middleware: auth
     }
   },
-  {path: '/individual-dashboard/organisation-verifier', name: 'IndividualOrganisationVerifier', component: IndividualOrganisationVerifier,
+  {path: '/individual-dashboard/view-verification-request', name: 'IndividualViewVerificationRequest', component: IndividualViewVerificationRequest,
+    meta: {
+      title: 'View Verification Request - Individual Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  {path: '/individual-dashboard/organisation-verifier/:username/:id', name: 'IndividualOrganisationVerifier', component: IndividualOrganisationVerifier,
     meta: {
       title: 'Organisation Verifier - Individual Dashboard | WALLID',
       middleware: auth
@@ -371,6 +381,18 @@ const routes = [
   {path: '/organisation-dashboard/id-card-management', name: 'OrganisationIDCardManagement', component: OrganisationIDCardManagement,
     meta: {
       title: 'ID Card Management - Orgainsation Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  {path: '/organisation-dashboard/add-card', name: 'OrganisationAddCard', component: OrganisationAddCard,
+    meta: {
+      title: 'Add Card - Orgainsation Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  {path: '/organisation-dashboard/create-card/:id/:user_id', name: 'OrganisationCreateCard', component: OrganisationCreateCard,
+    meta: {
+      title: 'Create Card - Orgainsation Dashboard | WALLID',
       middleware: auth
     }
   },
@@ -471,6 +493,12 @@ const routes = [
   {path: '/organisation-dashboard/create-verifier', name: 'OrganisationCreateVerifier', component: OrganisationCreateVerifier,
     meta: {
       title: 'Create Verifier - Orgainsation Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  {path: '/organisation-dashboard/add-verifier/:id/:user_id', name: 'OrganisationAddVerifier', component: OrganisationAddVerifier,
+    meta: {
+      title: 'Add Verifier - Orgainsation Dashboard | WALLID',
       middleware: auth
     }
   },

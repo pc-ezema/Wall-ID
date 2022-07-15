@@ -60,8 +60,8 @@
                                             </tr>
                                         </tbody>
                                         <tbody v-else>
-                                            <tr v-for="row in myidcards" v-bind:key="row.id">
-                                                <th scope="row">{{ row.id }}</th>
+                                            <tr v-for="(row, index) in myidcards" v-bind:key="index">
+                                                <th scope="row">{{ index + 1 }}</th>
                                                 <td>{{ row.id_card_number }}</td>
                                                 <td>{{ row.name }}</td>
                                                 <td><button class="viewCardBtn" data-toggle="modal" data-target="#modalView" @click="sendInfo(row)">View Card</button></td>

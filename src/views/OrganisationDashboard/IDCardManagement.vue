@@ -40,6 +40,14 @@
                             </div>
                         </a>
                     </router-link>
+                    <router-link to="/organisation-dashboard/add-card" class="innerSerBox innerSerBox3">
+                        <a>
+                            <div class="text-center">
+                                <img src="@/assets/img/dashAssets/innerSerBox2.png" draggable="false">
+                                <p>Add Cards</p>
+                            </div>
+                        </a>
+                    </router-link>
                     <router-link to="/organisation-dashboard/member-id" class="innerSerBox innerSerBox4">
                         <a>
                             <div class="text-center">

@@ -94,6 +94,7 @@
                 </router-link>
                 <ul>
                    <li><router-link to="/individual-dashboard/verification-request" class="menuRouter"><a>Verification Request</a></router-link></li>
+                   <li><router-link to="/individual-dashboard/view-verification-request" class="menuRouter"><a>View Verification Request</a></router-link></li>
                 </ul>
             </li>
             <!--My Wallet-->

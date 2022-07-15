@@ -14,8 +14,8 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="dashboard_header_title">
-                                        <h3>View Verifier</h3>
-                                        <p><router-link to="/organisation-dashboard/verification"><a><i class="bi bi-arrow-left"></i> Verification</a></router-link></p>
+                                        <h3>View Verification Requests</h3>
+                                        <!-- <p><router-link to="/individual-dashboard/id-card-management"><a><i class="bi bi-arrow-left"></i> ID Card Management</a></router-link></p> -->
                                     </div>
                                 </div>
                             </div>
@@ -26,8 +26,17 @@
                <!--Boxes Section-->
                <div class="row justify-content-center mt-3 secForm">
                    <div class="col-lg-11 secFormHead">
-                        <h5>All verifiers</h5>
+                        <h5>
+                            <router-link to="/individual-dashboard/verification-request"><a><i class="bi bi-plus-circle-fill"></i> Send Request</a></router-link>
+                        </h5>
                    </div>
+                   <!-- <div class="col-lg-11 filterSelect">
+                        <select>
+                            <option hidden>Filter</option>
+                            <option>Approved</option>
+                            <option>Pending</option>
+                        </select>
+                   </div> -->
                    <div class="col-lg-11 mt-3">
                      <div class="white_card card_height_100 mb_30">
                         <div class="white_card_body">
@@ -38,26 +47,34 @@
                                             <tr>
                                                 <th scope="col">ID</th>
                                                 <th scope="col">Name</th>
-                                                <th scope="col">Phone</th>
                                                 <th scope="col">Role</th>
+                                                <th scope="col">Organization Name</th>
                                                 <th scope="col">Request Date</th>
                                                 <th scope="col">Status</th>
                                             </tr>
                                         </thead>
-                                        <tbody v-if="!myVerifiers || !myVerifiers.length">
+                                        <tbody v-if="!myRequest || !myRequest.length">
                                             <tr>
-                                                <td class="align-enter text-dark font-13" colspan="6">No Verifiers.</td>
+                                                <td class="align-enter text-dark font-13" colspan="6">No Verification Request.</td>
                                             </tr>
                                         </tbody>
                                         <tbody v-else>
-                                            <tr v-for="(row, index) in myVerifiers" v-bind:key="index">
+                                            <tr v-for="(row, index) in myRequest" v-bind:key="index">
                                                 <th scope="row">{{ index + 1 }}</th>
                                                 <td>{{ row.name }}</td>
-                                                <td>{{ row.created_by_individual.phone }}</td>
                                                 <td>{{ row.role }}</td>
+                                                <td>{{ row.organization.name }}</td>
                                                 <td>{{ row.created_at }}</td>
                                                 <td>
-                                                    <a class="tbl-btn btn-enable">{{ row.status }}</a>
+                                                    <span v-if="row.status == 'Pending'">
+                                                        <a class="a-pending">{{ row.status }}</a>
+                                                    </span>
+                                                    <span v-else-if="row.status == 'Approved'">
+                                                        <a class="a-approved">{{ row.status }}</a>
+                                                    </span>
+                                                    <span v-else>
+                                                        <a style="background: red; color: #fff;">{{ row.status }}</a>
+                                                    </span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -80,20 +97,25 @@
          <i class="ti-angle-up"></i>
          </a>
       </div>
+
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
+<style scoped src="@/assets/css/styleDashboardSupport.css"></style>
 <script>
-import DashboardSidebar from './DashboardSidebar.vue';
+import DashboardSidebar from './DashboardSidebar.vue'
 import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
-import axios from 'axios';
+
+import axios from 'axios'
+
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+
     data() {
         return {
             pagination: {},
-            myVerifiers: [],
+            myRequest: [],
         }
     },
 
@@ -112,23 +134,23 @@ export default {
             };
         },
 
-        Verifiers() {
-            axios.get('verificaton/organization/verifiers')
+        MyRequest() {
+            axios.get('verificaton/view-request')
             .then(
                 response => {
                     this.prepPagination(response.data);
-                    this.myVerifiers = response.data.data;
+                    this.myRequest = response.data.data;
                 }
             ).catch (
                 error => {
                     console.log(error);
                 }
             )
-        },
+        }
     },
-
+    
     created() {
-        this.Verifiers();
+        this.MyRequest();
     },
 
     mounted() {

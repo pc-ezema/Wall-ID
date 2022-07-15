@@ -15,7 +15,7 @@
                                 <div class="col-lg-12">
                                     <div class="dashboard_header_title">
                                         <h3>All Organisation</h3>
-                                        <p><router-link to="/individual-dashboard/id-card-management"><a><i class="bi bi-arrow-left"></i> ID Card Management</a></router-link></p>
+                                        <p><router-link to="/individual-dashboard/view-verification-request"><a><i class="bi bi-arrow-left"></i> View Requests</a></router-link></p>
                                     </div>
                                 </div>
                             </div>
@@ -32,15 +32,12 @@
                                     <div class="col-lg-12">
                                         <label class="mb-1">Search for organisation</label>
                                         <input type="text" class="input searchInput" placeholder="Search for organisation">
-                                        <button type="submit" class="searchButton"><i class="bi bi-search"></i></button>
+                                        <!-- <button type="submit" class="searchButton"><i class="bi bi-search"></i></button> -->
                                     </div>
                                 </div>
                             </form>
-                            <div class="col-lg-12 mt-2">
-                                <div class="searchResult mb-2">
-                                    <p>Search Result <span>(1)</span></p>
-                                </div>
-                                <router-link to="/individual-dashboard/organisation-verifier">
+                            <div class="mb-2" v-for="row in resultQuery" v-bind:key="row.id">
+                                <router-link :to="'/individual-dashboard/organisation-verifier/' + row.username + '/' + row.details.id">
                                     <div class="resultDivDisplay">
                                         <div class="resultPicture">
                                             <div class="pictureDiv">
@@ -49,9 +46,9 @@
                                         </div>
                                         <div class="resultContent">
                                             <p>Name</p>
-                                            <h5>GreenMouse</h5>
+                                            <h5>{{row.details.name}}</h5>
                                             <p>Email</p>
-                                            <h5>greenmousedev@email.com</h5>
+                                            <h5>{{row.email}}</h5>
                                         </div>
                                         <div class="clear"></div>
                                     </div>
@@ -88,10 +85,71 @@
 import DashboardSidebar from './DashboardSidebar.vue'
 import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
+import axios from 'axios';
+
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+
+    data() {
+        return {
+            pagination: "",
+            search: [],
+            searchQuery: null
+        }
+    },
+
+    computed: {
+        resultQuery() {
+            if (this.searchQuery) {
+                return this.search.filter(item => {
+                return this.searchQuery
+                    .toLowerCase()
+                    .split(" ")
+                    .every(v => item.details.name.toLowerCase().includes(v));
+                });
+            } else {
+                return this.search;
+            }
+        }
+    },
+
+    methods: {
+        prepPagination(data) {
+            this.pagination = {
+                data: data.data,
+                current_page: data.meta.current_page,
+                first_item: data.meta.first_item,
+                last_item: data.meta.last_item,
+                last_page: data.meta.last_page,
+                next_page_url: data.meta.next_page_url,
+                per_page: data.meta.per_page,
+                previous_page_url: data.meta.previous_page_url,
+                total: data.meta.total,
+            };
+        },
+
+        loadOrganizations(page = 1) {
+            axios.get('users/organization/get')
+            .then(
+                response => {
+                    this.prepPagination(response.data);
+                    this.search = response.data.data;
+                }
+            ).catch (
+                error => {
+                    console.log(error);
+                }
+            )
+        },
+    },
+    
+    created() {
+        this.loadOrganizations();
+    },
+
     mounted() {
+        this.loadOrganizations();
         window.scrollTo(0, 0)
-    }
+    },
 }
 </script>

@@ -27,7 +27,7 @@
                <div class="row justify-content-center mt-3 secForm">
                    <div class="col-lg-11 filterSelect">
                         <select @change="onChange($event)" v-model="key">
-                            <option hidden>Filter</option>
+                            <option>Filter</option>
                             <option value="Individual">Individual</option>
                             <option value="Organization">Organization</option>
                         </select>
@@ -47,11 +47,12 @@
                                                 <th scope="col">Issued Date</th>
                                                 <th scope="col">Role</th>
                                                 <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody v-if="!mypendingidcards || !mypendingidcards.length">
                                             <tr>
-                                                <td class="align-enter text-dark font-13" colspan="6">No Pending ID Card From Organization.</td>
+                                                <td class="align-enter text-dark font-13" colspan="7">No Pending ID Card From Organization.</td>
                                             </tr>
                                         </tbody>
                                         <tbody v-else>
@@ -62,6 +63,13 @@
                                                 <td>{{ row.issued_date }}</td>
                                                 <td>{{ row.role }}</td>
                                                 <td><a class="a-pending">{{ row.status }}</a></td>
+                                                <td>
+                                                    <div class="action_btns d-flex">
+                                                      <a href="javascript:void(0)" @click="approveIDCard(row.id)" title="Approve" class="action_btn"> <i class="bi bi-patch-check"></i> </a>
+                                                    
+                                                      <a href="javascript:void(0)" @click="declineIDCard(row.id)" title="Decline" class="action_btn"> <i class="bi bi-x-circle"></i> </a>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -139,6 +147,7 @@ export default {
             mypendingidcards: [],
             organization: false,
             individual: true,
+            key: "Filter"
         }
     },
 
@@ -199,6 +208,62 @@ export default {
             ).catch (
                 error => {
                     console.log(error);
+                }
+            )
+        },
+
+        async approveIDCard(data){
+            this.$Progress.start();
+            await axios.post('id-card-management/process/id-card/organization/' + data, {
+                status: 'Approved'
+            }).then(
+                response => {
+                    this.$Progress.finish();
+                    this.$notify({
+                        type: "success",
+                        title: response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                    this.loadIndPendingCard();
+                }
+            ).catch (
+                error => {
+                    this.$Progress.fail();
+                    this.$notify({
+                        type: "error",
+                        title: error.response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                }
+            )
+        },
+
+        async declineIDCard(data){
+            this.$Progress.start();
+            await axios.post('id-card-management/process/id-card/organization/' + data, {
+                status: 'Declined'
+            }).then(
+                response => {
+                    this.$Progress.finish();
+                    this.$notify({
+                        type: "success",
+                        title: response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                    this.loadIndPendingCard();
+                }
+            ).catch (
+                error => {
+                    this.$Progress.fail();
+                    this.$notify({
+                        type: "error",
+                        title: error.response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
                 }
             )
         },

@@ -14,8 +14,8 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="dashboard_header_title">
-                                        <h3>Organisation Details</h3>
-                                        <p><router-link to="/individual-dashboard/verification-request"><a><i class="bi bi-arrow-left"></i> Go back</a></router-link></p>
+                                        <h3>Create Verifier</h3>
+                                        <p><router-link to="/organisation-dashboard/verification"><a><i class="bi bi-arrow-left"></i> Verification</a></router-link></p>
                                     </div>
                                 </div>
                             </div>
@@ -24,39 +24,40 @@
                </div>
 
                <!--Boxes Section-->
-               <div class="row justify-content-center mt-1 secForm">
+               <div class="row justify-content-center mt-3 secForm">
+                   <div class="col-lg-11 secFormHead">
+                        <h5>{{individual.individual.firstname}} {{individual.individual.lastname}} details</h5>
+                   </div>
                    <div class="col-lg-11 mt-3">
-                        <div class="row showOrgDtl">
-                            <div class="col-lg-12 text-center">
-                                <div class="orgPicture">
-                                    <img src="@/assets/img/dp.jpg">
+                        <form @submit.prevent="addVerifier()">
+                            <div class="row justify-content-center">
+                               <!--Name-->
+                               <div class="col-lg-6 mb-3">
+                                 <label>Full Name</label>
+                                 <input type="text" class="input" :value="individual.individual.firstname + ' ' + individual.individual.lastname" placeholder="Enter name" readonly>
+                                </div>
+                                <!--Username-->
+                                <div class="col-lg-6 mb-3">
+                                    <label>Username</label>
+                                    <input type="text" class="input" :value="individual.individual.user.name" placeholder="Enter username" readonly>
+                                </div>
+                                <!--Phone number-->
+                                <div class="col-lg-6 mb-3">
+                                    <label>Phone Number</label>
+                                    <input type="tel" class="input" :value="individual.individual.phone" placeholder="Enter phone number" readonly>
+                                </div>
+                                <!--Date joined-->
+                                <div class="col-lg-6 mb-3">
+                                    <label>Date Joined</label>
+                                     <input type="text" class="input" :value="individual.created_at" placeholder="Enter username" readonly>
+                                </div>
+                                <!--Button-->
+                                <div class="col-lg-3 text-center mb-3">
+                                    <button v-if="$wait.is('processing')" type="button" class="button">Creating Verifier...</button>
+                                    <button v-else type="submit" class="button">Create Verifier</button>
                                 </div>
                             </div>
-                            <div class="col-lg-12">
-                                <div class="txtCnt">
-                                    <h5>Name</h5>
-                                    <p>{{organization.details.name}}</p>
-                                </div>
-                                <div class="txtCnt">
-                                    <h5>Email</h5>
-                                    <p>{{organization.email}}</p>
-                                </div>
-                                <div class="txtCnt">
-                                    <h5>Username</h5>
-                                    <p>{{organization.username}}</p> 
-                                </div>
-                                <div class="txtCnt">
-                                    <h5>Registered Date</h5>
-                                    <p>{{ new Date(organization.details.created_at).toLocaleString()}}</p>
-                                </div>
-                                <div class="txtCnt selectRoles">
-                                    <form class="form-form-div" @submit.prevent="sendJoinRequest()">
-                                        <button v-if="$wait.is('processing')" type="button">Request Processing...</button>
-                                        <button v-else type="submit">Send Request</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+                        </form>
                    </div>
                </div>
             </div>
@@ -74,7 +75,6 @@
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
-<style scoped src="@/assets/css/styleDashboardSupport.css"></style>
 <script>
 import DashboardSidebar from './DashboardSidebar.vue'
 import DashboardNavbar from './DashboardNavbar.vue';
@@ -83,24 +83,24 @@ import axios from 'axios';
 
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+    
     data() {
         return {
-            organization: {},
-            id: "",
+            individual: {}
         }
     },
 
     methods: {
-        displayOrganization() {
-            let username = this.$route.params.username;
+        displayIndividual() {
+            let id = this.$route.params.id;
 
-            axios.get('users/organization/get', {
+            axios.get('organizations/members', {
                 params: {
-                    username: username
+                    id: id
                 }
             }).then(
                 response => {
-                    this.organization = response.data.data[0];
+                    this.individual = response.data.data[0];
                 }
             ).catch (
                 error => {
@@ -109,14 +109,14 @@ export default {
             )
         },
 
-        sendJoinRequest() {
-            let id = this.$route.params.id;
+        addVerifier() {
+            let user_id = this.$route.params.user_id;
 
             this.$wait.start("processing");
             this.$Progress.start();
 
-            axios.post('verificaton/send-request', {
-                organization_id: id,
+            axios.post('verificaton/organization/add', {
+                user_id: user_id
             }).then(
                 response => {
                     this.$wait.end("processing");
@@ -128,7 +128,7 @@ export default {
                         speed: 1000,
                     });
                     setTimeout(() => {
-                        this.$router.push('/individual-dashboard/view-verification-request');
+                        this.$router.push('/organisation-dashboard/view-verifier');
                     }, 6000);
                 }
             ).catch (
@@ -147,12 +147,11 @@ export default {
     },
     
     created() {
-        this.displayOrganization();
+        this.displayIndividual();
     },
-
+    
     mounted() {
-        this.displayOrganization();
-        window.scrollTo(0, 0);
-    },
+        window.scrollTo(0, 0)
+    }
 }
 </script>
