@@ -113,7 +113,7 @@
                         </div>
                     </div>
                    </div>
-                <div v-if="pendingcardsInd" class="col-lg-11 mt-3">
+                    <div v-if="pendingcardsInd" class="col-lg-11 mt-3">
                      <div class="white_card card_height_100 mb_30">
                         <div class="white_card_body">
                             <div class="QA_section">

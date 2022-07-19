@@ -57,7 +57,7 @@
                                         </thead>
                                         <tbody v-if="!users || !users.length">
                                             <tr>
-                                                <td class="align-enter text-dark font-13" colspan="8">No User</td>
+                                                <td class="align-enter text-dark font-13" colspan="8">No Users</td>
                                             </tr>
                                         </tbody>
                                         <tbody>
@@ -77,8 +77,8 @@
                                                 <td>{{row.username}}</td>
                                                 <td>{{ new Date(row.details.created_at).toLocaleString() }}</td>
                                                 <td>
-                                                   <a v-if="row.status = 'active'" href="#" class="status_btn">{{row.status}}</a>
-                                                   <a v-else href="#" class="status_btn yellow_btn">{{row.status}}</a>
+                                                   <a v-if="row.status == 'active'" href="#" class="status_btn">{{row.status}}</a>
+                                                   <a v-if="row.status == 'suspended'" href="#" class="status_btn yellow_btn">{{row.status}}</a>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -109,7 +109,7 @@
                                         </thead>
                                         <tbody v-if="!users || !users.length">
                                             <tr>
-                                                <td class="align-enter text-dark font-13" colspan="8">No User</td>
+                                                <td class="align-enter text-dark font-13" colspan="9">No Active Users</td>
                                             </tr>
                                         </tbody>
                                         <tbody>
@@ -129,13 +129,15 @@
                                                 <td>{{row.username}}</td>
                                                 <td>{{ new Date(row.details.created_at).toLocaleString() }}</td>
                                                 <td>
-                                                   <a v-if="row.status = 'active'" href="#" class="status_btn">{{row.status}}</a>
-                                                   <a v-else href="#" class="status_btn yellow_btn">{{row.status}}</a>
+                                                   <a v-if="row.status == 'active'" href="#" class="status_btn">{{row.status}}</a>
+                                                   <a v-if="row.status == 'suspended'" href="#" class="status_btn yellow_btn">{{row.status}}</a>
                                                 </td>
+                                                <td>
                                                 <div class="action_btns d-flex">
-                                                    <a href="#" title="View" class="action_btn"> <i class="bi bi-eye-fill"></i> </a>
-                                                    <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a>
+                                                    <a href="javascript:void(0)" @click="doAction(row.id, 'suspended')" title="Suspend Account" class="action_btn"> <i class="bi bi-file-excel" style="color: red;"></i> </a>
+                                                    <!-- <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a> -->
                                                 </div>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -165,7 +167,7 @@
                                         </thead>
                                         <tbody v-if="!users || !users.length">
                                             <tr>
-                                                <td class="align-enter text-dark font-13" colspan="8">No User</td>
+                                                <td class="align-enter text-dark font-13" colspan="9">No Suspended User</td>
                                             </tr>
                                         </tbody>
                                         <tbody>
@@ -185,13 +187,15 @@
                                                 <td>{{row.username}}</td>
                                                 <td>{{ new Date(row.details.created_at).toLocaleString() }}</td>
                                                 <td>
-                                                   <a v-if="row.status = 'active'" href="#" class="status_btn">{{row.status}}</a>
-                                                   <a v-else href="#" class="status_btn yellow_btn">{{row.status}}</a>
+                                                   <a v-if="row.status == 'active'" href="#" class="status_btn">{{row.status}}</a>
+                                                   <a v-if="row.status == 'suspended'" href="#" class="status_btn yellow_btn">{{row.status}}</a>
                                                 </td>
-                                                <div class="action_btns d-flex">
-                                                    <a href="#" title="View" class="action_btn"> <i class="bi bi-eye-fill"></i> </a>
-                                                    <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a>
-                                                </div>
+                                                <td>
+                                                    <div class="action_btns d-flex">
+                                                        <a href="javascript:void(0)" title="Activate Account" class="action_btn" @click="doAction(row.id, 'active')"> <i class="bi bi-file-check"></i> </a>
+                                                        <!-- <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a> -->
+                                                    </div>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -233,6 +237,7 @@ export default {
             active: false,
             suspended: false,
             key: "Filter",
+            status: null
         };
     },
 
@@ -243,7 +248,7 @@ export default {
                 this.active = false;
                 this.suspended = false;
 
-                axios.get('admin/allusers' + "?page=" + page)
+                axios.get('admin/users' + "?page=" + page)
                 .then(
                     response => {
                         this.users = response.data.data;
@@ -266,7 +271,7 @@ export default {
                 this.active = true;
                 this.suspended = false;
 
-                axios.get('admin/allactiveusers' + "?page=" + page)
+                axios.get('admin/users/active' + "?page=" + page)
                 .then(
                     response => {
                         this.users = response.data.data;
@@ -289,13 +294,11 @@ export default {
                 this.active = false;
                 this.suspended = true;
 
-                axios.get('admin/allsuspendedusers' + "?page=" + page)
+                axios.get('admin/users/suspended' + "?page=" + page)
                 .then(
                     response => {
                         this.users = response.data.data;
                         this.prepPagination(response.data);
-
-                        console.log(response);
                     }
                 ).catch(
                     error => {
@@ -311,35 +314,13 @@ export default {
         },
 
         loadAllUsers(page = 1) {
-            axios.get('admin/allusers' + "?page=" + page)
+            axios.get('admin/users' + "?page=" + page)
             .then(
                 response => {
                     this.prepPagination(response.data);
                     this.users = response.data.data;                    
                 }
             ).catch (
-                error => {
-                    this.$notify({
-                        type: "error",
-                        title: error.response.data.message,
-                        duration: 5000,
-                        speed: 1000,
-                    });
-                }
-            )
-        },
-
-        loadUsers(page = 1) {
-            axios.get('users' + '/' + this.status + "?page=" + page)
-            .then(
-                response => {
-                    this.users = response.data.data;
-                    this.status = undefined;
-                    this.prepPagination(response.data);
-
-                    console.log(response);
-                }
-            ).catch(
                 error => {
                     this.$notify({
                         type: "error",
@@ -382,32 +363,31 @@ export default {
         },
 
         doAction(id, status) {
-            this.$spinner.show();
-            axios
-                .get("/api/admin/users/" + id + "/" + status)
-                .then((response) => {
-                    console.log(response);
-
-                    for (var i = 0; i < this.users.length; i++) {
-                        if (this.users[i].id == id) {
-                            this.users[i] = response.data.data;
-                        }
-                    }
-                    this.loadUsers();
+            this.$Progress.start();
+            axios.get('admin/users/' + id + '/' + status)
+            .then(
+                response => {
+                    this.$Progress.finish();
                     this.$notify({
                         type: "success",
-                        text: response.data.message,
-                    });
-                })
-                .catch((e) => {
+                        title: response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });         
+                    
+                    this.loadAllUsers();
+                }
+            ).catch (
+                error => {
+                    this.$Progress.fail();
                     this.$notify({
                         type: "error",
-                        text: e.message,
+                        title: error.response.data.message,
+                        duration: 5000,
+                        speed: 1000,
                     });
-                })
-                .finally(() => {
-                    this.$spinner.hide();
-                });
+                }
+            )
         },
     },
 
