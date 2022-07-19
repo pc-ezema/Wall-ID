@@ -95,7 +95,7 @@
                                    </div>
                                 </div>
                                 <div class="crm_body">
-                                   <h4>15</h4>
+                                   <h4>{{dashboardstats.myidCard}}</h4>
                                    <p>ID Cards</p>
                                 </div>
                              </div>
@@ -108,7 +108,7 @@
                                    </div>
                                 </div>
                                 <div class="crm_body">
-                                   <h4>5</h4>
+                                   <h4>{{dashboardstats.totalEvents}}</h4>
                                    <p>Events</p>
                                 </div>
                              </div>
@@ -121,8 +121,8 @@
                                    </div>
                                 </div>
                                 <div class="crm_body">
-                                   <h4>20</h4>
-                                   <p>Subscription</p>
+                                   <h4>{{dashboardstats.active_subscriptions}}</h4>
+                                   <p>Active Subscription</p>
                                 </div>
                              </div>
                           </div>
@@ -233,12 +233,19 @@
 import DashboardSidebar from './DashboardSidebar.vue';
 import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
+import axios from 'axios'
 
 import {mapGetters} from 'vuex';
 
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
     
+    data() {
+        return {
+            dashboardstats: {},
+        }
+    },
+
     computed: {
         ...mapGetters(['user'])
     },
@@ -256,9 +263,37 @@ export default {
                 return "Good Evening";
             }
         },
+
+        getDashboardStats() {
+            axios.get('individuals/mobileStats')
+            .then(
+                response => {
+                    this.dashboardstats = response.data.data;
+                }
+            ).catch (
+                error => {
+                    console.log(error);
+                }
+            )
+        },
+
     },
-    
+    created() {
+        this.getDashboardStats();
+
+        this.$notify({
+            type: "success",
+            title: "Authorization",
+            text: "You have been logged in!",
+            duration: 5000,
+            speed: 1000,
+        });
+    },
+
     mounted() {
+        this.getDashboardStats();
+        console.log(this.dashboardstats);
+
         window.scrollTo(0, 0)
 
         const ctx = document.getElementById('myChart').getContext('2d');
@@ -268,7 +303,7 @@ export default {
                     labels: ['ID Cards', 'Events', 'Subscription'],
                     datasets: [{
                         label: 'Stats',
-                        data: [15, 5, 20],
+                        data: [1, 5, 20],
                         backgroundColor: [
                             '#FF7EA5',
                             '#E6ADFF',
@@ -290,16 +325,8 @@ export default {
                     }
                 }
             });
-    },
-
-    created() {
-        this.$notify({
-            type: "success",
-            title: "Authorization",
-            text: "You have been logged in!",
-            duration: 5000,
-            speed: 1000,
-        });
     }
+
+    
 }
 </script> 

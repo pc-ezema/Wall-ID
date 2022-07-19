@@ -13,6 +13,7 @@ import SignupOrganisation from '../views/SignupOrganisation.vue'
 import EmailVerification from '../views/EmailVerification.vue'
 import AccountVerified from '../views/AccountVerified.vue'
 import Page404 from '../views/Page404.vue'
+import AdminLogin from '../views/AdminLogin.vue'
 
 // Individual Dashboard
 import IndividualHome from '../views/IndividualDashboard/Home.vue'
@@ -91,6 +92,24 @@ import OrganisationIDCard from '../views/OrganisationDashboard/IDCard.vue'
 import OrganisationMembershipCard from '../views/OrganisationDashboard/MembershipCard.vue'
 import OrganisationTicket from '../views/OrganisationDashboard/Ticket.vue'
 */
+
+// Superadmin Dashboard
+import SuperadminHome from '../views/SuperadminDashboard/Home.vue'
+import SuperadminMyProfile from '../views/SuperadminDashboard/MyProfile.vue'
+// users
+import SuperadminAllUsers from '../views/SuperadminDashboard/AllUsers.vue'
+import SuperadminActiveUsers from '../views/SuperadminDashboard/ActiveUsers.vue'
+import SuperadminSuspendedUsers from '../views/SuperadminDashboard/SuspendedUsers.vue'
+// organisation
+import SuperadminAllOrganisations from '../views/SuperadminDashboard/AllOrganisations.vue'
+import SuperadminActivatedOrganisations from '../views/SuperadminDashboard/ActivatedOrganisations.vue'
+import SuperadminSuspendedOrganisations from '../views/SuperadminDashboard/SuspendedOrganisations.vue'
+// events
+import SuperadminAllEvents from '../views/SuperadminDashboard/AllEvents.vue'
+import SuperadminEventCategory from '../views/SuperadminDashboard/EventCategory.vue'
+// payment history
+import SuperadminTicketPayment from '../views/SuperadminDashboard/TicketPayment.vue'
+import SuperadminSubscriptionPayment from '../views/SuperadminDashboard/SubscriptionPayment.vue'
 
 import auth from "../middleware/auth";
 import guest from "../middleware/guest";
@@ -195,6 +214,13 @@ const routes = [
   {path: '/:catchAll(.*)', name: 'Page404', component: Page404,
     meta: {
       title: 'Page Not Found | WALLID',
+      middleware: guest
+    }
+  },
+
+  {path: '/admin/login', name: 'AdminLogin', component: AdminLogin,
+    meta: {
+      title: 'Admin Login | WALLID',
       middleware: guest
     }
   },
@@ -513,6 +539,96 @@ const routes = [
     : '/organisation-dashboard/pending-request', name: 'OrganisationPendingRequest', component: OrganisationPendingRequest,
     meta: {
       title: 'Pending Request - Orgainsation Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+
+  // Superadmin Dashboard
+  {path
+    : '/superadmin-dashboard/home', name: 'SuperadminHome', component: SuperadminHome,
+    meta: {
+      title: 'Dashboard - Superadmin Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  {path
+    : '/superadmin-dashboard/my-profile', name: 'SuperadminMyProfile', component: SuperadminMyProfile,
+    meta: {
+      title: 'My Profile - Superadmin Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  // users
+  {path
+    : '/superadmin-dashboard/all-users', name: 'SuperadminAllUsers', component: SuperadminAllUsers,
+    meta: {
+      title: 'All Users - Superadmin Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  {path
+    : '/superadmin-dashboard/active-users', name: 'SuperadminActiveUsers', component: SuperadminActiveUsers,
+    meta: {
+      title: 'Active Users - Superadmin Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  {path
+    : '/superadmin-dashboard/suspended-users', name: 'SuperadminSuspendedUsers', component: SuperadminSuspendedUsers,
+    meta: {
+      title: 'Suspended Users - Superadmin Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  // organisations
+  {path
+    : '/superadmin-dashboard/all-organisations', name: 'SuperadminAllOrganisations', component: SuperadminAllOrganisations,
+    meta: {
+      title: 'All Organisations - Superadmin Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  {path
+    : '/superadmin-dashboard/activated-organisations', name: 'SuperadminActivatedOrganisations', component: SuperadminActivatedOrganisations,
+    meta: {
+      title: 'Activated Organisations - Superadmin Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  {path
+    : '/superadmin-dashboard/suspended-organisations', name: 'SuperadminSuspendedOrganisations', component: SuperadminSuspendedOrganisations,
+    meta: {
+      title: 'Suspended Organisations - Superadmin Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  // events
+  {path
+    : '/superadmin-dashboard/all-events', name: 'SuperadminAllEvents', component: SuperadminAllEvents,
+    meta: {
+      title: 'All Events - Superadmin Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  {path
+    : '/superadmin-dashboard/event-category', name: 'SuperadminEventCategory', component: SuperadminEventCategory,
+    meta: {
+      title: 'Event Category - Superadmin Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  // payment history
+  {path
+    : '/superadmin-dashboard/ticket-payment', name: 'SuperadminTicketPayment', component: SuperadminTicketPayment,
+    meta: {
+      title: 'Ticket Payment - Superadmin Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  {path
+    : '/superadmin-dashboard/subscription-payment', name: 'SuperadminSubscriptionPayment', component: SuperadminSubscriptionPayment,
+    meta: {
+      title: 'Subscription Payment - Superadmin Dashboard | WALLID',
       middleware: auth
     }
   },

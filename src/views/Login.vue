@@ -108,6 +108,10 @@ export default {
                         setTimeout(() => {
                             this.$router.push('/organisation-dashboard/home');
                         }, 800);
+                    } else {
+                        setTimeout(() => {
+                            this.$router.push('/superadmin-dashboard/home');
+                        }, 800);
                     }
                 }
             ).catch (
