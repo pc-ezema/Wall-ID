@@ -77,7 +77,7 @@
                                                 </td>
                                                 <td>
                                                 <div class="action_btns d-flex">
-                                                    <a href="javascript:void(0)" @click="doAction(row.id, 'suspended')" title="Suspend Account" class="action_btn"> <i class="bi bi-file-excel" style="color: red;"></i> </a>
+                                                    <a href="javascript:void(0)" data-toggle="modal" data-target="#suspendConfirmationModal" @click="sendInfo(row)" title="Suspend Account" class="action_btn"> <i class="bi bi-file-excel" style="color: red;"></i> </a>
                                                     <!-- <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a> -->
                                                 </div>
                                                 </td>
@@ -97,11 +97,34 @@
       </section>
       
 
-      <div id="back-top" style="display: none;">
-         <a title="Go to Top" href="#">
-         <i class="ti-angle-up"></i>
-         </a>
-      </div>
+    <div id="back-top" style="display: none;">
+        <a title="Go to Top" href="#">
+        <i class="ti-angle-up"></i>
+        </a>
+    </div>
+
+    <div class="modal fade" id="suspendConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content viewCardModal">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabelTitle">Suspend Account</h5>
+                <button type="button" class="btn close" id="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body eventCategoryForm">
+                <p v-if=" this.selected.type == 'organization'">Are you sure you want to suspend {{this.selected.orgname}} Account?</p>
+                <p v-if=" this.selected.type == 'individual'">Are you sure you want to suspend {{this.selected.indname}} Account?</p>
+            </div>
+            <div class="modal-footer eventCategoryForm">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form @submit.prevent="doAction(this.selected.id, 'suspended')">
+                    <button type="submit" class="btn" style="background-color: red !important; color: white;">Suspend</button>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
@@ -117,10 +140,20 @@ export default {
         return {
             users: [],
             pagination: {},
+            selected: {
+                id: null,
+                type: null,
+                indname: null,
+                orgname: null
+            },
         };
     },
 
     methods: {
+        closeModal() {
+            document.getElementById('close').click();
+        },
+
         loadAllActiveUsers(page = 1) {
             axios.get('admin/users/active' + "?page=" + page)
             .then(
@@ -154,20 +187,11 @@ export default {
             };
         },
 
-        confirmAction(status, id) {
-            this.$confirm({
-                message: `Are you sure you want to ${status} this User?`,
-                button: {
-                    no: "No",
-                    yes: "Yes",
-                },
-                callback: (confirm) => {
-                    if (confirm) {
-                        let st = status == "Activate" ? "active" : "suspended";
-                        this.doAction(id, st);
-                    }
-                },
-            });
+        sendInfo(row) {
+            this.selected.id = row.id;
+            this.selected.type = row.type;
+            this.selected.indname = row.details.firstname + ' ' + row.details.lastname;
+            this.selected.orgname = row.details.name;
         },
 
         doAction(id, status) {
@@ -184,6 +208,7 @@ export default {
                     });         
                     
                     this.loadAllActiveUsers();
+                    this.closeModal();
                 }
             ).catch (
                 error => {
@@ -194,6 +219,7 @@ export default {
                         duration: 5000,
                         speed: 1000,
                     });
+                    this.closeModal();
                 }
             )
         },

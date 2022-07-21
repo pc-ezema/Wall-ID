@@ -49,16 +49,28 @@
                                                 <th scope="col">IP Address</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody v-if="!tickets || !tickets.length">
                                             <tr>
-                                                <th scope="row"></th>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                                <td class="align-enter text-dark font-13" colspan="8">No Ticket Payment</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody>
+                                             <tr v-for="(row, index) in tickets" v-bind:key="index">
+                                                <th scope="row">{{row.id}}</th>
+                                                <td>
+                                                    <span v-if="row.user.type == 'individual'">{{ row.user.details.firstname + " " + row.user.details.lastname }}</span>
+                                                    <span v-if="row.user.type == 'organization'">{{ row.user.details.name }}</span>
+                                                </td>
+                                                <td>
+                                                    <router-link>
+                                                        {{ row.event.id }}
+                                                    </router-link>
+                                                </td>
+                                                <td>{{row.payment.amount}}</td>
+                                                <td>{{row.payment.reference}}</td>
+                                                <td>{{row.payment.fees}}</td>
+                                                <td>{{ row.payment.channel }}</td>
+                                                <td>{{ row.payment.ip_address }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -87,9 +99,61 @@
 import DashboardSidebar from './DashboardSidebar.vue'
 import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
+import axios from 'axios';
+
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+    
+    data() {
+        return {
+            tickets: [],
+            pagination: {},
+        };
+    },
+
+    methods: {
+        loadAllTicketPayments(page = 1) {
+            axios.get('admin/payments/tickets' + "?page=" + page)
+            .then(
+                response => {
+                    this.prepPagination(response.data);
+                    this.tickets = response.data.data;                    
+                }
+            ).catch (
+                error => {
+                    this.$notify({
+                        type: "error",
+                        title: error.response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                }
+            )
+        },
+
+        prepPagination(data) {
+            this.pagination = {
+                data: data.data,
+                current_page: data.meta.current_page,
+                first_item: data.meta.first_item,
+                last_item: data.meta.last_item,
+                last_page: data.meta.last_page,
+                next_page_url: data.meta.next_page_url,
+                per_page: data.meta.per_page,
+                previous_page_url: data.meta.previous_page_url,
+                total: data.meta.total,
+            };
+        },
+    },
+
+    created() 
+    {
+        this.loadAllTicketPayments();
+    },
+
     mounted() {
+        this.loadAllTicketPayments();
+
         window.scrollTo(0, 0)
     }
 }

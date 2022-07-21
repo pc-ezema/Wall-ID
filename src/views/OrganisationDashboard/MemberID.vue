@@ -48,7 +48,7 @@
                                                 <th scope="col">ID</th>
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Image</th>
-                                                <th scope="col">Card Template</th>
+                                                <th scope="col">ID Card</th>
                                                 <th scope="col">Date Created</th>
                                                 <th scope="col">Status</th>
                                             </tr>
@@ -86,7 +86,7 @@
                                                 <th scope="col">ID</th>
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Image</th>
-                                                <th scope="col">Card Template</th>
+                                                <th scope="col">ID Card</th>
                                                 <th scope="col">Date Created</th>
                                                 <th scope="col">Status</th>
                                             </tr>
@@ -124,7 +124,7 @@
                                                 <th scope="col">ID</th>
                                                 <th scope="col">Name</th>
                                                 <th scope="col">Image</th>
-                                                <th scope="col">Card Template</th>
+                                                <th scope="col">ID Card</th>
                                                 <th scope="col">Date Created</th>
                                                 <th scope="col">Status</th>
                                                 <th scope="col">Action</th>

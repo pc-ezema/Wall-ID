@@ -14,7 +14,7 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="dashboard_header_title">
-                                        <h3>All Organisations</h3>
+                                        <h3>All Members</h3>
                                         <p><router-link to="/superadmin-dashboard/home"><a><i class="bi bi-arrow-left"></i> Dashboard</a></router-link></p>
                                     </div>
                                 </div>
@@ -26,7 +26,7 @@
                <!--Boxes Section-->
                <div class="row justify-content-center mt-3 secForm">
                    <div class="col-lg-11 secFormHead">
-                        <h5>All Organisations list</h5>
+                        <h5>All Members list</h5>
                    </div>
                    <div class="col-lg-11 filterSelect">
                         <input type="text" class="input searchInput" style="width: 100%;" placeholder="Search...">
@@ -45,35 +45,28 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col">S/N</th>
-                                                <th scope="col">ID Card Number</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Date Created</th>
+                                                <th scope="col">Member Name</th>
+                                                <th scope="col">Organization Joined</th>
+                                                 <th scope="col">Role</th>
+                                                <th scope="col">Date Joined</th>
                                                 <th scope="col">Status</th>
-                                                <th scope="col">Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody v-if="!organizations || !organizations.length">
+                                        <tbody v-if="!members || !members.length">
                                             <tr>
-                                                <td class="align-enter text-dark font-13" colspan="9">No Registered Organization</td>
+                                                <td class="align-enter text-dark font-13" colspan="5">No Joined Member</td>
                                             </tr>
                                         </tbody>
                                         <tbody>
-                                             <tr v-for="(row, index) in organizations" v-bind:key="index">
+                                             <tr v-for="(row, index) in members" v-bind:key="index">
                                                 <th scope="row">{{ index + 1}}</th>
-                                                <td>{{row.id_card_number}}</td>
-                                                <td>{{row.name}}</td>
+                                                <td>{{row.membership_request_details.individual.firstname}} {{row.membership_request_details.individual.lastname}}</td>
+                                                <td>{{row.membership_request_details.organization.name}}</td>
+                                                <td>{{row.role}}</td>
                                                 <td>{{ new Date(row.created_at).toLocaleString() }}</td>
                                                 <td>
-                                                   <a v-if="row.status == 1" href="#" class="status_btn">Active</a>
-                                                   <a v-if="row.status == 0" href="#" class="status_btn yellow_btn">Suspended</a>
-                                                </td>
-                                                <td>
-                                                   <div class="action_btns d-flex">
-                                                        <a v-if="row.status == 0" href="javascript:void(0)" title="Activate Account" class="action_btn" @click="doAction(row.id, 1)"> <i class="bi bi-file-check"></i> </a>
-                                                        <a  v-if="row.status == 1" href="javascript:void(0)" @click="doAction(row.id, 0)" title="Suspend Account" class="action_btn"> <i class="bi bi-file-excel" style="color: red;"></i> </a>
-                                                        <!-- <a href="#" title="View" class="action_btn"> <i class="bi bi-eye-fill"></i> </a>
-                                                        <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a> -->
-                                                  </div>
+                                                   <a v-if="row.status == 'active'" href="#" class="status_btn">Active</a>
+                                                   <a v-if="row.status == 'pending'" href="#" class="status_btn yellow_btn">Suspended</a>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -110,23 +103,18 @@ export default {
     
     data() {
         return {
-            organizations: [],
+            members: [],
             pagination: {},
-            all: true,
-            active: false,
-            suspended: false,
-            key: "Filter",
-            status: null
         };
     },
 
     methods: {
-        loadAllOrganizations(page = 1) {
-            axios.get('admin/organizations' + "?page=" + page)
+        loadAllMembers(page = 1) {
+            axios.get('admin/all/members' + "?page=" + page)
             .then(
                 response => {
                     this.prepPagination(response.data);
-                    this.organizations = response.data.data;                    
+                    this.members = response.data.data;                    
                 }
             ).catch (
                 error => {
@@ -153,59 +141,15 @@ export default {
                 total: data.meta.total,
             };
         },
-
-        confirmAction(status, id) {
-            this.$confirm({
-                message: `Are you sure you want to ${status} this User?`,
-                button: {
-                    no: "No",
-                    yes: "Yes",
-                },
-                callback: (confirm) => {
-                    if (confirm) {
-                        let st = status == "Activate" ? "active" : "suspended";
-                        this.doAction(id, st);
-                    }
-                },
-            });
-        },
-
-        doAction(id, status) {
-            this.$Progress.start();
-            axios.get('admin/organizations/' + id + '/' + status)
-            .then(
-                response => {
-                    this.$Progress.finish();
-                    this.$notify({
-                        type: "success",
-                        title: response.data.message,
-                        duration: 5000,
-                        speed: 1000,
-                    });         
-                    
-                    this.loadAllUsers();
-                }
-            ).catch (
-                error => {
-                    this.$Progress.fail();
-                    this.$notify({
-                        type: "error",
-                        title: error.response.data.message,
-                        duration: 5000,
-                        speed: 1000,
-                    });
-                }
-            )
-        },
     },
 
     created() 
     {
-        this.loadAllOrganizations();
+        this.loadAllMembers();
     },
 
     mounted() {
-        this.loadAllOrganizations();
+        this.loadAllMembers();
 
         window.scrollTo(0, 0)
     }

@@ -100,6 +100,11 @@ import SuperadminMyProfile from '../views/SuperadminDashboard/MyProfile.vue'
 import SuperadminAllUsers from '../views/SuperadminDashboard/AllUsers.vue'
 import SuperadminActiveUsers from '../views/SuperadminDashboard/ActiveUsers.vue'
 import SuperadminSuspendedUsers from '../views/SuperadminDashboard/SuspendedUsers.vue'
+// members
+import SuperadminAllMembers from '../views/SuperadminDashboard/AllMembers.vue'
+// ID Card Management
+import SuperadminAllTemplates from '../views/SuperadminDashboard/AllTemplates.vue'
+import SuperadminAllIDCards from '../views/SuperadminDashboard/AllIDCards.vue'
 // organisation
 import SuperadminAllOrganisations from '../views/SuperadminDashboard/AllOrganisations.vue'
 import SuperadminActivatedOrganisations from '../views/SuperadminDashboard/ActivatedOrganisations.vue'
@@ -110,6 +115,8 @@ import SuperadminEventCategory from '../views/SuperadminDashboard/EventCategory.
 // payment history
 import SuperadminTicketPayment from '../views/SuperadminDashboard/TicketPayment.vue'
 import SuperadminSubscriptionPayment from '../views/SuperadminDashboard/SubscriptionPayment.vue'
+// verifier
+import SuperadminAllVerifiers from '../views/SuperadminDashboard/AllVerifiers.vue'
 
 import auth from "../middleware/auth";
 import guest from "../middleware/guest";
@@ -580,6 +587,29 @@ const routes = [
       middleware: auth
     }
   },
+  // members
+  {path
+    : '/superadmin-dashboard/all-members', name: 'SuperadminAllMembers', component: SuperadminAllMembers,
+    meta: {
+      title: 'All Members - Superadmin Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  // ID Card Management
+  {path
+    : '/superadmin-dashboard/all-templates', name: 'SuperadminAllTemplates', component: SuperadminAllTemplates,
+    meta: {
+      title: 'All Templates - Superadmin Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  {path
+    : '/superadmin-dashboard/all-idcards', name: 'SuperadminAllIDCards', component: SuperadminAllIDCards,
+    meta: {
+      title: 'All IDCards - Superadmin Dashboard | WALLID',
+      middleware: auth
+    }
+  },
   // organisations
   {path
     : '/superadmin-dashboard/all-organisations', name: 'SuperadminAllOrganisations', component: SuperadminAllOrganisations,
@@ -629,6 +659,14 @@ const routes = [
     : '/superadmin-dashboard/subscription-payment', name: 'SuperadminSubscriptionPayment', component: SuperadminSubscriptionPayment,
     meta: {
       title: 'Subscription Payment - Superadmin Dashboard | WALLID',
+      middleware: auth
+    }
+  },
+  // verifiers
+  {path
+    : '/superadmin-dashboard/all-verifiers', name: 'SuperadminAllVerifiers', component: SuperadminAllVerifiers,
+    meta: {
+      title: 'All Verifiers - Superadmin Dashboard | WALLID',
       middleware: auth
     }
   },

@@ -39,8 +39,41 @@
                   <li><router-link to="/superadmin-dashboard/suspended-users" class="menuRouter"><a>Suspended Users</a></router-link></li>
                </ul>
             </li>
-            <!--Organisation-->
+            <!--Members-->
             <li class="">
+                <router-link to="#" class="has-arrow menuRouter">
+                    <a aria-expanded="false">
+                        <div class="nav_icon_small">
+                            <img src="@/assets/img/dashAssets/menu-card.png">
+                        </div>
+                        <div class="nav_title">
+                            <span>Members</span>
+                        </div>
+                    </a>
+                </router-link>
+                <ul>
+                   <li><router-link to="/superadmin-dashboard/all-members" class="menuRouter"><a>All Members</a></router-link></li>
+                </ul>
+             </li>
+             <!--ID Card Management-->
+            <li class="">
+                <router-link to="#" class="has-arrow menuRouter">
+                    <a aria-expanded="false">
+                        <div class="nav_icon_small">
+                            <img src="@/assets/img/dashAssets/menu-card.png">
+                        </div>
+                        <div class="nav_title">
+                            <span>ID Card Management</span>
+                        </div>
+                    </a>
+                </router-link>
+                <ul>
+                   <li><router-link to="/superadmin-dashboard/all-templates" class="menuRouter"><a>All Templates</a></router-link></li>
+                   <li><router-link to="/superadmin-dashboard/all-idcards" class="menuRouter"><a>All IDCards</a></router-link></li>
+                </ul>
+             </li>
+            <!--Organisation-->
+            <!-- <li class="">
                 <router-link to="#" class="has-arrow menuRouter">
                     <a aria-expanded="false">
                         <div class="nav_icon_small">
@@ -56,7 +89,7 @@
                    <li><router-link to="/superadmin-dashboard/activated-organisations" class="menuRouter"><a>Activated Organisations</a></router-link></li>
                    <li><router-link to="/superadmin-dashboard/suspended-organisations" class="menuRouter"><a>Suspended Organisations</a></router-link></li>
                 </ul>
-             </li>
+             </li> -->
             <!--Events-->
             <li class="">
                 <router-link to="#" class="has-arrow menuRouter">
@@ -91,6 +124,22 @@
                    <li><router-link to="/superadmin-dashboard/subscription-payment" class="menuRouter"><a>Subscription Payment</a></router-link></li>
                 </ul>
             </li>
+            <!--verification-->
+            <li class="">
+                <router-link to="#" class="has-arrow menuRouter">
+                    <a aria-expanded="false">
+                        <div class="nav_icon_small">
+                            <img src="@/assets/img/dashAssets/menu-member.png">
+                        </div>
+                        <div class="nav_title">
+                            <span>Verification</span>
+                        </div>
+                    </a>
+                </router-link>
+                <ul>
+                   <li><router-link to="/superadmin-dashboard/all-verifiers" class="menuRouter"><a>All Verifier</a></router-link></li>
+                </ul>
+             </li>
             <!--Admins-->
             <!-- <li class="">
                 <router-link to="#" class="has-arrow menuRouter">
