@@ -21,8 +21,9 @@
                                 <!-- Password Here -->
                                 <div>
                                     <label>Password</label>
-                                    <input type="password" v-model="login.password" placeholder="*********">
+                                    <input type="password" @keyup="validPassword" v-model="login.password" placeholder="*********">
                                 </div>
+                                <span style="color: red;">{{validationError}}</span>
 
                                 <!-- Submit Button Here-->
                                 <div class="signup-btn-div text-center">
@@ -61,7 +62,7 @@ export default {
                 email: "", 
                 password: "",
             },
-            validationError: [],
+            validationError: '',
         }
     },
 
@@ -79,10 +80,34 @@ export default {
             return /[#?!@$%^&*-]/.test(password)
         },
 
+        validPassword(){
+            if (!this.containsUppercase(this.login.password)) {
+                this.validationError = "Password should contain atleast one upper letter."
+                return false
+            }
+            else if (!this.containsLowercase(this.login.password)) {
+                this.validationError = "Password should contain atleast one lowercase letter.";
+                return false
+            }
+            else if (!this.containsNumber(this.login.password)) {
+                this.validationError = "Password should contain atleast one number."
+                return false
+            }
+            else if (!this.containsSpecial(this.login.password)) {
+                this.validationError = "Password should contain atleast one special character."
+                return false
+            }
+            else{
+                this.validationError = ''
+                return true
+            }
+
+        },
+
         async init_login() {
             this.$Progress.start();
             
-            if (this.login.email == ''|| this.login.password == '') {
+            if (this.login.email == ''|| this.login.password == '' || this.validPassword() == false) {
                 this.$notify({
                     type: "error",
                     title: "Please enter all the needed fields.",
@@ -92,41 +117,14 @@ export default {
                 this.$Progress.finish();
                 return;
             }
-            
-            if (!this.containsUppercase(this.login.password)) {
-                this.validationError.push("Password should contain atleast one upper letter.");
-                this.$Progress.finish();
-            }
-            if (!this.containsLowercase(this.login.password)) {
-                this.validationError.push("Password should contain atleast one lowercase letter.");
-                this.$Progress.finish();
-            }
-            if (!this.containsNumber(this.login.password)) {
-                this.validationError.push("Password should contain atleast one number.");
-                this.$Progress.finish();
-            }
-            if (!this.containsSpecial(this.login.password)) {
-                this.validationError.push("Password should contain atleast one special character.");
-                this.$Progress.finish();
-            }
+            else{
+                this.$wait.start("processing");
 
-            for (let i in this.validationError) {
-                this.$notify({
-                    type: "error",
-                    title: this.validationError[i],
-                    duration: 5000,
-                    speed: 1000,
-                });
-            } 
-
-            this.$wait.start("processing");
-
-            await axios.post('auth/login', { 
-                email: this.login.email, 
-                password: this.login.password
-            })
-            .then(
-                response => {
+                await axios.post('auth/login', { 
+                    email: this.login.email, 
+                    password: this.login.password
+                })
+                .then(response => {
                     this.validationError = [];
                     this.$notify({
                         type: "success",
@@ -156,11 +154,10 @@ export default {
                             this.$router.push('/superadmin-dashboard/home');
                         }, 800);
                     }
-                }
-            ).catch (
-                error => {
+                    }
+                ).catch (error => {
                     localStorage.removeItem('token')
-                    this.validationError = [];
+                    //this.validationError = [];
                     this.$notify({
                         type: "error",
                         title: error.response.data.message,
@@ -169,8 +166,9 @@ export default {
                     });
                     this.$wait.end("processing");
                     this.$Progress.fail();
-                }
-            )
+                })
+
+            }
         }
     },
 
