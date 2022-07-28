@@ -220,42 +220,57 @@
         </div>
 
         <!--Box 1-->
-        <div class="modal fade" id="modalView" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div
+            class="modal fade"
+            id="modalView"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true"
+        >
             <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content viewCardModal">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLongTitle">ID Card</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div 
-                        class="cardTemplate modalCardTemplate" 
-                        :style="{
-                            'background-color': this.selectedCard.background_color,
-                            'width': '330px',
-                            'height': '200px',
-                            'border-radius': '5px',
-                            'padding': '20px 15px'
-                        }"
-                        >
-                            <div class="cardLogo">
-                                <img v-bind:src="this.baseURL + this.selectedCard.cardLogo">
+            <div class="modal-content viewCardModal">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">ID Card</h5>
+                <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">
+                <div class="id-card-wrapper">
+                    <div class="id-card"
+                    :style="{'background-color': this.selectedCard.background_color}">
+                        <div class="id-card-header">
+                            <div class="header">
+                                <img v-bind:src="this.baseURL + this.selectedCard.cardLogo">{{this.selectedCard.organization}}
                             </div>
-                            <div class="cardContent">
-                                <p :style="{'color': this.selectedCard.text_color + '!important'}">Holder's Name: {{ this.selectedCard.name}}</p>
-                                <p :style="{'color': this.selectedCard.text_color + '!important'}">Job Role: {{ this.selectedCard.role }}</p>
-                                <p :style="{'color': this.selectedCard.text_color + '!important'}">ID No: {{ this.selectedCard.id_card_number }}</p>
-                                <p :style="{'color': this.selectedCard.text_color + '!important'}">Join Date: {{ this.selectedCard.issued_date }}</p>
+                        </div>
+                        <div class="profile-row">
+                            <div class="dp">
+                            <div class="dp-arc-outer"></div>
+                            <div class="dp-arc-inner"></div>
+                            <img v-bind:src="this.baseURL + this.selectedCard.cardImage">
                             </div>
-                            <div class="cardImage">
-                                <img v-bind:src="this.baseURL + this.selectedCard.cardImage">
+                            <div class="desc">
+                                <div :style="{'color': this.selectedCard.text_color + '!important'}">
+                                    <span>Holder's Name</span> <p :style="{'font-size': '1.1rem !important', 'color': this.selectedCard.text_color + '!important'}">{{ this.selectedCard.name}}</p>
+                                    <span>Job Role</span><p :style="{'color': this.selectedCard.text_color + '!important'}">{{ this.selectedCard.role }}</p>
+                                    <span>ID No</span><p :style="{'color': this.selectedCard.text_color + '!important'}">{{ this.selectedCard.id_card_number }}</p>
+                                </div>
                             </div>
-                            <div class="clear"></div>
-                            </div>
+                        </div>
+                        <div class="id-card-footer">
+                            <p :style="{'color': this.selectedCard.text_color + '!important'}">Join Date: {{ this.selectedCard.issued_date }}</p>
+                        </div>
                     </div>
                 </div>
+                </div>
+            </div>
             </div>
         </div>
 </template>
@@ -289,7 +304,8 @@ export default {
                 background_color: "",
                 text_color: "",
                 cardLogo: "",
-                cardImage: ""
+                cardImage: "",
+                organization: null
             }
         }
     },
@@ -466,6 +482,7 @@ export default {
             this.selectedCard.text_color = row.template.text_color;
             this.selectedCard.cardLogo = row.template.path;
             this.selectedCard.cardImage = row.path;
+            this.selectedCard.organization = row.created_by_organization.name
         }
 
     },
@@ -480,3 +497,95 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+/* .id-card-wrapper {
+  height: 100vh;
+  width:100%;
+  background-color: #091214;
+  display: flex;
+} */
+.id-card {
+  position: relative;
+  height: 15em;
+  flex-basis: 100%;
+  max-width: 30em;
+  margin: auto;
+  /* background-color: red; */
+ }
+
+.id-card-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: 30em;
+    height: 4em;
+    width: 100%;
+    margin: auto;
+    color: #fff;
+    padding: 1em;
+    background-color: #8604e2;
+}
+
+.id-card-header .header {
+    position: absolute;
+    right: 20px;
+    font-size: 1.2rem
+}
+.id-card-header .header img {
+    width: 30px;
+    margin-right: 1rem
+}
+.profile-row {
+  display: flex;
+  align-items: center
+}
+.profile-row .dp {
+  flex-basis: 30.3%;
+  position: relative;
+  margin: 24px 24px 24px 24px;
+  align-self: center;
+}
+
+.profile-row .dp img {
+  max-width: 100%;
+  border-radius: 50%;
+  display: block;
+  /* box-shadow: 0px 0px 4px 3px #fff; */
+  border: 5px solid #fff;
+}
+.profile-row .desc {
+  padding-top: 4rem;
+  /* flex-basis: 70.6%; */
+}
+
+.profile-row .desc span {
+    font-size: 10px;
+}
+
+.profile-row .desc {
+  font-family: 'Orbitron', sans-serif;
+  color: #000;
+  /* letter-spacing: 1px; */
+}
+
+.profile-row .desc p {
+    font-weight: bolder;
+}
+
+.id-card-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    max-width: 30em;
+    height: 1.5em;
+    width: 100%;
+    margin: auto;
+    color: #fff;
+    background-color: #8604e2;
+}
+.id-card-footer p {
+    position: absolute;
+    right: 10px;
+}
+</style>

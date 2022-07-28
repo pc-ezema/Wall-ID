@@ -60,8 +60,8 @@
                                         <tbody>
                                              <tr v-for="(row, index) in members" v-bind:key="index">
                                                 <th scope="row">{{ index + 1}}</th>
-                                                <td>{{row.membership_request_details.individual.firstname}} {{row.membership_request_details.individual.lastname}}</td>
-                                                <td>{{row.membership_request_details.organization.name}}</td>
+                                                <td>{{row.individual.firstname}} {{row.individual.lastname}}</td>
+                                                <td>{{row.organization.name}}</td>
                                                 <td>{{row.role}}</td>
                                                 <td>{{ new Date(row.created_at).toLocaleString() }}</td>
                                                 <td>

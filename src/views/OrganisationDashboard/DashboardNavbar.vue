@@ -9,6 +9,7 @@
                      <div class="line_icon open_miniSide d-none d-lg-block">
                         <img src="@/assets/img/line_img.png" style="cursor: pointer;">
                      </div>
+                     <span>Organization</span>
                      <div class="header_right d-flex justify-content-between align-items-center">
                         <div class="header_notification_warp d-flex align-items-center">
                            <li>

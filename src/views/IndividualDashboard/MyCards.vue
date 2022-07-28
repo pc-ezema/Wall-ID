@@ -48,7 +48,7 @@
                                                 <th scope="col">ID</th>
                                                 <th scope="col">ID Number</th>
                                                 <th scope="col">Name</th>
-                                                <th scope="col">Card Template</th>
+                                                <th scope="col">ID Card</th>
                                                 <th scope="col">Issued Date</th>
                                                 <th scope="col">Role</th>
                                                 <th scope="col">Status</th>
@@ -91,44 +91,59 @@
       </div>
 
       <!--Box 1-->
-    <div class="modal fade" id="modalView" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div
+            class="modal fade"
+            id="modalView"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalCenterTitle"
+            aria-hidden="true"
+        >
+            <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content viewCardModal">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">ID Card</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <h5 class="modal-title" id="exampleModalLongTitle">ID Card</h5>
+                <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                >
                     <span aria-hidden="true">&times;</span>
-                    </button>
+                </button>
                 </div>
                 <div class="modal-body">
-                    <div 
-                    class="cardTemplate modalCardTemplate" 
-                    :style="{
-                        'background-color': this.selectedCard.background_color,
-                        'width': '330px',
-                        'height': '200px',
-                        'border-radius': '5px',
-                        'padding': '20px 15px'
-                    }"
-                    >
-                        <div class="cardLogo">
-                            <img v-bind:src="this.baseURL + this.selectedCard.cardLogo">
+                <div class="id-card-wrapper">
+                    <div class="id-card"
+                    :style="{'background-color': this.selectedCard.background_color}">
+                        <div class="id-card-header">
+                            <div class="header">
+                                <img v-bind:src="this.baseURL + this.selectedCard.cardLogo">{{this.selectedCard.organization}}
+                            </div>
                         </div>
-                        <div class="cardContent">
-                            <p :style="{'color': this.selectedCard.text_color + '!important'}">Holder's Name: {{ this.selectedCard.name}}</p>
-                            <p :style="{'color': this.selectedCard.text_color + '!important'}">Job Role: {{ this.selectedCard.role }}</p>
-                            <p :style="{'color': this.selectedCard.text_color + '!important'}">ID No: {{ this.selectedCard.id_card_number }}</p>
+                        <div class="profile-row">
+                            <div class="dp">
+                            <div class="dp-arc-outer"></div>
+                            <div class="dp-arc-inner"></div>
+                            <img v-bind:src="this.baseURL + this.selectedCard.cardImage">
+                            </div>
+                            <div class="desc">
+                                <div :style="{'color': this.selectedCard.text_color + '!important'}">
+                                    <span>Holder's Name</span> <p :style="{'font-size': '1.1rem !important', 'color': this.selectedCard.text_color + '!important'}">{{ this.selectedCard.name}}</p>
+                                    <span>Job Role</span><p :style="{'color': this.selectedCard.text_color + '!important'}">{{ this.selectedCard.role }}</p>
+                                    <span>ID No</span><p :style="{'color': this.selectedCard.text_color + '!important'}">{{ this.selectedCard.id_card_number }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="id-card-footer">
                             <p :style="{'color': this.selectedCard.text_color + '!important'}">Join Date: {{ this.selectedCard.issued_date }}</p>
                         </div>
-                        <div class="cardImage">
-                            <img v-bind:src="this.baseURL + this.selectedCard.cardImage">
-                        </div>
-                        <div class="clear"></div>
-                        </div>
+                    </div>
+                </div>
                 </div>
             </div>
+            </div>
         </div>
-    </div>
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
@@ -156,7 +171,8 @@ export default {
                 background_color: "",
                 text_color: "",
                 cardLogo: "",
-                cardImage: ""
+                cardImage: "",
+                organization: null
             }
         }
     },
@@ -199,6 +215,7 @@ export default {
             this.selectedCard.text_color = row.template.text_color;
             this.selectedCard.cardLogo = row.template.path;
             this.selectedCard.cardImage = row.path;
+            this.selectedCard.organization = row.created_by_organization.name
         }
     },
 

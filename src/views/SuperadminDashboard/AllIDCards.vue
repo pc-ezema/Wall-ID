@@ -241,7 +241,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 /* .id-card-wrapper {
   height: 100vh;
   width:100%;

@@ -10,21 +10,7 @@
             <div class="col-lg-12 text-center">
               <h3>Individual Sign Up</h3>
               <p>Fill up the form below to sign up for your Wall-ID account.</p>
-            </div>
-            <div v-if="message" id="alerttopright" class="alert-timeout alert alert-success alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            <div v-if="notifmsg">
-              <div v-for="(errorArray, idx) in notifmsg" :key="idx">
-                  <div v-for="(allErrors, idx) in errorArray" :key="idx" id="alerttopright" class="alert-timeout alert alert-danger alert-dismissible fade show" role="alert">
-                    {{ allErrors }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
-              </div>
-            </div>
-            <error v-if="error" :error="error" />
-                            
+            </div>                            
             <form class="form-form-div" @submit.prevent="init_register()">
               <div class="row">
                 <!-- First Name Here -->
@@ -123,11 +109,10 @@
 import MainHeader from './MainHeader.vue'
 import MainFooter from './MainFooter.vue'
 import axios from 'axios'
-import Error from './Error.vue'
 
 export default {
-    components: { MainHeader, MainFooter, Error},
-    
+    components: { MainHeader, MainFooter},
+
     data() {
         return {
             register:{
@@ -136,12 +121,9 @@ export default {
                 username: "", 
                 email: "", 
                 phone: "", 
-                password: "",
+                password: ""
             },
             password_confirmation: "",
-            message: "",
-            error: "",
-            notifmsg: ""
         }
     },
 
@@ -163,18 +145,24 @@ export default {
 
           if (this.register.firstname == '' || this.register.lastname == '' || this.register.username == '' || this.register.email == ''
               || this.register.phone == '' || this.register.password == '') {
-              this.message = "";
-              this.notifmsg = "";
-              this.error = "Please enter all the needed fields."
+              this.$notify({
+                  type: "error",
+                  title: "Please enter all the needed fields.",
+                  duration: 5000,
+                  speed: 1000,
+              });
               this.$wait.end("processing");
               this.$Progress.fail();
               return
           }
 
           if (this.password_confirmation !== this.register.password) {
-              this.message = "";
-              this.notifmsg = "";
-              this.error = "Confirm password doesn't match with actual password."
+              this.$notify({
+                  type: "error",
+                  title: "Confirm password doesn't match with actual password.",
+                  duration: 5000,
+                  speed: 1000,
+              });
               this.$wait.end("processing");
               this.$Progress.fail();
               return
@@ -190,10 +178,12 @@ export default {
           })
           .then(
             response => {
-              this.error = "";
-              this.message = response.data.message;
-              // this.register = "";
-              this.password_confirmation = "";
+              this.$notify({
+                  type: "success",
+                  title: response.data.message,
+                  duration: 5000,
+                  speed: 1000,
+              });
               this.$wait.end("processing");
               this.$Progress.finish();
 
@@ -205,15 +195,23 @@ export default {
           ).catch (
             error => {
               if (error.response.status == 422) {
-                this.message = "";
-                this.error = "";
-                this.notifmsg = error.response.data.error;
+                for (let i in error.response.data.error) {
+                    this.$notify({
+                        type: "error",
+                        title: error.response.data.error[i][0],
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                } 
                 this.$wait.end("processing");
                 this.$Progress.fail();
               } else {
-                this.message = "";
-                this.notifmsg = "";
-                this.error = error.response.data.message;
+                this.$notify({
+                    type: "error",
+                    title: error.response.data.message,
+                    duration: 5000,
+                    speed: 1000,
+                });
                 this.$wait.end("processing");
                 this.$Progress.fail();
               }

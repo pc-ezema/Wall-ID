@@ -17,6 +17,7 @@ import $ from 'jquery'
 import Notifications from '@kyvg/vue3-notification'
 import wait from '@meforma/vue-wait-for'
 import VueProgressBar from "@aacassandra/vue3-progressbar"
+import useVuelidate from '@vuelidate/core'
 
 const options = {
     color: "#228B22",
@@ -32,4 +33,4 @@ const options = {
     inverse: false,
 };
 
-createApp(App).use(router).use(store).use(Notifications).use(wait).use(VueProgressBar, options).use(AOS.init()).mount('#app')
+createApp(App).use(router).use(store).use(Notifications).use(wait).use(VueProgressBar, options, useVuelidate).use(AOS.init()).mount('#app')

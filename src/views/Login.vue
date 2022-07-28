@@ -11,22 +11,17 @@
                                 <h3>Login</h3>
                                 <p>Enter your Wall-ID details to continue.</p>
                             </div>
-                            <div v-if="message" id="alerttopright" class="alert-timeout alert alert-success alert-dismissible fade show" role="alert">
-                                {{ message }}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                            <error v-if="error" :error="error" />
                             <form class="form-form-div"  @submit.prevent="init_login()">
                                 <!-- Email Here -->
                                 <div>
                                     <label>Email</label>
-                                    <input type="email" v-model="login.email" required placeholder="Enter your email">
+                                    <input type="email" v-model="login.email" placeholder="Enter your email">
                                 </div>
 
                                 <!-- Password Here -->
                                 <div>
                                     <label>Password</label>
-                                    <input type="password" v-model="login.password" required placeholder="*********">
+                                    <input type="password" v-model="login.password" placeholder="*********">
                                 </div>
 
                                 <!-- Submit Button Here-->
@@ -56,10 +51,9 @@
 import MainHeader from './MainHeader.vue'
 import MainFooter from './MainFooter.vue'
 import axios from 'axios'
-import Error from './Error.vue'
 
 export default {
-    components: { MainHeader, MainFooter, Error },
+    components: { MainHeader, MainFooter },
 
     data() {
         return {
@@ -67,30 +61,79 @@ export default {
                 email: "", 
                 password: "",
             },
-            error: "",
-            message: "",
+            validationError: [],
         }
     },
 
     methods: {
-        async init_login() {
-            this.$wait.start("processing");
-            this.$Progress.start();
+        containsUppercase: function(password) {
+            return /[A-Z]/.test(password)
+        },
+        containsLowercase: function(password) {
+            return /[a-z]/.test(password)
+        },
+        containsNumber: function(password) {
+            return /[0-9]/.test(password)
+        },
+        containsSpecial: function(password) {
+            return /[#?!@$%^&*-]/.test(password)
+        },
 
+        async init_login() {
+            this.$Progress.start();
+            
             if (this.login.email == ''|| this.login.password == '') {
-                this.error = "Please enter all the needed fields.";
-                this.isLoading = false;
-                return
+                this.$notify({
+                    type: "error",
+                    title: "Please enter all the needed fields.",
+                    duration: 5000,
+                    speed: 1000,
+                });
+                this.$Progress.finish();
+                return;
             }
             
+            if (!this.containsUppercase(this.login.password)) {
+                this.validationError.push("Password should contain atleast one upper letter.");
+                this.$Progress.finish();
+            }
+            if (!this.containsLowercase(this.login.password)) {
+                this.validationError.push("Password should contain atleast one lowercase letter.");
+                this.$Progress.finish();
+            }
+            if (!this.containsNumber(this.login.password)) {
+                this.validationError.push("Password should contain atleast one number.");
+                this.$Progress.finish();
+            }
+            if (!this.containsSpecial(this.login.password)) {
+                this.validationError.push("Password should contain atleast one special character.");
+                this.$Progress.finish();
+            }
+
+            for (let i in this.validationError) {
+                this.$notify({
+                    type: "error",
+                    title: this.validationError[i],
+                    duration: 5000,
+                    speed: 1000,
+                });
+            } 
+
+            this.$wait.start("processing");
+
             await axios.post('auth/login', { 
                 email: this.login.email, 
                 password: this.login.password
             })
             .then(
                 response => {
-                    this.error = "";
-                    this.message = response.data.message;
+                    this.validationError = [];
+                    this.$notify({
+                        type: "success",
+                        title: response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
                     this.$wait.end("processing");
                     this.$Progress.finish();
 
@@ -117,8 +160,13 @@ export default {
             ).catch (
                 error => {
                     localStorage.removeItem('token')
-                    this.message = "";
-                    this.error = error.response.data.message;
+                    this.validationError = [];
+                    this.$notify({
+                        type: "error",
+                        title: error.response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
                     this.$wait.end("processing");
                     this.$Progress.fail();
                 }
@@ -131,3 +179,10 @@ export default {
     }
 }
 </script>
+
+<style>
+.has_required{
+    text-decoration: line-through;
+    color:#689868;
+}
+</style>
