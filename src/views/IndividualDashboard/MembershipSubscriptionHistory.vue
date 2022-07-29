@@ -37,23 +37,33 @@
                                         <thead>
                                             <tr>
                                                 <th scope="col">ID</th>
-                                                <th scope="col">Name</th>
-                                                <th scope="col">Phone</th>
-                                                <th scope="col">Date Joined</th>
-                                                <th scope="col">Type</th>
-                                                <th scope="col">Staus</th>
+                                                <th scope="col">Plan Name</th>
+                                                <th scope="col">Plan Validity</th>
+                                                <th scope="col">Start Date</th>
+                                                <th scope="col">Expiry Date</th>
+                                                <th scope="col">Status</th>
                                                 <th scope="col">Action</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody v-if="!expired || !expired.length">
                                             <tr>
-                                                <th scope="row">1</th>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                                <td class="align-enter text-dark font-13" colspan="7">No Expired Subscription</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody v-else>
+                                            <tr v-for="(row, index) in expired" v-bind:key="index">
+                                                <th scope="row">{{ index + 1 }}</th>
+                                                <td>{{ row.subscription_plan.name }}</td>
+                                                <td>{{ row.subscription_plan.validity }} days</td>
+                                                <td>{{ new Date(row.created_at).toLocaleString() }}</td>
+                                                <td>{{ new Date(row.expiry_date).toLocaleString() }}</td>
+                                                <td><a class="a-pending">{{row.status}}</a></td>
+                                                <td>
+                                                    <div class="action_btns d-flex">
+                                                      <a href="javascript:void(0)" data-toggle="modal" data-target="#modalView" @click="showPaymentDetails(row.payment)" title="View Payment Details" class="action_btn"> <i class="bi bi-credit-card"></i> </a>
+                                                    </div>
+                                                </td>
+                                                
                                             </tr>
                                         </tbody>
                                     </table>
@@ -78,14 +88,73 @@
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
+<style scoped src="@/assets/css/styleDashboardSupport.css"></style>
+
 <script>
 import DashboardSidebar from './DashboardSidebar.vue'
 import DashboardNavbar from './DashboardNavbar.vue';
 import DashboardFooter from './DashboardFooter.vue';
+import axios from 'axios';
+
 export default {
     components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+    
+    data() {
+        return {
+            pagination: "",
+            expired: [],
+            payment_details: {},
+        }
+    },
+
+    methods: {
+        prepPagination(data) {
+            this.pagination = {
+                data: data.data,
+                current_page: data.meta.current_page,
+                first_item: data.meta.first_item,
+                last_item: data.meta.last_item,
+                last_page: data.meta.last_page,
+                next_page_url: data.meta.next_page_url,
+                per_page: data.meta.per_page,
+                previous_page_url: data.meta.previous_page_url,
+                total: data.meta.total,
+            };
+        },
+
+        loadActiveSubscription(page = 1) {
+            axios.get('individuals/organizations/subscriptions/expired/all')
+            .then(
+                response => {
+                    this.prepPagination(response.data);
+                    this.expired = response.data.data;
+                }
+            ).catch (
+                error => {
+                    console.log(error);
+                }
+            )
+        },
+
+        showPaymentDetails(data) {
+            this.payment_details = data;
+        },
+    },
+    
+    created() {
+        this.loadActiveSubscription();
+    },
+
     mounted() {
         window.scrollTo(0, 0)
     }
 }
 </script>
+
+<style scoped>
+    .view_payment p
+    {
+        font-weight: 700; 
+        color: #000;
+    }
+</style>

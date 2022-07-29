@@ -26,26 +26,37 @@
                <!--Boxes Section-->
                <div class="row justify-content-center mt-3 secForm">
                    <div class="col-lg-11 secFormHead">
-                        <h5>Choose an organisation to subscribe to</h5>
+                        <h5>Choose a plan subscribe to</h5>
                         <div class="row">
                             <div class="col-lg-12 mt-2">
-                                <div class="mb-2" v-for="row in organization" v-bind:key="row.id">
-                                    <router-link :to="'/individual-dashboard/choose-subscription-plan/' + row.organization.id">
-                                        <div class="resultDivDisplay">
-                                            <div class="resultPicture">
-                                                <div class="pictureDiv">
-                                                    <img src="@/assets/img/dp.jpg">
+                                <div class="mb-2" v-for="row in plans" v-bind:key="row.id">
+                                    <!-- <router-link> -->
+                                        <a @click="makePayment(row.id)">
+                                            <div class="resultDivDisplay">
+                                                <div class="resultContent">
+                                                    <div class="row">
+                                                        <div class="col-lg-6">
+                                                        <p>Name</p>
+                                                        <h5>{{row.name}}</h5>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                        <p>Payment</p>
+                                                        <h5>{{row.price}}</h5>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                        <p>Description</p>
+                                                        <h5>{{row.description}}</h5>
+                                                        </div>
+                                                        <div class="col-lg-6">
+                                                        <p>Period</p>
+                                                        <h5>{{row.validity}} days</h5>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                                <div class="clear"></div>
                                             </div>
-                                            <div class="resultContent">
-                                                <p>Name</p>
-                                                <h5>{{row.organization.name}}</h5>
-                                                <p>Email</p>
-                                                <h5>{{row.organization.user.email}}</h5>
-                                            </div>
-                                            <div class="clear"></div>
-                                        </div>
-                                    </router-link>
+                                        </a>
+                                    <!-- </router-link> -->
                                 </div>
                             </div>
                         </div>
@@ -79,7 +90,7 @@ export default {
     data() {
         return {
             pagination: "",
-            organization: []
+            plans: []
         }
     },
 
@@ -98,12 +109,14 @@ export default {
             };
         },
 
-        loadOrganizations(page = 1) {
-            axios.get('individuals/organizations')
+        loadOrganzationPlans(page = 1) {
+            let id = this.$route.params.id;
+
+            axios.get('individuals/organizations/'+ id +'/plans')
             .then(
                 response => {
-                    this.prepPagination(response.data);
-                    this.organization = response.data.data;
+                    // this.prepPagination(response.data);
+                    this.plans = response.data.data;
                 }
             ).catch (
                 error => {
@@ -111,14 +124,38 @@ export default {
                 }
             )
         },
+
+        async makePayment(id)
+        {
+            this.$Progress.start();
+
+            await axios.post('individuals/organizations/subscription/pay', {
+                subscription_plan_id: id
+            }).then(
+                response => {
+                    this.$Progress.finish();
+                    window.location.href = response.data.data.link;
+                }
+            ).catch (
+                error => {
+                    this.$Progress.fail();
+                    this.$notify({
+                        type: "error",
+                        title: error.response.data.message,
+                        duration: 5000,
+                        speed: 1000,
+                    });
+                }
+            )
+        }
     },
 
     created() {
-        this.loadOrganizations();
+        this.loadOrganzationPlans();
     },
 
     mounted() {
-        this.loadOrganizations();
+        this.loadOrganzationPlans();
         window.scrollTo(0, 0)
     }
 }
