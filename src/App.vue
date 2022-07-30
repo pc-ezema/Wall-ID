@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 import { getCurrentInstance } from "vue";
 
 export default {
@@ -19,8 +19,12 @@ export default {
   },
 
   async created() {
-      const response = await axios.get('user');
-      this.$store.dispatch('user',  response.data.data.user);
+    const response = await axios.get("user", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    this.$store.dispatch("user", response.data.data.user);
   },
-}
+};
 </script>

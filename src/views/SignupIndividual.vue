@@ -10,7 +10,7 @@
             <div class="col-lg-12 text-center">
               <h3>Individual Sign Up</h3>
               <p>Fill up the form below to sign up for your Wall-ID account.</p>
-            </div>                            
+            </div>
             <form class="form-form-div" @submit.prevent="init_register()">
               <div class="row">
                 <!-- First Name Here -->
@@ -27,7 +27,12 @@
                 <!-- Last Name Here -->
                 <div class="col-lg-6">
                   <label>Last Name</label>
-                  <input type="text" v-model="register.lastname" required placeholder="Enter last name" />
+                  <input
+                    type="text"
+                    v-model="register.lastname"
+                    required
+                    placeholder="Enter last name"
+                  />
                 </div>
 
                 <!-- Username Here -->
@@ -55,22 +60,45 @@
                 <!-- Telephone Number Here -->
                 <div class="col-lg-12">
                   <label>Telephone number</label>
-                  <input type="tel" v-model="register.phone" @keyup="validatePass" required placeholder="Enter phone number" />
+                  <input
+                    type="tel"
+                    v-model="register.phone"
+                    @keyup="validatePass"
+                    required
+                    placeholder="Enter phone number"
+                  />
                 </div>
 
                 <!-- Password Here -->
                 <div class="col-lg-12">
                   <label>Password</label>
-                  <input type="password" @keyup="validPassword" v-model="register.password" required placeholder="*********" />
+                  <input
+                    type="password"
+                    @keyup="validPassword"
+                    v-model="register.password"
+                    required
+                    placeholder="*********"
+                  />
                 </div>
-                <span style="color: red; margin-bottom: 1rem;">{{validationError}}</span>
+                <span style="color: red; margin-bottom: 1rem">{{
+                  validationError
+                }}</span>
 
                 <!-- Confirm Password Here -->
                 <div class="col-lg-12">
                   <label>Confirm password</label>
-                  <input type="password" @keyup="validConfirmPassword" v-model="password_confirmation" required placeholder="*********" />
+                  <input
+                    type="password"
+                    @keyup="validConfirmPassword"
+                    v-model="password_confirmation"
+                    required
+                    placeholder="*********"
+                  />
                 </div>
-                <span style="color: red; margin-bottom: 1rem;">{{validationConfirmError}}</span><br>
+                <span style="color: red; margin-bottom: 1rem">{{
+                  validationConfirmError
+                }}</span
+                ><br />
 
                 <!-- Accept Privacy Policy -->
                 <div class="col-lg-12 accept-terms">
@@ -81,8 +109,17 @@
 
                 <!-- Submit Button Here-->
                 <div class="col-lg-12 signup-btn-div text-center mb-3">
-                  <input v-if="$wait.is('processing')" value="Signing up..." class="submit-form text-center mb-3" >
-                  <input v-else type="submit" value="Sign Up" class="submit-form" />
+                  <input
+                    v-if="$wait.is('processing')"
+                    value="Signing up..."
+                    class="submit-form text-center mb-3"
+                  />
+                  <input
+                    v-else
+                    type="submit"
+                    value="Sign Up"
+                    class="submit-form"
+                  />
                 </div>
               </div>
 
@@ -108,187 +145,192 @@
   <MainFooter />
 </template>
 <script>
-import MainHeader from './MainHeader.vue'
-import MainFooter from './MainFooter.vue'
-import axios from 'axios'
+import MainHeader from "./MainHeader.vue";
+import MainFooter from "./MainFooter.vue";
+import axios from "axios";
 
 export default {
-    components: { MainHeader, MainFooter},
+  components: { MainHeader, MainFooter },
 
-    data() {
-        return {
-            register:{
-                firstname: "", 
-                lastname: "", 
-                username: "", 
-                email: "", 
-                phone: "", 
-                password: ""
-            },
-            password_confirmation: "",
-            validationConfirmError: '',
-            validationError: '',
-        }
+  data() {
+    return {
+      register: {
+        firstname: "",
+        lastname: "",
+        username: "",
+        email: "",
+        phone: "",
+        password: "",
+      },
+      password_confirmation: "",
+      validationConfirmError: "",
+      validationError: "",
+    };
+  },
+
+  methods: {
+    containsUppercase: function (password) {
+      return /[A-Z]/.test(password);
+    },
+    containsLowercase: function (password) {
+      return /[a-z]/.test(password);
+    },
+    containsNumber: function (password) {
+      return /[0-9]/.test(password);
+    },
+    containsSpecial: function (password) {
+      return /[#?!@$%^&*-]/.test(password);
     },
 
-    methods: {
-        containsUppercase: function(password) {
-            return /[A-Z]/.test(password)
-        },
-        containsLowercase: function(password) {
-            return /[a-z]/.test(password)
-        },
-        containsNumber: function(password) {
-            return /[0-9]/.test(password)
-        },
-        containsSpecial: function(password) {
-            return /[#?!@$%^&*-]/.test(password)
-        },
+    validPassword() {
+      if (!this.containsUppercase(this.register.password)) {
+        this.validationError =
+          "Password should contain atleast one upper letter.";
+        return false;
+      } else if (!this.containsLowercase(this.register.password)) {
+        this.validationError =
+          "Password should contain atleast one lowercase letter.";
+        return false;
+      } else if (!this.containsNumber(this.register.password)) {
+        this.validationError = "Password should contain atleast one number.";
+        return false;
+      } else if (!this.containsSpecial(this.register.password)) {
+        this.validationError =
+          "Password should contain atleast one special character.";
+        return false;
+      } else {
+        this.validationError = "";
+        return true;
+      }
+    },
 
-        validPassword(){
-            if (!this.containsUppercase(this.register.password)) {
-                this.validationError = "Password should contain atleast one upper letter."
-                return false
-            }
-            else if (!this.containsLowercase(this.register.password)) {
-                this.validationError = "Password should contain atleast one lowercase letter.";
-                return false
-            }
-            else if (!this.containsNumber(this.register.password)) {
-                this.validationError = "Password should contain atleast one number."
-                return false
-            }
-            else if (!this.containsSpecial(this.register.password)) {
-                this.validationError = "Password should contain atleast one special character."
-                return false
-            }
-            else{
-                this.validationError = ''
-                return true
-            }
+    validConfirmPassword() {
+      if (!this.containsUppercase(this.password_confirmation)) {
+        this.validationConfirmError =
+          "Password should contain atleast one upper letter.";
+        return false;
+      } else if (!this.containsLowercase(this.password_confirmation)) {
+        this.validationConfirmError =
+          "Password should contain atleast one lowercase letter.";
+        return false;
+      } else if (!this.containsNumber(this.password_confirmation)) {
+        this.validationConfirmError =
+          "Password should contain atleast one number.";
+        return false;
+      } else if (!this.containsSpecial(this.password_confirmation)) {
+        this.validationConfirmError =
+          "Password should contain atleast one special character.";
+        return false;
+      } else {
+        this.validationConfirmError = "";
+        return true;
+      }
+    },
 
-        },
+    makeid(length) {
+      let result = "";
+      const characters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      const charactersLength = characters.length;
+      for (var i = 0; i < length; i++) {
+        result += characters.charAt(
+          Math.floor(Math.random() * charactersLength)
+        );
+      }
+      return result;
+    },
 
-        validConfirmPassword(){
-            if (!this.containsUppercase(this.password_confirmation)) {
-                this.validationConfirmError = "Password should contain atleast one upper letter."
-                return false
-            }
-            else if (!this.containsLowercase(this.password_confirmation)) {
-                this.validationConfirmError = "Password should contain atleast one lowercase letter.";
-                return false
-            }
-            else if (!this.containsNumber(this.password_confirmation)) {
-                this.validationConfirmError = "Password should contain atleast one number."
-                return false
-            }
-            else if (!this.containsSpecial(this.password_confirmation)) {
-                this.validationConfirmError = "Password should contain atleast one special character."
-                return false
-            }
-            else{
-                this.validationConfirmError = ''
-                return true
-            }
+    async init_register() {
+      this.$wait.start("processing");
+      this.$Progress.start();
 
-        },
+      if (
+        this.register.firstname == "" ||
+        this.register.lastname == "" ||
+        this.register.username == "" ||
+        this.register.email == "" ||
+        this.register.phone == "" ||
+        this.register.password == "" ||
+        this.validPassword() == false
+      ) {
+        this.$notify({
+          type: "error",
+          title: "Please enter all the needed fields.",
+          duration: 5000,
+          speed: 1000,
+        });
+        this.$wait.end("processing");
+        this.$Progress.fail();
+        return;
+      } else if (this.password_confirmation !== this.register.password) {
+        this.$notify({
+          type: "error",
+          title: "Confirm password doesn't match with actual password.",
+          duration: 5000,
+          speed: 1000,
+        });
+        this.$wait.end("processing");
+        this.$Progress.fail();
+        return;
+      } else {
+        await axios
+          .post("auth/register", {
+            firstname: this.register.firstname,
+            lastname: this.register.lastname,
+            username: this.register.username,
+            email: this.register.email,
+            phone: this.register.phone,
+            password: this.register.password,
+          })
+          .then((response) => {
+            this.$notify({
+              type: "success",
+              title: response.data.message,
+              duration: 5000,
+              speed: 1000,
+            });
+            this.$wait.end("processing");
+            this.$Progress.finish();
 
-        makeid(length) {
-          let result = '';
-          const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-          const charactersLength = characters.length;
-          for (var i = 0; i < length; i++) {
-            result += characters.charAt(Math.floor(Math.random() *
-                charactersLength));
-          }
-          return result;
-        },
-
-        async init_register() {
-          this.$wait.start("processing");
-          this.$Progress.start();
-
-          if (this.register.firstname == '' || this.register.lastname == '' || this.register.username == '' || this.register.email == ''
-              || this.register.phone == '' || this.register.password == '' || this.validPassword() == false) {
-              this.$notify({
-                  type: "error",
-                  title: "Please enter all the needed fields.",
-                  duration: 5000,
-                  speed: 1000,
-              });
-              this.$wait.end("processing");
-              this.$Progress.fail();
-              return
-          }
-
-          else if (this.password_confirmation !== this.register.password) {
-              this.$notify({
-                  type: "error",
-                  title: "Confirm password doesn't match with actual password.",
-                  duration: 5000,
-                  speed: 1000,
-              });
-              this.$wait.end("processing");
-              this.$Progress.fail();
-              return
-          }
-
-          else{
-            await axios.post('auth/register', {
-              firstname: this.register.firstname, 
-              lastname: this.register.lastname, 
-              username: this.register.username,
-              email: this.register.email, 
-              phone: this.register.phone, 
-              password: this.register.password
-            })
-            .then(
-              response => {
+            // go to verification page
+            setTimeout(() => {
+              this.$router.push(
+                "/email_verification/" +
+                  this.makeid(200) +
+                  "/" +
+                  this.register.email
+              );
+            }, 1500);
+          })
+          .catch((error) => {
+            if (error.response.status == 422) {
+              for (let i in error.response.data.error) {
                 this.$notify({
-                    type: "success",
-                    title: response.data.message,
-                    duration: 5000,
-                    speed: 1000,
+                  type: "error",
+                  title: error.response.data.error[i][0],
+                  duration: 5000,
+                  speed: 1000,
                 });
-                this.$wait.end("processing");
-                this.$Progress.finish();
-
-                // go to verification page
-                setTimeout(() => {
-                  this.$router.push('/email_verification/' + this.makeid(200) + "/" + this.register.email)
-                }, 1500);
               }
-            ).catch (
-              error => {
-                if (error.response.status == 422) {
-                  for (let i in error.response.data.error) {
-                      this.$notify({
-                          type: "error",
-                          title: error.response.data.error[i][0],
-                          duration: 5000,
-                          speed: 1000,
-                      });
-                  } 
-                  this.$wait.end("processing");
-                  this.$Progress.fail();
-                } else {
-                  this.$notify({
-                      type: "error",
-                      title: error.response.data.message,
-                      duration: 5000,
-                      speed: 1000,
-                  });
-                  this.$wait.end("processing");
-                  this.$Progress.fail();
-                }
-              }
-            )
-          }
-        }
+              this.$wait.end("processing");
+              this.$Progress.fail();
+            } else {
+              this.$notify({
+                type: "error",
+                title: error.response.data.message,
+                duration: 5000,
+                speed: 1000,
+              });
+              this.$wait.end("processing");
+              this.$Progress.fail();
+            }
+          });
+      }
     },
+  },
 
-    mounted() {
-        window.scrollTo(0,0)
-    },
-}
+  mounted() {
+    window.scrollTo(0, 0);
+  },
+};
 </script>

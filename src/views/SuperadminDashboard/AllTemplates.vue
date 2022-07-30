@@ -115,7 +115,9 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content viewCardModal">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">ID Card Template</h5>
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            ID Card Template
+          </h5>
           <button
             type="button"
             class="close"
@@ -127,30 +129,63 @@
         </div>
         <div class="modal-body">
           <div class="id-card-wrapper">
-            <div class="id-card"
-            :style="{'background-color': this.selectedTemplate.background_color}">
-                <div class="id-card-header">
-                    <div class="header">
-                        <img v-bind:src="this.baseURL + this.selectedTemplate.cardLogo"> Organization Name
-                    </div>
+            <div
+              class="id-card"
+              :style="{
+                'background-color': this.selectedTemplate.background_color,
+              }"
+            >
+              <div class="id-card-header">
+                <div class="header">
+                  <img
+                    v-bind:src="this.baseURL + this.selectedTemplate.cardLogo"
+                  />
+                  Organization Name
                 </div>
-                <div class="profile-row">
-                    <div class="dp">
-                    <div class="dp-arc-outer"></div>
-                    <div class="dp-arc-inner"></div>
-                    <img src="https://via.placeholder.com/420x420" />
-                    </div>
-                    <div class="desc">
-                        <div :style="{'color': this.selectedTemplate.text_color + '!important'}">
-                            <span>Holder's Name</span> <p :style="{'font-size': '1.1rem !important', 'color': this.selectedTemplate.text_color + '!important'}"></p>
-                            <span>Job Role</span><p :style="{'color': this.selectedTemplate.text_color + '!important'}"></p>
-                            <span>ID No</span><p :style="{'color': this.selectedTemplate.text_color + '!important'}"></p>
-                        </div>
-                    </div>
+              </div>
+              <div class="profile-row">
+                <div class="dp">
+                  <div class="dp-arc-outer"></div>
+                  <div class="dp-arc-inner"></div>
+                  <img src="https://via.placeholder.com/420x420" />
                 </div>
-                <div class="id-card-footer">
-                    <p :style="{'color': this.selectedTemplate.text_color + '!important'}">Join Date: </p>
+                <div class="desc">
+                  <div
+                    :style="{
+                      color: this.selectedTemplate.text_color + '!important',
+                    }"
+                  >
+                    <span>Holder's Name</span>
+                    <p
+                      :style="{
+                        'font-size': '1.1rem !important',
+                        color: this.selectedTemplate.text_color + '!important',
+                      }"
+                    ></p>
+                    <span>Job Role</span>
+                    <p
+                      :style="{
+                        color: this.selectedTemplate.text_color + '!important',
+                      }"
+                    ></p>
+                    <span>ID No</span>
+                    <p
+                      :style="{
+                        color: this.selectedTemplate.text_color + '!important',
+                      }"
+                    ></p>
+                  </div>
                 </div>
+              </div>
+              <div class="id-card-footer">
+                <p
+                  :style="{
+                    color: this.selectedTemplate.text_color + '!important',
+                  }"
+                >
+                  Join Date:
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -203,7 +238,11 @@ export default {
 
     loadMyTemplate() {
       axios
-        .get("admin/all/templates")
+        .get("admin/all/templates", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
         .then((response) => {
           this.prepPagination(response.data);
           this.template = response.data.data;
@@ -241,33 +280,33 @@ export default {
   max-width: 30em;
   margin: auto;
   /* background-color: red; */
- }
+}
 
 .id-card-header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    max-width: 30em;
-    height: 4em;
-    width: 100%;
-    margin: auto;
-    color: #fff;
-    padding: 1em;
-    background-color: #8604e2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 30em;
+  height: 4em;
+  width: 100%;
+  margin: auto;
+  color: #fff;
+  padding: 1em;
+  background-color: #8604e2;
 }
 
 .id-card-header .header {
-    position: absolute;
-    right: 20px;
-    font-size: 1.2rem
+  position: absolute;
+  right: 20px;
+  font-size: 1.2rem;
 }
 .id-card-header .header img {
-    width: 30px;
-    margin-right: 1rem
+  width: 30px;
+  margin-right: 1rem;
 }
 .profile-row {
   display: flex;
-  align-items: center
+  align-items: center;
 }
 .profile-row .dp {
   flex-basis: 30.3%;
@@ -289,32 +328,32 @@ export default {
 }
 
 .profile-row .desc span {
-    font-size: 10px;
+  font-size: 10px;
 }
 
 .profile-row .desc {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   color: #000;
   /* letter-spacing: 1px; */
 }
 
 .profile-row .desc p {
-    font-weight: bolder;
+  font-weight: bolder;
 }
 
 .id-card-footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    max-width: 30em;
-    height: 1.5em;
-    width: 100%;
-    margin: auto;
-    color: #fff;
-    background-color: #8604e2;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  max-width: 30em;
+  height: 1.5em;
+  width: 100%;
+  margin: auto;
+  color: #fff;
+  background-color: #8604e2;
 }
 .id-card-footer p {
-    position: absolute;
-    right: 10px;
+  position: absolute;
+  right: 10px;
 }
 </style>

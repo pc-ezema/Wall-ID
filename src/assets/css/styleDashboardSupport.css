@@ -1,303 +1,297 @@
-.resultDivDisplay{
-    width: 100%;
-    display: block;
-    background-color: rgb(255, 255, 255);
-    border-radius: 10px;
-    padding: 10px 20px;
+.resultDivDisplay {
+  width: 100%;
+  display: block;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  padding: 10px 20px;
 }
-.resultDivDisplay .resultPicture{
+.resultDivDisplay .resultPicture {
+  float: left;
+  width: 20%;
+}
+.resultDivDisplay .resultPicture .pictureDiv {
+  width: 130px;
+  height: 130px;
+}
+.resultDivDisplay .resultPicture .pictureDiv img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 900px;
+  align-items: center;
+}
+.resultDivDisplay .resultContent {
+  width: 80%;
+  float: left;
+}
+.resultDivDisplay .clear {
+  clear: both;
+}
+.resultDivDisplay p {
+  color: rgb(71, 71, 71);
+  font-size: 15px;
+  font-weight: 400;
+}
+.resultDivDisplay h5 {
+  color: #000;
+  font-size: 16px;
+  font-weight: 600;
+}
+@media (max-width: 1080px) {
+  .resultDivDisplay .resultPicture .pictureDiv {
+    width: 100px;
+    height: 100px;
+  }
+}
+@media (max-width: 570px) {
+  .resultDivDisplay .resultPicture {
     float: left;
-    width: 20%;
-}
-.resultDivDisplay .resultPicture .pictureDiv{
-    width: 130px;
-    height: 130px;
-}
-.resultDivDisplay .resultPicture .pictureDiv img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 900px;
-    align-items: center;
-}
-.resultDivDisplay .resultContent{
-    width: 80%;
+    width: 30%;
+  }
+  .resultDivDisplay .resultContent {
+    width: 70%;
     float: left;
+  }
 }
-.resultDivDisplay .clear{
-    clear: both;
-}
-.resultDivDisplay p{
-    color: rgb(71, 71, 71);
-    font-size: 15px;
-    font-weight: 400;
-}
-.resultDivDisplay h5{
-    color: #000;
-    font-size: 16px;
-    font-weight: 600;
-}
-@media(max-width: 1080px){
-    .resultDivDisplay .resultPicture .pictureDiv{
-        width: 100px;
-        height: 100px;
-    }
-}
-@media(max-width: 570px){
-    .resultDivDisplay .resultPicture{
-        float: left;
-        width: 30%;
-    }
-    .resultDivDisplay .resultContent{
-        width: 70%;
-        float: left;
-    }
-}
-@media(max-width: 440px){
-    .resultDivDisplay .resultPicture .pictureDiv{
-        width: 70px;
-        height: 70px;
-    }
-    .resultDivDisplay .resultPicture{
-        padding-top: 5%;
-    }
-    .resultDivDisplay p{
-        font-size: 13px;
-    }
-    .resultDivDisplay h5{
-        font-size: 14px;
-    }
-}
-@media(max-width: 360px){
-    .resultDivDisplay{
-        padding: 10px 5px;
-    }
-}
-
-.showOrgDtl .orgPicture{
-    width: 130px;
-    height: 130px;
-    margin: auto;
-}
-.showOrgDtl .orgPicture img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 900px;
-}
-.showOrgDtl .txtCnt{
-    margin-bottom: 25px;
-}
-.showOrgDtl .txtCnt h5{
-    font-weight: 500;
-    font-size: 18px;
-    color: #000;
-    line-height: 1.1 !important;
-}
-.showOrgDtl .txtCnt p{
-    font-weight: 400;
+@media (max-width: 440px) {
+  .resultDivDisplay .resultPicture .pictureDiv {
+    width: 70px;
+    height: 70px;
+  }
+  .resultDivDisplay .resultPicture {
+    padding-top: 5%;
+  }
+  .resultDivDisplay p {
+    font-size: 13px;
+  }
+  .resultDivDisplay h5 {
     font-size: 14px;
-    color: #000;
+  }
 }
-.showOrgDtl button{
-    background-image: linear-gradient(180deg, #8604e2, #ac38ff);
-    padding: 12px 5px;
-    font-size: 16px;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    width: 100%;
+@media (max-width: 360px) {
+  .resultDivDisplay {
+    padding: 10px 5px;
+  }
 }
 
-.selectRoles select{
-    width: 100%;
-    display: block;
-    padding: 10px 8px;
-    border: 1px solid #8604e2;
-    border-radius: 5px;
-    -moz-appearance: none; 
-	-webkit-appearance: none; 
-	appearance: none;
-    background-color: #fff;
-    float: right;
+.showOrgDtl .orgPicture {
+  width: 130px;
+  height: 130px;
+  margin: auto;
 }
-.selectRoles span, .selectRoles label{
-    display: block;
+.showOrgDtl .orgPicture img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 900px;
 }
-
-.a-approved{
-    background-color: rgb(26, 101, 26);
-    color: #fff;
-    border-radius: 10px;
-    padding: 5px 5px;
-    font-size: 14px;
+.showOrgDtl .txtCnt {
+  margin-bottom: 25px;
 }
-.a-pending{
-    background-color: rgb(252, 227, 8);
-    color: #000;
-    border-radius: 10px;
-    padding: 5px 5px;
-    font-size: 14px;
+.showOrgDtl .txtCnt h5 {
+  font-weight: 500;
+  font-size: 18px;
+  color: #000;
+  line-height: 1.1 !important;
 }
-.a-declined{
-    background-color: rgb(152, 0, 0);
-    color: #fff;
-    border-radius: 10px;
-    padding: 5px 5px;
-    font-size: 14px;
+.showOrgDtl .txtCnt p {
+  font-weight: 400;
+  font-size: 14px;
+  color: #000;
+}
+.showOrgDtl button {
+  background-image: linear-gradient(180deg, #8604e2, #ac38ff);
+  padding: 12px 5px;
+  font-size: 16px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
 }
 
-
-.cardTemplate .cardLogo img{
-    width: 30px;
-    padding-bottom: 20px;
+.selectRoles select {
+  width: 100%;
+  display: block;
+  padding: 10px 8px;
+  border: 1px solid #8604e2;
+  border-radius: 5px;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  float: right;
 }
-.cardTemplate .cardContent{
-    width: 80%;
-    float: left;
-}
-.cardTemplate .cardImage{
-    width: 20%;
-    float: left;
-}
-.cardTemplate .cardImage img{
-    width: 60px;
-    margin-top: 15px;
-}
-.cardTemplate .clear{
-    clear: both;
+.selectRoles span,
+.selectRoles label {
+  display: block;
 }
 
-
-
-.formCardTemp label{
-    font-size: 14px;
-    font-weight: 500;
-    padding-bottom: 10px;
-    display: block;
-    color: #000;
+.a-approved {
+  background-color: rgb(26, 101, 26);
+  color: #fff;
+  border-radius: 10px;
+  padding: 5px 5px;
+  font-size: 14px;
 }
-.formCardTemp .inputColor{
-    font-size: 16px;
-    font-weight: 500;
-    padding: 5px 8px 5px 50%;
-    width: 100%;
-    height: 40px;
-    display: block;
-    color: #000;
-    border: 1px solid #8604e2;
-    border-radius: 5px;
-    background-color: #fff;
+.a-pending {
+  background-color: rgb(252, 227, 8);
+  color: #000;
+  border-radius: 10px;
+  padding: 5px 5px;
+  font-size: 14px;
 }
-.formCardTemp .input{
-    font-size: 15px;
-    font-weight: 500;
-    padding: 8px 8px;
-    width: 100%;
-    display: block;
-    color: #000;
-    border: 1px solid #8604e2;
-    border-radius: 5px;
-    background-color: #fff;
-}
-.formCardTemp button{
-    background-image: linear-gradient(180deg, #8604e2, #ac38ff);
-    padding: 12px 5px;
-    font-size: 16px;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    width: 100%;
-}
-.viewCardBtn{
-    background-color: #8604e2;
-    color: #fff;
-    padding: 6px 10px;
-    border-radius: 5px;
-    border: none;
-}
-.modalCardTemplate{
-    margin: auto;
+.a-declined {
+  background-color: rgb(152, 0, 0);
+  color: #fff;
+  border-radius: 10px;
+  padding: 5px 5px;
+  font-size: 14px;
 }
 
-
-.viewCardModal .modal-title{
-    color: #000 !important;
-    font-size: 17px !important;
-    font-weight: 600 !important;
+.cardTemplate .cardLogo img {
+  width: 30px;
+  padding-bottom: 20px;
 }
-.viewCardModal button{
-    background-color: #00000000 !important;
-    border: none;
+.cardTemplate .cardContent {
+  width: 80%;
+  float: left;
 }
-.viewCardModal button span{
-    color: #000 !important;
+.cardTemplate .cardImage {
+  width: 20%;
+  float: left;
 }
-.editTemplateBtn{
-    background: #000;
-    color: #fff;
-    padding: 8px 15px;
-    border-radius: 5px;
+.cardTemplate .cardImage img {
+  width: 60px;
+  margin-top: 15px;
+}
+.cardTemplate .clear {
+  clear: both;
 }
 
+.formCardTemp label {
+  font-size: 14px;
+  font-weight: 500;
+  padding-bottom: 10px;
+  display: block;
+  color: #000;
+}
+.formCardTemp .inputColor {
+  font-size: 16px;
+  font-weight: 500;
+  padding: 5px 8px 5px 50%;
+  width: 100%;
+  height: 40px;
+  display: block;
+  color: #000;
+  border: 1px solid #8604e2;
+  border-radius: 5px;
+  background-color: #fff;
+}
+.formCardTemp .input {
+  font-size: 15px;
+  font-weight: 500;
+  padding: 8px 8px;
+  width: 100%;
+  display: block;
+  color: #000;
+  border: 1px solid #8604e2;
+  border-radius: 5px;
+  background-color: #fff;
+}
+.formCardTemp button {
+  background-image: linear-gradient(180deg, #8604e2, #ac38ff);
+  padding: 12px 5px;
+  font-size: 16px;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+}
+.viewCardBtn {
+  background-color: #8604e2;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 5px;
+  border: none;
+}
+.modalCardTemplate {
+  margin: auto;
+}
 
-
+.viewCardModal .modal-title {
+  color: #000 !important;
+  font-size: 17px !important;
+  font-weight: 600 !important;
+}
+.viewCardModal button {
+  background-color: #00000000 !important;
+  border: none;
+}
+.viewCardModal button span {
+  color: #000 !important;
+}
+.editTemplateBtn {
+  background: #000;
+  color: #fff;
+  padding: 8px 15px;
+  border-radius: 5px;
+}
 
 /**************************/
 /**************************/
 /****SUPERADMIN*****/
 /*************************/
 /************************/
-.admin-box{
-    padding: 15px 10px 45px 10px;
-    border-radius: 10px;
-    box-shadow: 0px 5px 10px #bfbfbfb9;
-    width: 100%;
+.admin-box {
+  padding: 15px 10px 45px 10px;
+  border-radius: 10px;
+  box-shadow: 0px 5px 10px #bfbfbfb9;
+  width: 100%;
 }
-.admin-box h5{
-    color: #A221FC;
-    padding-left: 10px;
-    font-weight: 700 !important;
-    font-size: 17px !important;
+.admin-box h5 {
+  color: #a221fc;
+  padding-left: 10px;
+  font-weight: 700 !important;
+  font-size: 17px !important;
 }
-.admin-box p{
-    float: right;
-    font-size: 20px;
-    font-weight: 700;
-    color: #000;
-    margin-top: 10px;
+.admin-box p {
+  float: right;
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+  margin-top: 10px;
 }
-.admin-box .clear{
-    clear: right;
+.admin-box .clear {
+  clear: right;
 }
 /**************/
-.tableAdminHome{
-    background-color: #ffffff;
-    border-radius: 10px;
-    padding: 30px 20px 20px 20px !important;
+.tableAdminHome {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 30px 20px 20px 20px !important;
 }
 /***************/
-.btnCreateEvent{
-    background-color: #A221FC;
-    color: #fff;
-    width: 120px;
-    border-radius: 5px;
-    border: none;
-    padding: 10px 5px;
-    float: right;
+.btnCreateEvent {
+  background-color: #a221fc;
+  color: #fff;
+  width: 120px;
+  border-radius: 5px;
+  border: none;
+  padding: 10px 5px;
+  float: right;
 }
-.eventCategoryForm .input{
-    width: 100%;
-    padding: 10px !important;
-    border-radius: 5px !important;
-    box-shadow: none !important;
-    border: 1px solid #373737 !important;
+.eventCategoryForm .input {
+  width: 100%;
+  padding: 10px !important;
+  border-radius: 5px !important;
+  box-shadow: none !important;
+  border: 1px solid #373737 !important;
 }
-.eventCategoryForm button{
-    width: 110px;
-    padding: 10px !important;
-    border-radius: 5px;
-    border: none;
-    background-color: #8604e2 !important;
-    color: #fff;
+.eventCategoryForm button {
+  width: 110px;
+  padding: 10px !important;
+  border-radius: 5px;
+  border: none;
+  background-color: #8604e2 !important;
+  color: #fff;
 }
