@@ -61,15 +61,16 @@
                 <!-- Password Here -->
                 <div class="col-lg-12">
                   <label>Password</label>
-                  <input type="password" v-model="register.password" @keyup="validPassword" required placeholder="*********" />
+                  <input type="password" @keyup="validPassword" v-model="register.password" required placeholder="*********" />
                 </div>
-                <span style="color: red;">{{validationError}}</span>
+                <span style="color: red; margin-bottom: 1rem;">{{validationError}}</span>
 
                 <!-- Confirm Password Here -->
                 <div class="col-lg-12">
                   <label>Confirm password</label>
-                  <input type="password" v-model="password_confirmation" required placeholder="*********" />
+                  <input type="password" @keyup="validConfirmPassword" v-model="password_confirmation" required placeholder="*********" />
                 </div>
+                <span style="color: red; margin-bottom: 1rem;">{{validationConfirmError}}</span><br>
 
                 <!-- Accept Privacy Policy -->
                 <div class="col-lg-12 accept-terms">
@@ -125,7 +126,8 @@ export default {
                 password: ""
             },
             password_confirmation: "",
-            validationError: ''
+            validationConfirmError: '',
+            validationError: '',
         }
     },
 
@@ -166,6 +168,31 @@ export default {
             }
 
         },
+
+        validConfirmPassword(){
+            if (!this.containsUppercase(this.password_confirmation)) {
+                this.validationConfirmError = "Password should contain atleast one upper letter."
+                return false
+            }
+            else if (!this.containsLowercase(this.password_confirmation)) {
+                this.validationConfirmError = "Password should contain atleast one lowercase letter.";
+                return false
+            }
+            else if (!this.containsNumber(this.password_confirmation)) {
+                this.validationConfirmError = "Password should contain atleast one number."
+                return false
+            }
+            else if (!this.containsSpecial(this.password_confirmation)) {
+                this.validationConfirmError = "Password should contain atleast one special character."
+                return false
+            }
+            else{
+                this.validationConfirmError = ''
+                return true
+            }
+
+        },
+
         makeid(length) {
           let result = '';
           const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

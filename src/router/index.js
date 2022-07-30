@@ -37,6 +37,7 @@ import IndividualEventHistory from '../views/IndividualDashboard/EventHistory.vu
 import IndividualMembershipAndSubscription from '../views/IndividualDashboard/MembershipAndSubscription.vue'
 import IndividualSubscription from '../views/IndividualDashboard/Subscription.vue'
 import IndividualAddSubscriptionPlan from '../views/IndividualDashboard/AddSubscriptionPlan.vue'
+import IndividualChooseSubscriptionPlan from '../views/IndividualDashboard/ChooseSubscriptionPlan.vue'
 import IndividualMembership from '../views/IndividualDashboard/Membership.vue'
 import IndividualJoinNewOrganisation from '../views/IndividualDashboard/JoinNewOrganisation.vue'
 import IndividualChooseOrganisation from '../views/IndividualDashboard/ChooseOrganisation.vue'
@@ -346,6 +347,12 @@ const routes = [
       middleware: auth
     }
   },
+  {path: '/individual-dashboard/choose-subscription-plan/:id', name: 'IndividualAddSubscriptionChoosePlan', component: IndividualChooseSubscriptionPlan,
+  meta: {
+    title: 'Choose Subscription Plan - Individual Dashboard | WALLID',
+    middleware: auth
+  }
+},
   {path: '/individual-dashboard/memberships', name: 'IndividualMembership', component: IndividualMembership,
     meta: {
       title: 'Membership - Individual Dashboard | WALLID',

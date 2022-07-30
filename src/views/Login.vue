@@ -177,10 +177,3 @@ export default {
     }
 }
 </script>
-
-<style>
-.has_required{
-    text-decoration: line-through;
-    color:#689868;
-}
-</style>
