@@ -125,7 +125,7 @@ export default {
                     password: this.login.password
                 })
                 .then(response => {
-                    this.validationError = [];
+                    this.validationError = '';
                     this.$notify({
                         type: "success",
                         title: response.data.message,

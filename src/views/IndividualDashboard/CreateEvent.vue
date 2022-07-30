@@ -29,37 +29,42 @@
                         <h5>About the event</h5>
                    </div>
                    <div class="col-lg-11 mt-3">
-                        <form>
+                        <form @submit.prevent="createEvent" enctype="multipart/form-data">
                             <div class="row">
                                 <!--Name-->
                                 <div class="col-lg-12 mb-3">
                                     <label>Event Name</label>
                                     <input type="text" class="input" v-model="form.name" placeholder="Enter the name event">
+                                    <span style="color: red" v-if="error.name">{{error.name[0]}}</span>
                                 </div>
+                                
                                 <!--Description-->
                             <div class="col-lg-12 mb-3">
                                 <label>Description</label>
-                                <textarea cols="30" rows="4" v-model="description" class="input" placeholder="Write a little note about the event"></textarea>
+                                <textarea cols="30" rows="4" v-model="form.description" class="input" placeholder="Write a little note about the event"></textarea>
+                                <span style="color: red" v-if="error.description">{{error.description[0]}}</span>
                             </div>
                                 <!--Event type-->
                                 <div class="col-lg-6 mb-3">
-                                    <label>Event Type</label>
-                                    <select class="input">
+                                    <label>Event Category</label>
+                                    <select class="input" v-model="form.category_id">
                                         <option hidden>Choose Event Category</option>
                                         <option v-for="category in categories" :key="category.id" :value="category.id">
                                             {{category.name}}
                                         </option>
                                     </select>
+                                    <span style="color: red" v-if="error.category_id">The category field is required</span>
                                 </div>
                                 <!--Visibility-->
                                 <div class="col-lg-6 mb-3">
-                                    <label>Visibility</label>
-                                    <select class="input">
+                                    <label>Event Type</label>
+                                    <select class="input" v-model="form.type">
                                         <option hidden>Choose Event Visibility</option>
-                                        <option>Open</option>
-                                        <option>Semi-opened</option>
-                                        <option>Closed</option>
+                                        <option value="open">Open</option>
+                                        <option value="semi-open">Semi-opened</option>
+                                        <option value="close">Closed</option>
                                     </select>
+                                    <span style="color: red" v-if="error.type">The event type field is required</span>
                                 </div>
                                 <!--Add photo of event-->
                                 <div class="col-lg-12 mb-3">
@@ -71,7 +76,7 @@
                                                 <img src="" alt="">
                                             </div>
                                             <div class="controls" style="display: none;">
-                                                <input type="file" name="contact_image_1"/>
+                                                <input type="file" @change="getEventImg($event)" name="contact_image_1"/>
                                             </div>
                                         </div>
                                     </div>
@@ -84,7 +89,8 @@
                                 <!--Venue-->
                                 <div class="col-lg-12 mb-3">
                                     <label>Venue</label>
-                                    <input type="time" class="input" v-model="venue">
+                                    <input type="text" class="input" v-model="form.venue">
+                                    <span style="color: red" v-if="error.venue">{{error.venue[0]}}</span>
                                 </div>
                                 <!--Add photo of Venue-->
                                 <div class="col-lg-12 mb-3">
@@ -96,15 +102,15 @@
                                                 <img src="" alt="">
                                             </div>
                                             <div class="controls" style="display: none;">
-                                                <input type="file" name="contact_image_1"/>
+                                                <input type="file" @change="getVenueImg($event)" name="contact_image_1"/>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-12 mb-3">
+                                <!-- <div class="col-lg-12 mb-3">
                                     <label>Address</label>
                                     <textarea cols="30" rows="4" v-model="description" class="input" placeholder="Enter the address of the event"></textarea>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="row">
                                 <div class="col-lg-12 subHead">
@@ -112,60 +118,66 @@
                                 </div>
                                 <div class="col-lg-6 mb-3">
                                     <label>Time (starts)</label>
-                                    <input type="time" class="input" v-model="start_time">
+                                    <input type="time" class="input" v-model="form.start_time">
+                                    <span style="color: red" v-if="error.start_time">{{error.start_time[0]}}</span>
                                 </div>
                                 <div class="col-lg-6 mb-3">
                                     <label>Time (ends)</label>
-                                    <input type="time" class="input" v-model="end_time">
+                                    <input type="time" class="input" v-model="form.end_time">
+                                    <span style="color: red" v-if="error.end_time">{{error.end_time[0]}}</span>
                                 </div>
                                 <div class="col-lg-6 mb-3">
                                     <label>Date (starts)</label>
                                     <input type="date" class="input" v-model="form.start_date">
-                                </div>
+                                    <span style="color: red" v-if="error.start_date">{{error.start_date[0]}}</span>
+                               </div>
                                 <div class="col-lg-6 mb-3">
                                     <label>Date (ends)</label>
                                     <input type="date" class="input" v-model="form.end_date">
+                                    <span style="color: red" v-if="error.end_date">{{error.end_date[0]}}</span>
                                 </div>
                             </div>
-                            <div class="col-lg-12 mb-3">
+                            <!-- <div class="col-lg-12 mb-3">
                                 <label>Type</label>
                                 <input type="text" class="input" placeholder="Enter type" v-model="form.type">
-                            </div>
+                            </div> -->
                             <div class="row">
                                 <div class="col-lg-12 subHead">
                                     <h5>Ticket</h5>
                                 </div>
                                 <div class="col-lg-12 mb-3">
                                     <label>Accessibility</label>
-                                    <input type="radio" checked v-model="accessibility" value="free"> <span class="radioSpan">Free</span>
-                                    <input type="radio" v-model="accessibility" value="paid"> <span class="radioSpan">Paid</span>
+                                    <input type="radio" name="isFree" checked v-model="form.isFree" value="true"> <span class="radioSpan">Free</span>
+                                    <input type="radio" name="isFree" v-model="form.isFree" value="false"> <span class="radioSpan">Paid</span>
                                 </div>
                                 <div class="col-lg-12 mb-3">
                                     <label>Number of tickets</label>
-                                    <input type="number" class="input" placeholder="Enter no of tickets">
+                                    <input v-model="form.tickets" type="number" class="input" placeholder="Enter no of tickets">
+                                    <span style="color: red" v-if="error.tickets">The ticket number field is required</span>
                                 </div>
+
                             </div>
-                            <div class="row" v-if="accessibility === 'paid'">
+                            <div class="row" v-if="form.isFree == 'false'">
                                 <div class="col-lg-12 subHead">
                                     <h5>Ticket Categories</h5>
                                 </div>
                                 <div class="col-lg-12 mb-3">
                                     <label>Price Type</label>
-                                    <input type="radio" checked v-model="priceType" value="single"> <span class="radioSpan">Single</span>
-                                    <input type="radio" v-model="priceType" value="multiple"> <span class="radioSpan">Multiple</span>
+                                    <input type="radio" name="priceType"  v-model="form.pricing" value="single"> <span class="radioSpan">Single</span>
+                                    <input type="radio" name="priceType" v-model="form.pricing" value="multiple"> <span class="radioSpan">Multiple</span>
                                 </div>
-                                <div v-if="priceType === 'multiple'">
+                                <div v-if="form.pricing === 'multiple'">
                                     <div class="row" 
                                         v-for="(section, index) in form.ticketCategories"
                                         v-bind:key="'S' + index"
                                         :index="index">
                                         <div class="col-lg-6 mb-3">
-                                            <label>Category Name</label>
-                                            <input type="number" class="input" placeholder="Enter no of tickets">
+                                            <label>Ticket Name</label>
+                                            <input type="text" class="input" v-model="form.ticketCategories[index].name" placeholder="Enter ticket name">
                                         </div>
                                         <div class="col-lg-6 mb-3">
                                             <label>Price</label>
-                                            <input type="number" class="input" placeholder="Enter no of tickets">
+                                            <input type="number" class="input" v-model="form.ticketCategories[index].price" placeholder="Enter price of ticket">
                                         </div>
                                     </div>
                                     <div>
@@ -189,7 +201,7 @@
                                         <div class="col-lg-6 mb-3">
                                             <!--          Remove Svg Icon-->
                                             <svg
-                                                v-show="phoneNumbers.length > 1"
+                                                
                                                 @click="removeField(index, form.ticketCategories)"
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 viewBox="0 0 24 24"
@@ -208,15 +220,20 @@
                                 </div>
                                 <div v-else>
                                     <div class="col-lg-12 mb-3">
-                                        <label>Event Ticket Price</label>
-                                        <input type="number" class="input" placeholder="Enter no of tickets">
+                                        <div class="row">
+                                            <div class="col-lg-6 mb-3">
+                                                <label>Price</label>
+                                                <input type="number" v-model="form.price" class="input" placeholder="Enter price of ticket">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row justify-content-center mt-2">
                                 <!--Button-->
                                 <div class="col-lg-3 text-center mb-3">
-                                    <button type="submit" class="button">Create Event</button>
+                                    <button v-if="$wait.is('processing')" disabled type="submit" class="button">Creating Event...</button>
+                                    <button v-else type="submit" class="button">Create Event</button>
                                 </div>
                             </div>
                         </form>
@@ -259,14 +276,14 @@ export default {
                 end_date: "",
                 start_time: "",
                 end_time: "",
-                price: 0,
                 tickets: "",
                 description: "",
-                isFree: false,
+                isFree: true,
+                price: 0,
                 pricing: "",
-                image: "",
+                image: null,
                 category_id: "",
-                venue_image: "",
+                venue_image: null,
                 ticketCategories: [
                     {
                         name: "",
@@ -274,16 +291,106 @@ export default {
                     },
                 ],
             },
+            error: '',
         };
     },
 
     methods: {
         addField(value, fieldType) {
-            fieldType.push({ value: "" });
+            fieldType.push({
+                        name: "",
+                        price: 0,
+                    });
         },
 
         removeField(index, fieldType) {
             fieldType.splice(index, 1);
+        },
+
+        getEventImg(e){
+            //this.form.image = event.target.files[0]
+            let file = e.target.files[0];
+                let reader = new FileReader();  
+
+            if(file['size'] < 2111775)
+            {
+                reader.onloadend = (file) => {
+                //console.log('RESULT', reader.result)
+                 this.form.image = reader.result;
+                }              
+                 reader.readAsDataURL(file);
+            }else{
+                alert('File size can not be bigger than 2 MB')
+            }
+        },
+        getVenueImg(e){
+            let file = e.target.files[0];
+                let reader = new FileReader();  
+
+            if(file['size'] < 2111775)
+            {
+                reader.onloadend = (file) => {
+                //console.log('RESULT', reader.result)
+                 this.form.venue_image = reader.result;
+                }              
+                 reader.readAsDataURL(file);
+            }else{
+                alert('File size can not be bigger than 2 MB')
+            }
+        },
+
+        async createEvent(){
+            //console.log(this.form.ticketCategories)
+            const fd = new FormData();
+            fd.append('name', this.form.name)
+            fd.append('type', this.form.type)
+            fd.append('venue', this.form.venue)
+            fd.append('start_date', this.form.start_date)
+            fd.append('end_date', this.form.end_date)
+            fd.append('start_time', this.form.start_time)
+            fd.append('end_time', this.form.end_time)
+            fd.append('price', this.form.price)
+            fd.append('tickets', this.form.tickets)
+            fd.append('description', this.form.description)
+            fd.append('isFree', this.form.isFree)
+            fd.append('pricing', this.form.pricing)
+            fd.append('image', this.form.image)
+            fd.append('category_id', this.form.category_id)
+            fd.append('venue_image', this.form.venue_image)
+            fd.append('ticketCategories', this.form.ticketCategories)
+
+            this.$Progress.start();
+            this.$wait.start("processing");
+            axios.post('events', fd, {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            })
+            .then(res => {
+                this.$wait.end("processing");
+                this.$Progress.finish();
+                this.$notify({
+                    type: "success",
+                    title: res.data.message,
+                    duration: 5000,
+                    speed: 1000,
+                });
+                setTimeout(() => {
+                    this.$router.push('/individual-dashboard/event-gallery');
+                }, 1200);
+            })
+            .catch(err => {
+                console.log(err.response.data)
+                this.error = err.response.data.error
+                this.$notify({
+                    type: "error",
+                    title: err.response.data.message,
+                    duration: 5000,
+                    speed: 1000,
+                });
+                this.$wait.end("processing");
+                this.$Progress.fail();
+            })
         },
 
         loadAllEventCategory() {
