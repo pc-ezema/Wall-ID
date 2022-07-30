@@ -55,14 +55,15 @@
                 <!-- Telephone Number Here -->
                 <div class="col-lg-12">
                   <label>Telephone number</label>
-                  <input type="tel" v-model="register.phone" required placeholder="Enter phone number" />
+                  <input type="tel" v-model="register.phone" @keyup="validatePass" required placeholder="Enter phone number" />
                 </div>
 
                 <!-- Password Here -->
                 <div class="col-lg-12">
                   <label>Password</label>
-                  <input type="password" v-model="register.password" required placeholder="*********" />
+                  <input type="password" v-model="register.password" @keyup="validPassword" required placeholder="*********" />
                 </div>
+                <span style="color: red;">{{validationError}}</span>
 
                 <!-- Confirm Password Here -->
                 <div class="col-lg-12">
@@ -124,10 +125,47 @@ export default {
                 password: ""
             },
             password_confirmation: "",
+            validationError: ''
         }
     },
 
     methods: {
+        containsUppercase: function(password) {
+            return /[A-Z]/.test(password)
+        },
+        containsLowercase: function(password) {
+            return /[a-z]/.test(password)
+        },
+        containsNumber: function(password) {
+            return /[0-9]/.test(password)
+        },
+        containsSpecial: function(password) {
+            return /[#?!@$%^&*-]/.test(password)
+        },
+
+        validPassword(){
+            if (!this.containsUppercase(this.register.password)) {
+                this.validationError = "Password should contain atleast one upper letter."
+                return false
+            }
+            else if (!this.containsLowercase(this.register.password)) {
+                this.validationError = "Password should contain atleast one lowercase letter.";
+                return false
+            }
+            else if (!this.containsNumber(this.register.password)) {
+                this.validationError = "Password should contain atleast one number."
+                return false
+            }
+            else if (!this.containsSpecial(this.register.password)) {
+                this.validationError = "Password should contain atleast one special character."
+                return false
+            }
+            else{
+                this.validationError = ''
+                return true
+            }
+
+        },
         makeid(length) {
           let result = '';
           const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -144,7 +182,7 @@ export default {
           this.$Progress.start();
 
           if (this.register.firstname == '' || this.register.lastname == '' || this.register.username == '' || this.register.email == ''
-              || this.register.phone == '' || this.register.password == '') {
+              || this.register.phone == '' || this.register.password == '' || this.validPassword() == false) {
               this.$notify({
                   type: "error",
                   title: "Please enter all the needed fields.",
@@ -156,7 +194,7 @@ export default {
               return
           }
 
-          if (this.password_confirmation !== this.register.password) {
+          else if (this.password_confirmation !== this.register.password) {
               this.$notify({
                   type: "error",
                   title: "Confirm password doesn't match with actual password.",
@@ -168,55 +206,57 @@ export default {
               return
           }
 
-          await axios.post('auth/register', {
+          else{
+            await axios.post('auth/register', {
               firstname: this.register.firstname, 
               lastname: this.register.lastname, 
               username: this.register.username,
               email: this.register.email, 
               phone: this.register.phone, 
               password: this.register.password
-          })
-          .then(
-            response => {
-              this.$notify({
-                  type: "success",
-                  title: response.data.message,
-                  duration: 5000,
-                  speed: 1000,
-              });
-              this.$wait.end("processing");
-              this.$Progress.finish();
-
-              // go to verification page
-              setTimeout(() => {
-                this.$router.push('/email_verification/' + this.makeid(200) + "/" + this.register.email)
-              }, 1500);
-            }
-          ).catch (
-            error => {
-              if (error.response.status == 422) {
-                for (let i in error.response.data.error) {
-                    this.$notify({
-                        type: "error",
-                        title: error.response.data.error[i][0],
-                        duration: 5000,
-                        speed: 1000,
-                    });
-                } 
-                this.$wait.end("processing");
-                this.$Progress.fail();
-              } else {
+            })
+            .then(
+              response => {
                 this.$notify({
-                    type: "error",
-                    title: error.response.data.message,
+                    type: "success",
+                    title: response.data.message,
                     duration: 5000,
                     speed: 1000,
                 });
                 this.$wait.end("processing");
-                this.$Progress.fail();
+                this.$Progress.finish();
+
+                // go to verification page
+                setTimeout(() => {
+                  this.$router.push('/email_verification/' + this.makeid(200) + "/" + this.register.email)
+                }, 1500);
               }
-            }
-          )
+            ).catch (
+              error => {
+                if (error.response.status == 422) {
+                  for (let i in error.response.data.error) {
+                      this.$notify({
+                          type: "error",
+                          title: error.response.data.error[i][0],
+                          duration: 5000,
+                          speed: 1000,
+                      });
+                  } 
+                  this.$wait.end("processing");
+                  this.$Progress.fail();
+                } else {
+                  this.$notify({
+                      type: "error",
+                      title: error.response.data.message,
+                      duration: 5000,
+                      speed: 1000,
+                  });
+                  this.$wait.end("processing");
+                  this.$Progress.fail();
+                }
+              }
+            )
+          }
         }
     },
 
