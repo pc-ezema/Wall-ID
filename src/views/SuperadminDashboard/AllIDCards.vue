@@ -81,11 +81,13 @@
                               View Card
                             </button>
                           </td>
-                          <td>{{row.created_by_organization.name}}</td>
+                          <td>{{ row.created_by_organization.name }}</td>
                           <td>
                             {{ new Date(row.created_at).toLocaleString() }}
                           </td>
-                          <td><a class="a-approved">{{row.status}}</a></td>
+                          <td>
+                            <a class="a-approved">{{ row.status }}</a>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -131,30 +133,70 @@
         </div>
         <div class="modal-body">
           <div class="id-card-wrapper">
-            <div class="id-card"
-            :style="{'background-color': this.selectedCard.background_color}">
-                <div class="id-card-header">
-                    <div class="header">
-                        <img v-bind:src="this.baseURL + this.selectedCard.cardLogo">{{this.selectedCard.organization}}
-                    </div>
+            <div
+              class="id-card"
+              :style="{
+                'background-color': this.selectedCard.background_color,
+              }"
+            >
+              <div class="id-card-header">
+                <div class="header">
+                  <img
+                    v-bind:src="this.baseURL + this.selectedCard.cardLogo"
+                  />{{ this.selectedCard.organization }}
                 </div>
-                <div class="profile-row">
-                    <div class="dp">
-                    <div class="dp-arc-outer"></div>
-                    <div class="dp-arc-inner"></div>
-                    <img v-bind:src="this.baseURL + this.selectedCard.cardImage">
-                    </div>
-                    <div class="desc">
-                        <div :style="{'color': this.selectedCard.text_color + '!important'}">
-                            <span>Holder's Name</span> <p :style="{'font-size': '1.1rem !important', 'color': this.selectedCard.text_color + '!important'}">{{ this.selectedCard.name}}</p>
-                            <span>Job Role</span><p :style="{'color': this.selectedCard.text_color + '!important'}">{{ this.selectedCard.role }}</p>
-                            <span>ID No</span><p :style="{'color': this.selectedCard.text_color + '!important'}">{{ this.selectedCard.id_card_number }}</p>
-                        </div>
-                    </div>
+              </div>
+              <div class="profile-row">
+                <div class="dp">
+                  <div class="dp-arc-outer"></div>
+                  <div class="dp-arc-inner"></div>
+                  <img
+                    v-bind:src="this.baseURL + this.selectedCard.cardImage"
+                  />
                 </div>
-                <div class="id-card-footer">
-                    <p :style="{'color': this.selectedCard.text_color + '!important'}">Join Date: {{ this.selectedCard.issued_date }}</p>
+                <div class="desc">
+                  <div
+                    :style="{
+                      color: this.selectedCard.text_color + '!important',
+                    }"
+                  >
+                    <span>Holder's Name</span>
+                    <p
+                      :style="{
+                        'font-size': '1.1rem !important',
+                        color: this.selectedCard.text_color + '!important',
+                      }"
+                    >
+                      {{ this.selectedCard.name }}
+                    </p>
+                    <span>Job Role</span>
+                    <p
+                      :style="{
+                        color: this.selectedCard.text_color + '!important',
+                      }"
+                    >
+                      {{ this.selectedCard.role }}
+                    </p>
+                    <span>ID No</span>
+                    <p
+                      :style="{
+                        color: this.selectedCard.text_color + '!important',
+                      }"
+                    >
+                      {{ this.selectedCard.id_card_number }}
+                    </p>
+                  </div>
                 </div>
+              </div>
+              <div class="id-card-footer">
+                <p
+                  :style="{
+                    color: this.selectedCard.text_color + '!important',
+                  }"
+                >
+                  Join Date: {{ this.selectedCard.issued_date }}
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -190,7 +232,7 @@ export default {
         text_color: "",
         cardLogo: "",
         cardImage: "",
-        organization: null
+        organization: null,
       },
     };
   },
@@ -212,7 +254,11 @@ export default {
 
     loadMyIdCard() {
       axios
-        .get("admin/all/idcards")
+        .get("admin/all/idcards", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
         .then((response) => {
           this.prepPagination(response.data);
           this.memberid = response.data.data;
@@ -223,21 +269,21 @@ export default {
     },
 
     sendInfo(row) {
-        this.selectedCard.name = row.name;
-        this.selectedCard.role = row.role;
-        this.selectedCard.id_card_number = row.id_card_number;
-        this.selectedCard.issued_date = row.issued_date;
-        this.selectedCard.background_color = row.template.background_color;
-        this.selectedCard.text_color = row.template.text_color;
-        this.selectedCard.cardLogo = row.template.path;
-        this.selectedCard.cardImage = row.path;
-        this.selectedCard.organization = row.created_by_organization.name
+      this.selectedCard.name = row.name;
+      this.selectedCard.role = row.role;
+      this.selectedCard.id_card_number = row.id_card_number;
+      this.selectedCard.issued_date = row.issued_date;
+      this.selectedCard.background_color = row.template.background_color;
+      this.selectedCard.text_color = row.template.text_color;
+      this.selectedCard.cardLogo = row.template.path;
+      this.selectedCard.cardImage = row.path;
+      this.selectedCard.organization = row.created_by_organization.name;
     },
   },
 
   created() {
     this.loadMyIdCard();
-  }
+  },
 };
 </script>
 
@@ -255,33 +301,33 @@ export default {
   max-width: 30em;
   margin: auto;
   /* background-color: red; */
- }
+}
 
 .id-card-header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    max-width: 30em;
-    height: 4em;
-    width: 100%;
-    margin: auto;
-    color: #fff;
-    padding: 1em;
-    background-color: #8604e2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 30em;
+  height: 4em;
+  width: 100%;
+  margin: auto;
+  color: #fff;
+  padding: 1em;
+  background-color: #8604e2;
 }
 
 .id-card-header .header {
-    position: absolute;
-    right: 20px;
-    font-size: 1.2rem
+  position: absolute;
+  right: 20px;
+  font-size: 1.2rem;
 }
 .id-card-header .header img {
-    width: 30px;
-    margin-right: 1rem
+  width: 30px;
+  margin-right: 1rem;
 }
 .profile-row {
   display: flex;
-  align-items: center
+  align-items: center;
 }
 .profile-row .dp {
   flex-basis: 30.3%;
@@ -303,32 +349,32 @@ export default {
 }
 
 .profile-row .desc span {
-    font-size: 10px;
+  font-size: 10px;
 }
 
 .profile-row .desc {
-  font-family: 'Orbitron', sans-serif;
+  font-family: "Orbitron", sans-serif;
   color: #000;
   /* letter-spacing: 1px; */
 }
 
 .profile-row .desc p {
-    font-weight: bolder;
+  font-weight: bolder;
 }
 
 .id-card-footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    max-width: 30em;
-    height: 1.5em;
-    width: 100%;
-    margin: auto;
-    color: #fff;
-    background-color: #8604e2;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  max-width: 30em;
+  height: 1.5em;
+  width: 100%;
+  margin: auto;
+  color: #fff;
+  background-color: #8604e2;
 }
 .id-card-footer p {
-    position: absolute;
-    right: 10px;
+  position: absolute;
+  right: 10px;
 }
 </style>

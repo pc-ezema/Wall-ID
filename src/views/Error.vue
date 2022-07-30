@@ -1,13 +1,22 @@
 <template>
-    <div id="alerttopright" class="alert-timeout alert alert-danger alert-dismissible fade show" role="alert">
-        {{ error }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+  <div
+    id="alerttopright"
+    class="alert-timeout alert alert-danger alert-dismissible fade show"
+    role="alert"
+  >
+    {{ error }}
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="alert"
+      aria-label="Close"
+    ></button>
+  </div>
 </template>
 
 <script>
 export default {
-    name: 'Error',
-    props: ['error'],
-}
+  name: "Error",
+  props: ["error"],
+};
 </script>
