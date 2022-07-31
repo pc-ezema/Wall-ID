@@ -151,6 +151,26 @@ export default {
   },
 
   methods: {
+    loadAllInvites() {
+      axios
+        .get("organizations/subscriptions/plans", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.Subscriptions = response.data.data;
+        })
+        .catch((error) => {
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+        });
+    },
+
     async sendInvites() {
       this.$Progress.start();
 
@@ -181,6 +201,8 @@ export default {
               duration: 5000,
               speed: 1000,
             });
+            this.invite.event_id = null;
+            this.invite.username = null;
             this.$Progress.finish();
           })
           .catch((error) => {
