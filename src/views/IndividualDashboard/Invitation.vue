@@ -35,7 +35,7 @@
             <h5>Send Invitation</h5>
           </div>
           <div class="col-lg-11 mt-3">
-            <form>
+            <form @submit.prevent="sendInvites()">
               <div class="row justify-content-end">
                 <!--Event ID-->
                 <div class="col-lg-6 mb-3">
@@ -43,13 +43,14 @@
                   <input
                     type="text"
                     class="input"
-                    placeholder="Wall ID username"
+                    v-model="invite.event_id"
+                    placeholder="Event ID"
                   />
                 </div>
                 <!--Receiver username-->
                 <div class="col-lg-6 mb-3">
                   <label>Receiver username</label>
-                  <input type="text" class="input" placeholder="Holders role" />
+                  <input type="text" class="input" v-model="invite.username" placeholder="Enter Username" />
                 </div>
                 <!--Button-->
                 <div class="col-lg-2 text-center mb-3">
@@ -135,8 +136,66 @@
 import DashboardSidebar from "./DashboardSidebar.vue";
 import DashboardNavbar from "./DashboardNavbar.vue";
 import DashboardFooter from "./DashboardFooter.vue";
+import axios from "axios";
+
 export default {
   components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+
+  data() {
+    return {
+      invite: {
+        event_id: "",
+        username: "",
+      },
+    };
+  },
+
+  methods: {
+    async sendInvites() {
+      this.$Progress.start();
+
+      if (
+        this.invite.event_id == "" ||
+        this.invite.username == ""
+      ) {
+        this.$notify({
+          type: "error",
+          title: "Please enter all the needed fields.",
+          duration: 5000,
+          speed: 1000,
+        });
+        this.$Progress.finish();
+        return;
+      } else {
+        this.$wait.start("processing");
+
+        await axios
+          .post("events/invite", {
+            event_id: this.invite.event_id,
+            username: this.invite.username,
+          })
+          .then((response) => {
+            this.$notify({
+              type: "success",
+              title: response.data.message,
+              duration: 5000,
+              speed: 1000,
+            });
+            this.$Progress.finish();
+          })
+          .catch((error) => {
+            this.$notify({
+              type: "error",
+              title: error.response.data.message,
+              duration: 5000,
+              speed: 1000,
+            });
+            this.$Progress.fail();
+          });
+      }
+    },
+  },
+
   mounted() {
     window.scrollTo(0, 0);
   },

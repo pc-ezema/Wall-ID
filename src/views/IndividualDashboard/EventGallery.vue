@@ -50,6 +50,7 @@
                           <th scope="col">Ticket QTY</th>
                           <th scope="col">Start Date</th>
                           <th scope="col">End Date</th>
+                          <th scope="col">Event ID</th>
                           <th scope="col">Image</th>
                           <th scope="col">Action</th>
                         </tr>
@@ -76,6 +77,9 @@
                           </td>
                           <td>
                             {{ getDate(item.end_date) }}
+                          </td>
+                          <td>
+                            {{ item.unique_id }}
                           </td>
                           <td>
                             <img
@@ -151,7 +155,7 @@ export default {
           this.category = res.data.data.category;
           for (let x of this.events) {
             this.category = x.category;
-            console.log(this.category);
+            // console.log(this.category);
           }
         })
         .catch((err) => console.log(err));

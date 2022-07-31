@@ -184,10 +184,6 @@
                   }}</span>
                 </div>
               </div>
-              <!-- <div class="col-lg-12 mb-3">
-                                <label>Type</label>
-                                <input type="text" class="input" placeholder="Enter type" v-model="form.type">
-                            </div> -->
               <div class="row">
                 <div class="col-lg-12 subHead">
                   <h5>Ticket</h5>
@@ -271,57 +267,55 @@
                     </div>
                   </div>
                   <div>
-                    <div class="col-lg-6 mb-3">
-                      <!--          Add Svg Icon-->
-                      <svg
-                        @click="addField(input, form.ticketCategories)"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width="24"
-                        height="24"
-                        class="ml-2 cursor-pointer"
-                      >
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path
-                          fill="green"
-                          d="M11 11V7h2v4h4v2h-4v4h-2v-4H7v-2h4zm1 11C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"
-                        />
-                      </svg>
-                      Add
-                    </div>
-                    <div class="col-lg-6 mb-3">
-                      <!--          Remove Svg Icon-->
-                      <svg
-                        @click="removeField(index, form.ticketCategories)"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        width="24"
-                        height="24"
-                        class="ml-2 cursor-pointer"
-                      >
-                        <path fill="none" d="M0 0h24v24H0z" />
-                        <path
-                          fill="#EC4899"
-                          d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0-9.414l2.828-2.829 1.415 1.415L13.414 12l2.829 2.828-1.415 1.415L12 13.414l-2.828 2.829-1.415-1.415L10.586 12 7.757 9.172l1.415-1.415L12 10.586z"
-                        />
-                      </svg>
-                      Remove
+                    <div class="row">
+                        <div class="col-lg-6 mb-3">
+                        <!--          Add Svg Icon-->
+                        <svg
+                            @click="addField(input, form.ticketCategories)"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            height="24"
+                            class="ml-2 cursor-pointer"
+                        >
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path
+                            fill="green"
+                            d="M11 11V7h2v4h4v2h-4v4h-2v-4H7v-2h4zm1 11C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"
+                            />
+                        </svg>
+                        Add
+                        </div>
+                        <div class="col-lg-6 mb-3">
+                        <!--          Remove Svg Icon-->
+                        <svg
+                            @click="removeField(index, form.ticketCategories)"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            width="24"
+                            height="24"
+                            class="ml-2 cursor-pointer"
+                        >
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path
+                            fill="#EC4899"
+                            d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm0-9.414l2.828-2.829 1.415 1.415L13.414 12l2.829 2.828-1.415 1.415L12 13.414l-2.828 2.829-1.415-1.415L10.586 12 7.757 9.172l1.415-1.415L12 10.586z"
+                            />
+                        </svg>
+                        Remove
+                        </div>
                     </div>
                   </div>
                 </div>
                 <div v-else>
                   <div class="col-lg-12 mb-3">
-                    <div class="row">
-                      <div class="col-lg-6 mb-3">
-                        <label>Price</label>
-                        <input
-                          type="number"
-                          v-model="form.price"
-                          class="input"
-                          placeholder="Enter price of ticket"
-                        />
-                      </div>
-                    </div>
+                    <label>Price</label>
+                    <input
+                        type="number"
+                        v-model="form.price"
+                        class="input"
+                        placeholder="Enter price of ticket"
+                    />
                   </div>
                 </div>
               </div>
