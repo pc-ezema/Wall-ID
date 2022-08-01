@@ -37,7 +37,7 @@
               <div class="col-lg-12 mt-2">
                 <div class="mb-2" v-for="row in plans" v-bind:key="row.id">
                   <!-- <router-link> -->
-                  <a @click="makePayment(row.id)">
+                  <a @click="makePayment(row.id)" style="cursor: pointer;">
                     <div class="resultDivDisplay">
                       <div class="resultContent">
                         <div class="row">

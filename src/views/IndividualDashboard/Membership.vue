@@ -1,6 +1,8 @@
 <template>
   <DashboardSidebar />
 
+  <TheLoader v-if="showLoading"/>
+
   <section class="main_content dashboard_part large_header_bg">
     <DashboardNavbar />
 
@@ -120,16 +122,18 @@
 import DashboardSidebar from "./DashboardSidebar.vue";
 import DashboardNavbar from "./DashboardNavbar.vue";
 import DashboardFooter from "./DashboardFooter.vue";
+import TheLoader from '../TheLoader.vue';
 
 import axios from "axios";
 
 export default {
-  components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+  components: { DashboardSidebar, DashboardNavbar, DashboardFooter, TheLoader },
 
   data() {
     return {
       pagination: {},
       membership: [],
+      showLoading: false
     };
   },
 
@@ -149,6 +153,7 @@ export default {
     },
 
     loadMyCard() {
+      // this.showLoading = true;
       axios
         .get("individuals/organizations/join-requests", {
           headers: {
@@ -158,6 +163,7 @@ export default {
         .then((response) => {
           this.prepPagination(response.data);
           this.membership = response.data.data;
+          // this.showLoading = false;
         })
         .catch((error) => {
           console.log(error);
@@ -170,7 +176,6 @@ export default {
   },
 
   mounted() {
-    this.loadMyCard();
     window.scrollTo(0, 0);
   },
 };

@@ -9,6 +9,8 @@ import axios from "axios";
 import { getCurrentInstance } from "vue";
 
 export default {
+  name: "App",
+
   setup() {
     const internalInstance = getCurrentInstance();
     //  [App.vue specific] When App.vue is first loaded start the progress bar

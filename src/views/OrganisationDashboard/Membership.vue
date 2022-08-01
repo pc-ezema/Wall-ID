@@ -59,6 +59,7 @@
                           <th scope="col">Role</th>
                           <th scope="col">Date Requested</th>
                           <th scope="col">Membership Status</th>
+                          <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody v-if="!membership || !membership.length">
@@ -88,6 +89,18 @@
                               row.status
                             }}</span>
                           </td>
+                          <td>
+                            <div class="action_btns d-flex">
+                              <a
+                                href="javascript:void(0)"
+                                @click="DeactivateMember(row.id)"
+                                title="Deactivate"
+                                class="action_btn"
+                              >
+                                <i class="bi bi-x-square-fill"></i>
+                              </a>
+                            </div>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -97,6 +110,151 @@
             </div>
           </div>
           <div v-if="pendingMember" class="col-lg-11 mt-3">
+            <div class="white_card card_height_100 mb_30">
+              <div class="white_card_body">
+                <div class="QA_section">
+                  <div class="QA_table mb_30">
+                    <table class="table lms_table_active">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Phone</th>
+                          <th scope="col">Role</th>
+                          <th scope="col">Date Requested</th>
+                          <th scope="col">Membership Status</th>
+                          <th scope="col">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="!membership || !membership.length">
+                        <tr>
+                          <td class="align-enter text-dark font-13" colspan="7">
+                            No Pending Membership Request
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr
+                          v-for="(row, index) in membership"
+                          v-bind:key="index"
+                        >
+                          <th scope="row">{{ index + 1 }}</th>
+                          <td>
+                            {{ row.individual.firstname }}
+                            {{ row.individual.lastname }}
+                          </td>
+                          <td>{{ row.individual.phone }}</td>
+                          <td>{{ row.role }}</td>
+                          <td>
+                            {{
+                              new Date(
+                                row.individual.created_at
+                              ).toLocaleString()
+                            }}
+                          </td>
+                          <td>
+                            <span class="badge" style="background: red">{{
+                              row.status
+                            }}</span>
+                          </td>
+                          <td>
+                            <div class="action_btns d-flex">
+                              <a
+                                href="javascript:void(0)"
+                                @click="approveMember(row.id)"
+                                title="Approve"
+                                class="action_btn"
+                              >
+                                <i class="bi bi-check-circle"></i>
+                              </a>
+
+                              <a
+                                href="javascript:void(0)"
+                                @click="DeclineMember(row.id)"
+                                title="Decline"
+                                class="action_btn"
+                              >
+                                <i class="bi bi-x-octagon"></i>
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-if="deactivateMember" class="col-lg-11 mt-3">
+            <div class="white_card card_height_100 mb_30">
+              <div class="white_card_body">
+                <div class="QA_section">
+                  <div class="QA_table mb_30">
+                    <table class="table lms_table_active">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Phone</th>
+                          <th scope="col">Role</th>
+                          <th scope="col">Date Requested</th>
+                          <th scope="col">Membership Status</th>
+                          <th scope="col">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="!membership || !membership.length">
+                        <tr>
+                          <td class="align-enter text-dark font-13" colspan="7">
+                            No Deactivated Member
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr
+                          v-for="(row, index) in membership"
+                          v-bind:key="index"
+                        >
+                          <th scope="row">{{ index + 1 }}</th>
+                          <td>
+                            {{ row.individual.firstname }}
+                            {{ row.individual.lastname }}
+                          </td>
+                          <td>{{ row.individual.phone }}</td>
+                          <td>{{ row.role }}</td>
+                          <td>
+                            {{
+                              new Date(
+                                row.individual.created_at
+                              ).toLocaleString()
+                            }}
+                          </td>
+                          <td>
+                            <span class="badge" style="background: red">{{
+                              row.status
+                            }}</span>
+                          </td>
+                          <td>
+                            <div class="action_btns d-flex">
+                              <a
+                                href="javascript:void(0)"
+                                @click="activateMember(row.id)"
+                                title="Approve"
+                                class="action_btn"
+                              >
+                                <i class="bi bi-check-circle"></i>
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-if="declineMember" class="col-lg-11 mt-3">
             <div class="white_card card_height_100 mb_30">
               <div class="white_card_body">
                 <div class="QA_section">
@@ -193,16 +351,19 @@ export default {
       pagination: {},
       membership: [],
       approvedMember: false,
+      deactivateMember: false,
+      declineMember: false,
       pendingMember: true,
-      key: "",
+      key: "Filter",
     };
   },
 
   methods: {
     onChange(event) {
-      console.log(event.target.value);
       if (this.key == "Activated") {
         this.pendingMember = false;
+        this.deactivateMember = false;
+        this.declineMember = false;
         this.approvedMember = true;
         axios
           .get("organizations/members/active", {
@@ -221,9 +382,51 @@ export default {
 
       if (this.key == "Pending") {
         this.approvedMember = false;
+        this.deactivateMember = false;
+        this.declineMember = false;
         this.pendingMember = true;
         axios
           .get("organizations/members/requests/get", {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then((response) => {
+            this.prepPagination(response.data);
+            this.membership = response.data.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
+      if (this.key == "Declined") {
+        this.approvedMember = false;
+        this.deactivateMember = false;
+        this.declineMember = true;
+        this.pendingMember = false;
+        axios
+          .get("organizations/members/decline", {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then((response) => {
+            this.prepPagination(response.data);
+            this.membership = response.data.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
+      if (this.key == "Deactivated") {
+        this.approvedMember = false;
+        this.deactivateMember = true;
+        this.declineMember = false;
+        this.pendingMember = false;
+        axios
+          .get("organizations/members/unactive", {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
@@ -253,7 +456,6 @@ export default {
     },
 
     loadMyCard(page = 1) {
-      this.approvedMember = false;
       axios
         .get("organizations/members/requests/get" + "?page=" + page, {
           headers: {
@@ -270,6 +472,7 @@ export default {
     },
 
     async approveMember(data) {
+      this.$Progress.start();
       await axios
         .get("organizations/members/requests/approve/" + data, {
           headers: {
@@ -283,6 +486,7 @@ export default {
             duration: 5000,
             speed: 1000,
           });
+          this.$Progress.finish();
           this.loadMyCard();
         })
         .catch((error) => {
@@ -292,6 +496,94 @@ export default {
             duration: 5000,
             speed: 1000,
           });
+          this.$Progress.fail();
+        });
+    },
+
+    async DeclineMember(data) {
+      this.$Progress.start();
+      await axios 
+        .get("organizations/members/requests/decline/" + data, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.$notify({
+            type: "success",
+            title: response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+          this.$Progress.finish();
+          this.loadMyCard();
+        })
+        .catch((error) => {
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+          this.$Progress.fail();
+        });
+    },
+
+    async activateMember(data) {
+      this.$Progress.start();
+      await axios
+        .get("organizations/members/activate/" + data, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.$notify({
+            type: "success",
+            title: response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+          this.$Progress.finish();
+          this.loadMyCard();
+        })
+        .catch((error) => {
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+          this.$Progress.fail();
+        });
+    },
+
+    async DeactivateMember(data) {
+      this.$Progress.start();
+      await axios
+        .get("organizations/members/deactivate/" + data, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.$notify({
+            type: "success",
+            title: response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+          this.$Progress.finish();
+          this.loadMyCard();
+        })
+        .catch((error) => {
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+          this.$Progress.fail();
         });
     },
   },

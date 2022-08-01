@@ -171,7 +171,7 @@ export default {
           });
           setTimeout(() => {
             this.$router.push("/individual-dashboard/memberships");
-          }, 6000);
+          }, 1000);
         })
         .catch((error) => {
           this.$wait.end("processing");
