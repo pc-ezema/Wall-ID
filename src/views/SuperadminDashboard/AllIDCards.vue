@@ -139,14 +139,14 @@
                 'background-color': this.selectedCard.background_color,
               }"
             >
-              <div class="id-card-header">
-                <div class="header">
+              <div class="id-card-header" :style="{'background-color': this.selectedCard.background_color}">
+                <div class="header" :style="{color: this.selectedCard.text_color + '!important'}">
                   <img
                     v-bind:src="this.baseURL + this.selectedCard.cardLogo"
-                  />{{ this.selectedCard.organization }}
+                    style="border-radius: 50%;" />{{ this.selectedCard.organization }}
                 </div>
               </div>
-              <div class="profile-row">
+              <div class="profile-row" :style="{'background-color': this.selectedCard.background_color, 'filter': 'brightness(90%)'}">
                 <div class="dp">
                   <div class="dp-arc-outer"></div>
                   <div class="dp-arc-inner"></div>
@@ -154,7 +154,7 @@
                     v-bind:src="this.baseURL + this.selectedCard.cardImage"
                   />
                 </div>
-                <div class="desc">
+                <div class="desc" style="padding-top: initial">
                   <div
                     :style="{
                       color: this.selectedCard.text_color + '!important',
@@ -188,7 +188,7 @@
                   </div>
                 </div>
               </div>
-              <div class="id-card-footer">
+              <div class="id-card-footer" :style="{'background-color': this.selectedCard.background_color}">
                 <p
                   :style="{
                     color: this.selectedCard.text_color + '!important',
@@ -288,12 +288,6 @@ export default {
 </script>
 
 <style scoped>
-/* .id-card-wrapper {
-  height: 100vh;
-  width:100%;
-  background-color: #091214;
-  display: flex;
-} */
 .id-card {
   position: relative;
   height: 15em;
@@ -313,7 +307,7 @@ export default {
   margin: auto;
   color: #fff;
   padding: 1em;
-  background-color: #8604e2;
+  z-index: 999;
 }
 
 .id-card-header .header {
@@ -328,6 +322,7 @@ export default {
 .profile-row {
   display: flex;
   align-items: center;
+  padding-top: 3rem;
 }
 .profile-row .dp {
   flex-basis: 30.3%;
@@ -342,10 +337,6 @@ export default {
   display: block;
   /* box-shadow: 0px 0px 4px 3px #fff; */
   border: 5px solid #fff;
-}
-.profile-row .desc {
-  padding-top: 4rem;
-  /* flex-basis: 70.6%; */
 }
 
 .profile-row .desc span {
@@ -371,7 +362,6 @@ export default {
   width: 100%;
   margin: auto;
   color: #fff;
-  background-color: #8604e2;
 }
 .id-card-footer p {
   position: absolute;

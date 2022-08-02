@@ -39,9 +39,10 @@
           <div class="col-lg-11 filterSelect">
             <select @change="onChange($event)" v-model="key">
               <option>Filter</option>
-              <option value="Approved">Approved</option>
+              <option value="Approved">Approved/Active</option>
               <option value="Declined">Declined</option>
               <option value="PendingInd">Pending</option>
+              <option value="Deactivate">Deactivate</option>
               <!-- <option value="PendingOrg">Pending By Organization</option> -->
             </select>
           </div>
@@ -59,6 +60,7 @@
                           <th scope="col">ID Card</th>
                           <th scope="col">Date Created</th>
                           <th scope="col">Status</th>
+                          <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody v-if="!memberid || !memberid.length">
@@ -88,6 +90,18 @@
                           </td>
                           <td>
                             <a class="a-approved">{{ row.status }}</a>
+                          </td>
+                          <td>
+                            <div class="action_btns d-flex">
+                              <a
+                                href="javascript:void(0)"
+                                @click="deactivateIDCard(row.id)"
+                                title="Deactivate"
+                                class="action_btn"
+                              >
+                                <i class="bi bi-x-circle"></i>
+                              </a>
+                            </div>
                           </td>
                         </tr>
                       </tbody>
@@ -223,6 +237,71 @@
               </div>
             </div>
           </div>
+          <div v-if="deactivatedcards" class="col-lg-11 mt-3">
+            <div class="white_card card_height_100 mb_30">
+              <div class="white_card_body">
+                <div class="QA_section">
+                  <div class="QA_table mb_30">
+                    <table class="table lms_table_active">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Image</th>
+                          <th scope="col">ID Card</th>
+                          <th scope="col">Date Created</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="!memberid || !memberid.length">
+                        <tr>
+                          <td class="align-enter text-dark font-13" colspan="7">
+                            No Deactivated ID Card
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr v-for="(row, index) in memberid" v-bind:key="index">
+                          <th scope="row">{{ index + 1 }}</th>
+                          <td>{{ row.name }}</td>
+                          <td><img :src="this.baseURL + row.path" /></td>
+                          <td>
+                            <button
+                              class="viewCardBtn"
+                              data-toggle="modal"
+                              data-target="#modalView"
+                              @click="sendInfo(row)"
+                            >
+                              View Card
+                            </button>
+                          </td>
+                          <td>
+                            {{ new Date(row.issued_date).toLocaleString() }}
+                          </td>
+                          <td>
+                            <a class="a-pending">{{ row.status }}</a>
+                          </td>
+                          <td>
+                            <div class="action_btns d-flex">
+                              <a
+                                href="javascript:void(0)"
+                                @click="approveIDCard(row.id)"
+                                title="Approve"
+                                class="action_btn"
+                              >
+                                <i class="bi bi-patch-check"></i>
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
           <!-- <div v-if="pendingcardsOrg" class="col-lg-11 mt-3">
                      <div class="white_card card_height_100 mb_30">
                         <div class="white_card_body">
@@ -312,14 +391,14 @@
                 'background-color': this.selectedCard.background_color,
               }"
             >
-              <div class="id-card-header">
-                <div class="header">
+              <div class="id-card-header" :style="{'background-color': this.selectedCard.background_color}">
+                <div class="header" :style="{color: this.selectedCard.text_color + '!important'}">
                   <img
                     v-bind:src="this.baseURL + this.selectedCard.cardLogo"
-                  />{{ this.selectedCard.organization }}
+                    style="border-radius: 50%;" />{{ this.selectedCard.organization }}
                 </div>
               </div>
-              <div class="profile-row">
+              <div class="profile-row" :style="{'background-color': this.selectedCard.background_color, 'filter': 'brightness(90%)'}">
                 <div class="dp">
                   <div class="dp-arc-outer"></div>
                   <div class="dp-arc-inner"></div>
@@ -327,7 +406,7 @@
                     v-bind:src="this.baseURL + this.selectedCard.cardImage"
                   />
                 </div>
-                <div class="desc">
+                <div class="desc" style="padding-top: initial">
                   <div
                     :style="{
                       color: this.selectedCard.text_color + '!important',
@@ -361,7 +440,7 @@
                   </div>
                 </div>
               </div>
-              <div class="id-card-footer">
+              <div class="id-card-footer" :style="{'background-color': this.selectedCard.background_color}">
                 <p
                   :style="{
                     color: this.selectedCard.text_color + '!important',
@@ -398,6 +477,7 @@ export default {
       pendingcardsOrg: false,
       approvedcards: false,
       declinedcards: false,
+      deactivatedcards: false,
       key: "Filter",
       selectedCard: {
         name: "",
@@ -420,7 +500,7 @@ export default {
         this.pendingcardsOrg = false;
         this.approvedcards = true;
         this.declinedcards = false;
-
+        this.deactivatedcards = false
         axios
           .get("id-card-management/organization/approved/id-card", {
             headers: {
@@ -441,6 +521,7 @@ export default {
         this.pendingcardsOrg = false;
         this.approvedcards = false;
         this.declinedcards = false;
+        this.deactivatedcards = false
         axios
           .get("id-card-management/organization/pending/id-card", {
             headers: {
@@ -461,6 +542,7 @@ export default {
         this.pendingcardsOrg = false;
         this.approvedcards = false;
         this.declinedcards = false;
+        this.deactivatedcards = false
         axios
           .get("id-card-management/organization/pending/id-card", {
             headers: {
@@ -481,8 +563,30 @@ export default {
         this.pendingcardsOrg = false;
         this.approvedcards = false;
         this.declinedcards = true;
+        this.deactivatedcards = false
         axios
           .get("id-card-management/organization/declined/id-card", {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then((response) => {
+            this.prepPagination(response.data);
+            this.memberid = response.data.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
+      if (this.key == "Deactivate") {
+        this.pendingcardsInd = false;
+        this.pendingcardsOrg = false;
+        this.approvedcards = false;
+        this.declinedcards = false;
+        this.deactivatedcards = true
+        axios
+          .get("id-card-management/organization/deactivate/id-card", {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
@@ -512,9 +616,6 @@ export default {
     },
 
     loadPendingCards() {
-      this.approvedcards = false;
-      this.declinedcards = false;
-
       axios
         .get("id-card-management/organization/pending/id-card", {
           headers: {
@@ -600,6 +701,38 @@ export default {
         });
     },
 
+    async deactivateIDCard(data) {
+      this.$Progress.start();
+      await axios
+        .post(
+          "id-card-management/organization/deactivate/id-card/" + data,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.$Progress.finish();
+          this.$notify({
+            type: "success",
+            title: response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+          this.loadPendingCards();
+        })
+        .catch((error) => {
+          this.$Progress.fail();
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+        });
+    },
+
     sendInfo(row) {
       this.selectedCard.name = row.name;
       this.selectedCard.role = row.role;
@@ -625,12 +758,6 @@ export default {
 </script>
 
 <style scoped>
-/* .id-card-wrapper {
-  height: 100vh;
-  width:100%;
-  background-color: #091214;
-  display: flex;
-} */
 .id-card {
   position: relative;
   height: 15em;
@@ -650,7 +777,7 @@ export default {
   margin: auto;
   color: #fff;
   padding: 1em;
-  background-color: #8604e2;
+  z-index: 999;
 }
 
 .id-card-header .header {
@@ -665,6 +792,7 @@ export default {
 .profile-row {
   display: flex;
   align-items: center;
+  padding-top: 3rem;
 }
 .profile-row .dp {
   flex-basis: 30.3%;
@@ -679,10 +807,6 @@ export default {
   display: block;
   /* box-shadow: 0px 0px 4px 3px #fff; */
   border: 5px solid #fff;
-}
-.profile-row .desc {
-  padding-top: 4rem;
-  /* flex-basis: 70.6%; */
 }
 
 .profile-row .desc span {
@@ -708,7 +832,6 @@ export default {
   width: 100%;
   margin: auto;
   color: #fff;
-  background-color: #8604e2;
 }
 .id-card-footer p {
   position: absolute;

@@ -108,6 +108,51 @@
       <i class="ti-angle-up"></i>
     </a>
   </div>
+  <!--Box 1-->
+  <div
+    class="modal fade"
+    id="modalView"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content viewCardModal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            View Payment Details
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="view_payment">
+            <p><b>ID: </b> {{ payment_details.id }}</p>
+            <p><b>Payment Reference: </b> {{ payment_details.reference }}</p>
+            <p>
+              <b>Subscription ID: </b> {{ payment_details.subscription_id }}
+            </p>
+            <p><b>Amount: </b> {{ payment_details.amount }}</p>
+            <p><b>Payment Channel: </b> {{ payment_details.channel }}</p>
+            <p>
+              <b>Paid At: </b>
+              {{ new Date(payment_details.paid_at).toLocaleString() }}
+            </p>
+            <p style="float: right">
+              <a class="a-approved">{{ payment_details.status }}</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
@@ -145,7 +190,7 @@ export default {
       };
     },
 
-    loadActiveSubscription(page = 1) {
+    loadExpireSubscription(page = 1) {
       axios
         .get("individuals/organizations/subscriptions/expired/all", {
           headers: {
@@ -167,7 +212,7 @@ export default {
   },
 
   created() {
-    this.loadActiveSubscription();
+    this.loadExpireSubscription();
   },
 
   mounted() {

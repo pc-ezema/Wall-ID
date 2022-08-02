@@ -455,7 +455,7 @@ export default {
       };
     },
 
-    loadMyCard(page = 1) {
+    loadMembership(page = 1) {
       axios
         .get("organizations/members/requests/get" + "?page=" + page, {
           headers: {
@@ -589,11 +589,10 @@ export default {
   },
 
   created() {
-    this.loadMyCard();
+    this.loadMembership();
   },
 
   mounted() {
-    this.loadMyCard();
     window.scrollTo(0, 0);
   },
 };

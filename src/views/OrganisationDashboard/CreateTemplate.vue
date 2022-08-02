@@ -36,19 +36,19 @@
           <div class="col-lg-11">
             <div class="id-card-wrapper">
               <div class="id-card">
-                <div class="id-card-header">
+                <div class="id-card-header" style="background-color: #8604e2;">
                   <div class="header">
-                    <img src="https://via.placeholder.com/20x20" /> Organization
+                    <img src="https://via.placeholder.com/20x20" style="border-radius: 50%;"/> Organization
                     Name
                   </div>
                 </div>
-                <div class="profile-row">
+                <div class="profile-row" style="background-color: #8604e2; filter: brightness(90%);">
                   <div class="dp">
                     <div class="dp-arc-outer"></div>
                     <div class="dp-arc-inner"></div>
                     <img src="https://via.placeholder.com/420x420" />
                   </div>
-                  <div class="desc">
+                  <div class="desc" style="padding-top: initial">
                     <div style="">
                       <span>Holder's Name</span>
                       <p></p>
@@ -59,7 +59,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="id-card-footer">
+                <div class="id-card-footer" style="background-color: #8604e2;">
                   <p style="color: #fff">Join Date:</p>
                 </div>
               </div>
@@ -90,6 +90,16 @@
                     placeholder="Select the role that belong to this template"
                     class="input"
                   />
+                  <!-- <select class="input" v-model="template.role">
+                    <option hidden>Choose a Role</option>
+                    <option
+                      v-for="role in membersrole"
+                      :key="role.id"
+                      :value="role.id"
+                    >
+                      {{ role.role }}
+                    </option>
+                  </select> -->
                 </div>
                 <div class="col-lg-12 mb-2">
                   <label>Logo</label>
@@ -101,26 +111,7 @@
                   />
                 </div>
                 <div class="col-lg-12">
-                  <botton
-                    v-if="$wait.is('processing')"
-                    style="
-                      background-image: linear-gradient(
-                        180deg,
-                        #8604e2,
-                        #ac38ff
-                      );
-                      padding: 12px 5px;
-                      font-size: 16px;
-                      color: #fff;
-                      border: none;
-                      border-radius: 5px;
-                      width: 100%;
-                      display: block;
-                      text-align: center;
-                    "
-                    >Template Adding...</botton
-                  >
-                  <button v-else type="submit">Create Template</button>
+                  <button type="submit">Create Template</button>
                 </div>
               </div>
             </form>
@@ -156,12 +147,27 @@ export default {
         background_color: "",
         text_color: "",
         role: "",
+        membersrole: []
       },
       logo: "",
     };
   },
 
   methods: {
+    loadMembership() {
+      axios
+        .get("organizations/members/active", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.membersrole = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     async createTemplate() {
       const fd = new FormData();
       fd.append("background_color", this.template.background_color.slice(1));
@@ -169,7 +175,6 @@ export default {
       fd.append("role", this.template.role);
       fd.append("logo", this.logo);
 
-      this.$wait.start("processing");
       this.$Progress.start();
 
       await axios
@@ -179,7 +184,6 @@ export default {
           },
         })
         .then((response) => {
-          this.$wait.end("processing");
           this.$Progress.finish();
           this.$notify({
             type: "success",
@@ -192,7 +196,6 @@ export default {
           }, 800);
         })
         .catch((error) => {
-          console.log(error);
           if (error.response.status == 401) {
             this.$wait.end("processing");
             this.$Progress.fail();
@@ -222,6 +225,10 @@ export default {
     },
   },
 
+  created() {
+    this.loadMembership();
+  },
+
   mounted() {
     window.scrollTo(0, 0);
   },
@@ -238,7 +245,7 @@ export default {
   flex-basis: 100%;
   max-width: 30em;
   margin: auto;
-  border: 1px solid #8604e2;
+  /* border: 1px solid #8604e2; */
 }
 
 .id-card-header {
@@ -251,7 +258,7 @@ export default {
   margin: auto;
   color: #fff;
   padding: 1em;
-  background-color: #8604e2;
+  z-index: 999;
 }
 
 .id-card-header .header {
@@ -266,6 +273,7 @@ export default {
 .profile-row {
   display: flex;
   align-items: center;
+  padding-top: 3rem;
 }
 .profile-row .dp {
   flex-basis: 30.3%;
@@ -281,10 +289,10 @@ export default {
   /* box-shadow: 0px 0px 4px 3px #fff; */
   border: 5px solid #fff;
 }
-.profile-row .desc {
+/* .profile-row .desc {
   padding-top: 4rem;
-  /* flex-basis: 70.6%; */
-}
+  flex-basis: 70.6%;
+} */
 
 .profile-row .desc span {
   font-size: 10px;
@@ -292,7 +300,7 @@ export default {
 
 .profile-row .desc {
   font-family: "Orbitron", sans-serif;
-  color: #000;
+  color: #fff;
   /* letter-spacing: 1px; */
 }
 
@@ -310,7 +318,6 @@ export default {
   width: 100%;
   margin: auto;
   color: #fff;
-  background-color: #8604e2;
 }
 .id-card-footer p {
   position: absolute;

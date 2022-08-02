@@ -146,14 +146,14 @@
                 'background-color': this.selectedCard.background_color,
               }"
             >
-              <div class="id-card-header">
-                <div class="header">
+              <div class="id-card-header" :style="{'background-color': this.selectedCard.background_color}">
+                <div class="header" :style="{color: this.selectedCard.text_color + '!important'}">
                   <img
                     v-bind:src="this.baseURL + this.selectedCard.cardLogo"
-                  />{{ this.selectedCard.organization }}
+                    style="border-radius: 50%;" />{{ this.selectedCard.organization }}
                 </div>
               </div>
-              <div class="profile-row">
+              <div class="profile-row" :style="{'background-color': this.selectedCard.background_color, 'filter': 'brightness(90%)'}">
                 <div class="dp">
                   <div class="dp-arc-outer"></div>
                   <div class="dp-arc-inner"></div>
@@ -161,7 +161,7 @@
                     v-bind:src="this.baseURL + this.selectedCard.cardImage"
                   />
                 </div>
-                <div class="desc">
+                <div class="desc" style="padding-top: initial">
                   <div
                     :style="{
                       color: this.selectedCard.text_color + '!important',
@@ -195,7 +195,7 @@
                   </div>
                 </div>
               </div>
-              <div class="id-card-footer">
+              <div class="id-card-footer" :style="{'background-color': this.selectedCard.background_color}">
                 <p
                   :style="{
                     color: this.selectedCard.text_color + '!important',
@@ -292,3 +292,85 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.id-card {
+  position: relative;
+  height: 15em;
+  flex-basis: 100%;
+  max-width: 30em;
+  margin: auto;
+  /* background-color: red; */
+}
+
+.id-card-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 30em;
+  height: 4em;
+  width: 100%;
+  margin: auto;
+  color: #fff;
+  padding: 1em;
+  z-index: 999;
+}
+
+.id-card-header .header {
+  position: absolute;
+  right: 20px;
+  font-size: 1.2rem;
+}
+.id-card-header .header img {
+  width: 30px;
+  margin-right: 1rem;
+}
+.profile-row {
+  display: flex;
+  align-items: center;
+  padding-top: 3rem;
+}
+.profile-row .dp {
+  flex-basis: 30.3%;
+  position: relative;
+  margin: 24px 24px 24px 24px;
+  align-self: center;
+}
+
+.profile-row .dp img {
+  max-width: 100%;
+  border-radius: 50%;
+  display: block;
+  /* box-shadow: 0px 0px 4px 3px #fff; */
+  border: 5px solid #fff;
+}
+
+.profile-row .desc span {
+  font-size: 10px;
+}
+
+.profile-row .desc {
+  font-family: "Orbitron", sans-serif;
+  color: #000;
+  /* letter-spacing: 1px; */
+}
+
+.profile-row .desc p {
+  font-weight: bolder;
+}
+
+.id-card-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  max-width: 30em;
+  height: 1.5em;
+  width: 100%;
+  margin: auto;
+  color: #fff;
+}
+.id-card-footer p {
+  position: absolute;
+  right: 10px;
+}
+</style>

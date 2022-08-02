@@ -518,7 +518,6 @@ export default {
   },
 
   mounted() {
-    this.loadAllEventCategory();
     window.scrollTo(0, 0);
 
     $(".image-box").click(function (event) {

@@ -148,21 +148,21 @@
                 'background-color': this.selectedTemplate.background_color,
               }"
             >
-              <div class="id-card-header">
-                <div class="header">
+              <div class="id-card-header" :style="{'background-color': this.selectedTemplate.background_color}">
+                <div class="header" :style="{color: this.selectedTemplate.text_color + '!important'}">
                   <img
                     v-bind:src="this.baseURL + this.selectedTemplate.cardLogo"
-                  />
+                    style="border-radius: 50%;" />
                   Organization Name
                 </div>
               </div>
-              <div class="profile-row">
+              <div class="profile-row" :style="{'background-color': this.selectedTemplate.background_color, 'filter': 'brightness(90%)'}">
                 <div class="dp">
                   <div class="dp-arc-outer"></div>
                   <div class="dp-arc-inner"></div>
                   <img src="https://via.placeholder.com/420x420" />
                 </div>
-                <div class="desc">
+                <div class="desc" style="padding-top: initial">
                   <div
                     :style="{
                       color: this.selectedTemplate.text_color + '!important',
@@ -190,7 +190,7 @@
                   </div>
                 </div>
               </div>
-              <div class="id-card-footer">
+              <div class="id-card-footer" :style="{'background-color': this.selectedTemplate.background_color}">
                 <p
                   :style="{
                     color: this.selectedTemplate.text_color + '!important',
@@ -308,20 +308,17 @@ export default {
 };
 </script>
 
-<style>
-/* .id-card-wrapper {
-  height: 100vh;
-  width:100%;
-  background-color: #091214;
-  display: flex;
-} */
+<style scoped>
+.id-card-wrapper {
+  width: 430px;
+}
 .id-card {
   position: relative;
   height: 15em;
   flex-basis: 100%;
   max-width: 30em;
   margin: auto;
-  /* background-color: red; */
+  /* border: 1px solid #8604e2; */
 }
 
 .id-card-header {
@@ -334,7 +331,7 @@ export default {
   margin: auto;
   color: #fff;
   padding: 1em;
-  background-color: #8604e2;
+  z-index: 999;
 }
 
 .id-card-header .header {
@@ -349,6 +346,7 @@ export default {
 .profile-row {
   display: flex;
   align-items: center;
+  padding-top: 3rem;
 }
 .profile-row .dp {
   flex-basis: 30.3%;
@@ -364,10 +362,10 @@ export default {
   /* box-shadow: 0px 0px 4px 3px #fff; */
   border: 5px solid #fff;
 }
-.profile-row .desc {
+/* .profile-row .desc {
   padding-top: 4rem;
-  /* flex-basis: 70.6%; */
-}
+  flex-basis: 70.6%;
+} */
 
 .profile-row .desc span {
   font-size: 10px;
@@ -381,6 +379,7 @@ export default {
 
 .profile-row .desc p {
   font-weight: bolder;
+  font-size: 1.1rem !important;
 }
 
 .id-card-footer {
@@ -392,7 +391,6 @@ export default {
   width: 100%;
   margin: auto;
   color: #fff;
-  background-color: #8604e2;
 }
 .id-card-footer p {
   position: absolute;
