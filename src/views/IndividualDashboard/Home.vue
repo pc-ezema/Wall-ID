@@ -408,9 +408,9 @@ export default {
         });
     },
   },
-  created() {
-    this.getDashboardStats();
 
+  mounted() {
+    this.getDashboardStats();
     this.$notify({
       type: "success",
       title: "Authorization",
@@ -418,12 +418,6 @@ export default {
       duration: 5000,
       speed: 1000,
     });
-  },
-
-  mounted() {
-    this.getDashboardStats();
-    console.log(this.dashboardstats);
-
     window.scrollTo(0, 0);
 
     const ctx = document.getElementById("myChart").getContext("2d");
