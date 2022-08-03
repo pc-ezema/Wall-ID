@@ -331,10 +331,6 @@ export default {
     },
   },
 
-  created() {
-    this.loadIndPendingCard();
-  },
-
   mounted() {
     this.loadIndPendingCard();
     window.scrollTo(0, 0);

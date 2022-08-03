@@ -160,11 +160,8 @@ export default {
     },
   },
 
-  created() {
-    this.MyRequest();
-  },
-
   mounted() {
+    this.MyRequest();
     window.scrollTo(0, 0);
   },
 };

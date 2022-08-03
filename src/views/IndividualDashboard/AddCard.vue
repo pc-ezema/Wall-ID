@@ -163,10 +163,6 @@ export default {
     },
   },
 
-  created() {
-    this.loadOrganizations();
-  },
-
   mounted() {
     this.loadOrganizations();
     window.scrollTo(0, 0);

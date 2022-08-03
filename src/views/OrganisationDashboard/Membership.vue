@@ -487,7 +487,7 @@ export default {
             speed: 1000,
           });
           this.$Progress.finish();
-          this.loadMyCard();
+          this.loadMembership();
         })
         .catch((error) => {
           this.$notify({
@@ -516,7 +516,7 @@ export default {
             speed: 1000,
           });
           this.$Progress.finish();
-          this.loadMyCard();
+          this.loadMembership();
         })
         .catch((error) => {
           this.$notify({
@@ -545,7 +545,7 @@ export default {
             speed: 1000,
           });
           this.$Progress.finish();
-          this.loadMyCard();
+          this.loadMembership();
         })
         .catch((error) => {
           this.$notify({
@@ -574,7 +574,7 @@ export default {
             speed: 1000,
           });
           this.$Progress.finish();
-          this.loadMyCard();
+          this.loadMembership();
         })
         .catch((error) => {
           this.$notify({
@@ -588,11 +588,8 @@ export default {
     },
   },
 
-  created() {
-    this.loadMembership();
-  },
-
   mounted() {
+    this.loadMembership();
     window.scrollTo(0, 0);
   },
 };

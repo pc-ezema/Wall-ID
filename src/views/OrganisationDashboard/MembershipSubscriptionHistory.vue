@@ -324,11 +324,9 @@ export default {
     },
   },
 
-  created() {
-    this.loadActiveSubscription();
-  },
 
   mounted() {
+    this.loadActiveSubscription();
     window.scrollTo(0, 0);
   },
 };

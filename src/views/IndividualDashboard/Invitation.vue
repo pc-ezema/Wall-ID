@@ -46,6 +46,16 @@
                     v-model="invite.event_id"
                     placeholder="Event ID"
                   />
+                  <!-- <select class="input" v-model="invite.event_id">
+                    <option hidden>Choose Event ID</option>
+                    <option
+                      v-for="uniqueid in event_id"
+                      :key="uniqueid.id"
+                      :value="uniqueid.id"
+                    >
+                      {{ uniqueid.unique_id }}
+                    </option>
+                  </select> -->
                 </div>
                 <!--Receiver username-->
                 <div class="col-lg-6 mb-3">
@@ -144,22 +154,23 @@ export default {
   data() {
     return {
       invite: {
-        event_id: "",
+        event_id: [],
         username: "",
       },
     };
   },
 
   methods: {
-    loadAllInvites() {
+    loadAllEventID() {
       axios
-        .get("organizations/subscriptions/plans", {
+        .get("events/mine/eventby/uniqueid", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         })
         .then((response) => {
-          this.Subscriptions = response.data.data;
+          this.event_id = response.data.data;
+          console.log(response.data.data);
         })
         .catch((error) => {
           this.$notify({
@@ -217,6 +228,10 @@ export default {
       }
     },
   },
+
+  // created() {
+  //   this.loadAllEventID();
+  // },
 
   mounted() {
     window.scrollTo(0, 0);

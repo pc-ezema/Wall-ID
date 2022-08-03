@@ -17,9 +17,12 @@
                     <h3>
                       {{ getTime() }}, {{ user.details.firstname }}
                       {{ user.details.lastname }}!
-                      <span style="float: right">{{
-                        user.details.id_card_number
-                      }}</span>
+                      <input style="color: #a221fc; font-weight: 700;text-align: right; cursor: copy; float: right; border: none; background-color: transparent; resize: none; outline: none;"
+                      v-on:focus="$event.target.select()" 
+                      ref="clone" 
+                      readonly 
+                      @click="copy"
+                      :value="user.details.id_card_number"/>
                     </h3>
                   </div>
                 </div>
@@ -365,6 +368,18 @@ export default {
   },
 
   methods: {
+    copy() {
+      this.$refs.clone.focus();
+      document.execCommand('copy');
+      this.$notify({
+        type: "success",
+        title: "Wall ID Number",
+        text: "Copied Successsfully!",
+        duration: 5000,
+        speed: 1000,
+      });
+    },
+
     getTime() {
       const d = new Date();
       const time = d.getHours();

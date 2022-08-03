@@ -36,8 +36,6 @@
             <div class="row">
               <div class="col-lg-12 mt-2">
                 <div class="mb-2" v-for="row in plans" v-bind:key="row.id">
-                  <!-- <router-link> -->
-                  <a @click="makePayment(row.id)" style="cursor: pointer;">
                     <div class="resultDivDisplay">
                       <div class="resultContent">
                         <div class="row">
@@ -57,12 +55,16 @@
                             <p>Period</p>
                             <h5>{{ row.validity }} days</h5>
                           </div>
+                            <div class="col-12">
+                                <button
+                                    class="viewCardBtn"
+                                    @click="makePayment(row.id)"
+                                    >Proceed To Payment</button>
+                            </div>
                         </div>
                       </div>
                       <div class="clear"></div>
                     </div>
-                  </a>
-                  <!-- </router-link> -->
                 </div>
               </div>
             </div>

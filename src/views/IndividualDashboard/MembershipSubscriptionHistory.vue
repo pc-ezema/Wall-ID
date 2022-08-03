@@ -211,11 +211,8 @@ export default {
     },
   },
 
-  created() {
-    this.loadExpireSubscription();
-  },
-
   mounted() {
+    this.loadExpireSubscription();
     window.scrollTo(0, 0);
   },
 };

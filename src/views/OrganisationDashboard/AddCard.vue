@@ -166,11 +166,8 @@ export default {
     },
   },
 
-  created() {
-    this.loadMembers();
-  },
-
   mounted() {
+    this.loadMembers();
     window.scrollTo(0, 0);
   },
 };

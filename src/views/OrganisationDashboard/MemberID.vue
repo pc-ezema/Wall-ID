@@ -746,10 +746,6 @@ export default {
     },
   },
 
-  created() {
-    this.loadPendingCards();
-  },
-
   mounted() {
     this.loadPendingCards();
     window.scrollTo(0, 0);
@@ -786,7 +782,8 @@ export default {
   font-size: 1.2rem;
 }
 .id-card-header .header img {
-  width: 30px;
+  width: 50px;
+  height: 20px;
   margin-right: 1rem;
 }
 .profile-row {

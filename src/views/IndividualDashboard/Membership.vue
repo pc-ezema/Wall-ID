@@ -171,11 +171,8 @@ export default {
     },
   },
 
-  created() {
-    this.loadMyCard();
-  },
-
   mounted() {
+    this.loadMyCard();
     window.scrollTo(0, 0);
   },
 };

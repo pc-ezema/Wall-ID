@@ -218,6 +218,7 @@ import axios from "axios";
 export default {
   components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
   mounted() {
+    this.loadMyTemplate();
     window.scrollTo(0, 0);
   },
 
@@ -302,16 +303,10 @@ export default {
     },
   },
 
-  created() {
-    this.loadMyTemplate();
-  },
 };
 </script>
 
 <style scoped>
-.id-card-wrapper {
-  width: 430px;
-}
 .id-card {
   position: relative;
   height: 15em;
@@ -340,7 +335,8 @@ export default {
   font-size: 1.2rem;
 }
 .id-card-header .header img {
-  width: 30px;
+  width: 50px;
+  height: 20px;
   margin-right: 1rem;
 }
 .profile-row {

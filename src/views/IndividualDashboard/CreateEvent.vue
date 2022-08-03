@@ -378,7 +378,7 @@ export default {
         description: "",
         isFree: true,
         price: 0,
-        pricing: "",
+        pricing: 0,
         image: null,
         category_id: "",
         venue_image: null,

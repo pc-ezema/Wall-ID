@@ -568,13 +568,8 @@ export default {
     },
   },
 
-  created() {
-    this.loadAllSubscription();
-  },
-
   mounted() {
     this.loadAllSubscription();
-
     window.scrollTo(0, 0);
   },
 };
