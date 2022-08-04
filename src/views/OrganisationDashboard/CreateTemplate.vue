@@ -38,7 +38,7 @@
               <div class="id-card">
                 <div class="id-card-header" style="background-color: #8604e2;">
                   <div class="header">
-                    <img src="https://via.placeholder.com/20x20" style="border-radius: 50%;"/> Organization
+                    <img src="https://via.placeholder.com/20x20" /> Organization
                     Name
                   </div>
                 </div>
@@ -267,8 +267,9 @@ export default {
   font-size: 1.2rem;
 }
 .id-card-header .header img {
-  width: 30px;
+  width: 50px;
   margin-right: 1rem;
+  margin-top: -0.5rem;
 }
 .profile-row {
   display: flex;

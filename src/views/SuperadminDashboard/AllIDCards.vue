@@ -143,7 +143,7 @@
                 <div class="header" :style="{color: this.selectedCard.text_color + '!important'}">
                   <img
                     v-bind:src="this.baseURL + this.selectedCard.cardLogo"
-                    style="border-radius: 50%;" />{{ this.selectedCard.organization }}
+                    />{{ this.selectedCard.organization }}
                 </div>
               </div>
               <div class="profile-row" :style="{'background-color': this.selectedCard.background_color, 'filter': 'brightness(90%)'}">
@@ -316,9 +316,9 @@ export default {
   font-size: 1.2rem;
 }
 .id-card-header .header img {
-  width: 50px;
-  height: 20px;
+  width: 70px;
   margin-right: 1rem;
+  margin-top: -0.5rem;
 }
 .profile-row {
   display: flex;
