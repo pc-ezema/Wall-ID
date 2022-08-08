@@ -38,6 +38,19 @@
             <div class="white_card card_height_100 mb_30">
               <div class="white_card_body">
                 <div class="QA_section">
+                  <form>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <label class="mb-1">Search for event</label>
+                        <input
+                          type="text"
+                          v-model="searchQuery"
+                          class="input searchInput"
+                          placeholder="Search for event with Name, Event ID"
+                        />
+                      </div>
+                    </div>
+                  </form>
                   <div class="QA_table mb_30">
                     <table class="table lms_table_active">
                       <thead>
@@ -50,12 +63,13 @@
                           <th scope="col">Ticket QTY</th>
                           <th scope="col">Start Date</th>
                           <th scope="col">End Date</th>
+                          <th scope="col">Event ID</th>
                           <th scope="col">Image</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(item, i) in events" :key="item.id">
+                        <tr v-for="(item, i) in resultQuery" :key="item.id">
                           <th scope="row">
                             {{ i + 1 }}
                           </th>
@@ -76,6 +90,9 @@
                           </td>
                           <td>
                             {{ getDate(item.end_date) }}
+                          </td>
+                          <td>
+                            {{ item.unique_id }}
                           </td>
                           <td>
                             <img
@@ -132,8 +149,24 @@ export default {
       baseURL: axios.defaults.baseURL.slice(0, -5),
       category: [],
       categoryName: "",
+      searchQuery: null,
     };
   },
+
+  computed: {
+    resultQuery() {
+      if (this.searchQuery) {
+        const value= this.searchQuery.charAt(0).toUpperCase() + this.searchQuery.slice(1);
+        return this.events.filter(function(event){
+          return event.name.indexOf(value) > -1 ||
+                event.unique_id.indexOf(value) > -1 
+        })
+      } else {
+        return this.events;
+      }
+    },
+  },
+
   methods: {
     getDate(value) {
       return new Date(value).toLocaleDateString("en-US");

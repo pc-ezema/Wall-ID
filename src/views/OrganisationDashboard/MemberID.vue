@@ -736,7 +736,7 @@ export default {
     sendInfo(row) {
       this.selectedCard.name = row.name;
       this.selectedCard.role = row.role;
-      this.selectedCard.id_card_number = row.id_card_number;
+      this.selectedCard.id_card_number = row.created_by_individual.id_card_number;
       this.selectedCard.issued_date = row.issued_date;
       this.selectedCard.background_color = row.template.background_color;
       this.selectedCard.text_color = row.template.text_color;

@@ -41,16 +41,12 @@
                       type="text"
                       v-model="searchQuery"
                       class="input searchInput"
-                      placeholder="Search for organisation"
+                      placeholder="Search for organisation with Email, Name, Username and WallID Number"
                     />
-                    <!-- <button type="submit" class="searchButton"><i class="bi bi-search"></i></button> -->
                   </div>
                 </div>
               </form>
               <div class="col-lg-12 mt-2">
-                <div class="searchResult mb-2">
-                  <!-- <p>Search Result <span>(1)</span></p> -->
-                </div>
                 <div
                   class="mb-2"
                   v-for="row in resultQuery"
@@ -117,12 +113,13 @@ export default {
   computed: {
     resultQuery() {
       if (this.searchQuery) {
-        return this.search.filter((item) => {
-          return this.searchQuery
-            .toLowerCase()
-            .split(" ")
-            .every((v) => item.details.name.toLowerCase().includes(v));
-        });
+        const value= this.searchQuery.charAt(0).toUpperCase() + this.searchQuery.slice(1);
+        return this.search.filter(function(item){
+          return item.email.indexOf(value) > -1 ||
+                item.details.name.indexOf(value) > -1 ||
+                item.details.id_card_number.indexOf(value) > -1 ||
+                item.username.indexOf(value) > -1
+        })
       } else {
         return this.search;
       }
