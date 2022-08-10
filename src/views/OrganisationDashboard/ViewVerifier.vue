@@ -128,12 +128,16 @@
           <form @submit.prevent="assignEvent(this.selectedVerifier.id)">
             <div class="row">
               <div class="col-lg-12">
-                <input style="height: 0.8rem"
-                  type="text"
-                  v-model="unique_id"
-                  class="input"
-                  placeholder="Event ID"
-                />
+                <select style="height: 0.8rem" class="input" v-model="unique_id">
+                  <option>Choose Event ID</option>
+                  <option
+                    v-for="uniqueid in event_id"
+                    :key="uniqueid.id"
+                    :value="uniqueid.unique_id"
+                  >
+                    {{ uniqueid.unique_id }}
+                  </option>
+                </select>
               </div>
               <div class="col-lg-12 text-center">
                 <button
@@ -172,11 +176,32 @@ export default {
       pagination: {},
       myVerifiers: [],
       selectedVerifier: {},
-      unique_id: ""
+      unique_id: "Choose Event ID",
+      event_id: [],
     };
   },
 
   methods: {
+    loadAllEventID() {
+      axios
+        .get("events/mine/eventby/uniqueid", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.event_id = response.data.data;
+        })
+        .catch((error) => {
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+        });
+    },
+
     closeModal() {
       document.getElementById("close").click();
     },
@@ -273,6 +298,7 @@ export default {
   },
 
   mounted() {
+    this.loadAllEventID();
     this.Verifiers();
     window.scrollTo(0, 0);
   },

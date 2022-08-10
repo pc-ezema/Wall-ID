@@ -35,21 +35,35 @@
             <h5>Send Invitation</h5>
           </div>
           <div class="col-lg-11 mt-3">
-            <form>
+            <form @submit.prevent="sendInvites()">
               <div class="row justify-content-end">
                 <!--Event ID-->
                 <div class="col-lg-6 mb-3">
                   <label>Event ID</label>
-                  <input
-                    type="text"
-                    class="input"
-                    placeholder="Wall ID username"
-                  />
+                  <select class="input" v-model="invite.event_id">
+                    <option>Choose Event ID</option>
+                    <option
+                      v-for="uniqueid in event_id"
+                      :key="uniqueid.id"
+                      :value="uniqueid.unique_id"
+                    >
+                      {{ uniqueid.unique_id }}
+                    </option>
+                  </select>
                 </div>
                 <!--Receiver username-->
                 <div class="col-lg-6 mb-3">
                   <label>Receiver username</label>
-                  <input type="text" class="input" placeholder="Holders role" />
+                  <select class="input" v-model="invite.username">
+                    <option>Choose Username</option>
+                    <option
+                      v-for="user in username"
+                      :key="user.id"
+                      :value="user.username"
+                    >
+                      {{ user.username }}
+                    </option>
+                  </select>
                 </div>
                 <!--Button-->
                 <div class="col-lg-2 text-center mb-3">
@@ -135,9 +149,134 @@
 import DashboardSidebar from "./DashboardSidebar.vue";
 import DashboardNavbar from "./DashboardNavbar.vue";
 import DashboardFooter from "./DashboardFooter.vue";
+import axios from "axios";
+
 export default {
   components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+  data() {
+    return {
+      event_id: [],
+      username: [],
+      invites: [],
+      invite: {
+        event_id: "Choose Event ID",
+        username: "Choose Username",
+      },
+    };
+  },
+
+  methods: {
+    loadAllInvites() {
+      axios
+        .get("events/invites", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.invites = response.data.data;
+        })
+        .catch((error) => {
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+        });
+    },
+
+    loadAllEventID() {
+      axios
+        .get("events/mine/eventby/uniqueid", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.event_id = response.data.data;
+        })
+        .catch((error) => {
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+        });
+    },
+
+    loadAllUsername() {
+      axios
+        .get("users/all/user", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.username = response.data.data;
+        })
+        .catch((error) => {
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+        });
+    },
+
+    async sendInvites() {
+      this.$Progress.start();
+
+      if (
+        this.invite.event_id == "" ||
+        this.invite.username == ""
+      ) {
+        this.$notify({
+          type: "error",
+          title: "Please enter all the needed fields.",
+          duration: 5000,
+          speed: 1000,
+        });
+        this.$Progress.finish();
+        return;
+      } else {
+        this.$wait.start("processing");
+
+        await axios
+          .post("events/invite", {
+            event_id: this.invite.event_id,
+            username: this.invite.username,
+          })
+          .then((response) => {
+            this.$notify({
+              type: "success",
+              title: response.data.message,
+              duration: 5000,
+              speed: 1000,
+            });
+            this.invite.event_id = null;
+            this.invite.username = null;
+            this.$Progress.finish();
+          })
+          .catch((error) => {
+            this.$notify({
+              type: "error",
+              title: error.response.data.message,
+              duration: 5000,
+              speed: 1000,
+            });
+            this.$Progress.fail();
+          });
+      }
+    },
+  },
+
   mounted() {
+    this.loadAllInvites();
+    this.loadAllEventID();
+    this.loadAllUsername();
     window.scrollTo(0, 0);
   },
 };

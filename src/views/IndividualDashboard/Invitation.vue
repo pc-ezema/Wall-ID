@@ -40,27 +40,30 @@
                 <!--Event ID-->
                 <div class="col-lg-6 mb-3">
                   <label>Event ID</label>
-                  <input
-                    type="text"
-                    class="input"
-                    v-model="invite.event_id"
-                    placeholder="Event ID"
-                  />
-                  <!-- <select class="input" v-model="invite.event_id">
-                    <option hidden>Choose Event ID</option>
+                  <select class="input" v-model="invite.event_id">
+                    <option>Choose Event ID</option>
                     <option
                       v-for="uniqueid in event_id"
                       :key="uniqueid.id"
-                      :value="uniqueid.id"
+                      :value="uniqueid.unique_id"
                     >
                       {{ uniqueid.unique_id }}
                     </option>
-                  </select> -->
+                  </select>
                 </div>
                 <!--Receiver username-->
                 <div class="col-lg-6 mb-3">
                   <label>Receiver username</label>
-                  <input type="text" class="input" v-model="invite.username" placeholder="Enter Username" />
+                  <select class="input" v-model="invite.username">
+                    <option>Choose Username</option>
+                    <option
+                      v-for="user in username"
+                      :key="user.id"
+                      :value="user.username"
+                    >
+                      {{ user.username }}
+                    </option>
+                  </select>
                 </div>
                 <!--Button-->
                 <div class="col-lg-2 text-center mb-3">
@@ -153,9 +156,11 @@ export default {
 
   data() {
     return {
+      event_id: [],
+      username: [],
       invite: {
-        event_id: [],
-        username: "",
+        event_id: "Choose Event ID",
+        username: "Choose Username",
       },
     };
   },
@@ -170,7 +175,26 @@ export default {
         })
         .then((response) => {
           this.event_id = response.data.data;
-          console.log(response.data.data);
+        })
+        .catch((error) => {
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+        });
+    },
+
+    loadAllUsername() {
+      axios
+        .get("users/all/user", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.username = response.data.data;
         })
         .catch((error) => {
           this.$notify({
@@ -229,11 +253,9 @@ export default {
     },
   },
 
-  // created() {
-  //   this.loadAllEventID();
-  // },
-
   mounted() {
+    this.loadAllEventID();
+    this.loadAllUsername();
     window.scrollTo(0, 0);
   },
 };
