@@ -83,7 +83,6 @@ import DashboardSidebar from "./DashboardSidebar.vue";
 import DashboardNavbar from "./DashboardNavbar.vue";
 import DashboardFooter from "./DashboardFooter.vue";
 
-import { mapGetters } from "vuex";
 import axios from "axios";
 
 export default {
@@ -91,11 +90,8 @@ export default {
   data() {
     return {
       baseURL: axios.defaults.baseURL.slice(0, -5),
+      user: this.$store.state.user || null,
     };
-  },
-
-  computed: {
-    ...mapGetters(["user"]),
   },
 
   mounted() {

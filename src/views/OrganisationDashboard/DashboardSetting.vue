@@ -165,7 +165,7 @@
 import DashboardSidebar from "./DashboardSidebar.vue";
 import DashboardNavbar from "./DashboardNavbar.vue";
 import DashboardFooter from "./DashboardFooter.vue";
-import { mapGetters } from "vuex";
+
 import axios from "axios";
 
 export default {
@@ -179,11 +179,8 @@ export default {
       avatar: "",
       new_password: null,
       new_password_confirmation: null,
+      user: this.$store.state.user || null,
     };
-  },
-
-  computed: {
-    ...mapGetters(["user"]),
   },
 
   methods: {

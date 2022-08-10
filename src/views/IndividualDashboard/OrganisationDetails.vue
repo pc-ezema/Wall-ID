@@ -35,7 +35,14 @@
             <div class="row showOrgDtl">
               <div class="col-lg-12 text-center">
                 <div class="orgPicture">
-                  <img src="@/assets/img/dp.jpg" />
+                  <img
+                  v-if="organization.details.image"
+                    v-bind:src="this.baseURL + organization.details.image"
+                    alt="Profile Picture"
+                  />
+                  <div v-else class="profilePicture">
+                      {{organization.details.name.substring(0, 1)}}
+                  </div>
                 </div>
               </div>
               <div class="col-lg-12">
@@ -96,6 +103,8 @@ export default {
   data() {
     return {
       organization: {},
+      baseURL: axios.defaults.baseURL.slice(0, -5),
+      user: this.$store.state.user || null,
     };
   },
 

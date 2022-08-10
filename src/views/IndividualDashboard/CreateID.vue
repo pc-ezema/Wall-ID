@@ -145,7 +145,7 @@ export default {
           });
           setTimeout(() => {
             this.$router.push("/individual-dashboard/pending-cards");
-          }, 800);
+          }, 1000);
         })
         .catch((error) => {
           console.log(error);

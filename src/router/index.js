@@ -83,6 +83,7 @@ import OrganisationVerification from "../views/OrganisationDashboard/Verificatio
 import OrganisationCreateVerifier from "../views/OrganisationDashboard/CreateVerifier.vue";
 import OrganisationAddVerifier from "../views/OrganisationDashboard/AddVerifier.vue";
 import OrganisationViewVerifier from "../views/OrganisationDashboard/ViewVerifier.vue";
+import OrganisationEventVerifier from "../views/OrganisationDashboard/EventVerifier.vue";
 import OrganisationPendingRequest from "../views/OrganisationDashboard/PendingRequest.vue";
 // my wallet
 /*
@@ -732,6 +733,15 @@ const routes = [
     component: OrganisationViewVerifier,
     meta: {
       title: "View Verifier - Orgainsation Dashboard | WALLID",
+      middleware: auth,
+    },
+  },
+  {
+    path: "/organisation-dashboard/event-verifier",
+    name: "OrganisationEventVerifier",
+    component: OrganisationEventVerifier,
+    meta: {
+      title: "Event Verifier - Orgainsation Dashboard | WALLID",
       middleware: auth,
     },
   },

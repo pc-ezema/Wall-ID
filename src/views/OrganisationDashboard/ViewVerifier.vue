@@ -48,6 +48,7 @@
                           <th scope="col">Role</th>
                           <th scope="col">Request Date</th>
                           <th scope="col">Status</th>
+                          <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody v-if="!myVerifiers || !myVerifiers.length">
@@ -70,6 +71,16 @@
                           <td>
                             <a class="tbl-btn btn-enable">{{ row.status }}</a>
                           </td>
+                          <td>
+                            <button
+                              data-toggle="modal"
+                              data-target="#modalView"
+                              @click="sendInfo(row)"
+                              class="tbl-btn btn-enable"
+                            >
+                              Assign Event
+                            </button>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -90,13 +101,69 @@
       <i class="ti-angle-up"></i>
     </a>
   </div>
+
+  <div
+    class="modal fade"
+    id="modalView"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content viewCardModal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Assign Event</h5>
+          <button
+            type="button"
+            class="close"
+            id="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form @submit.prevent="assignEvent(this.selectedVerifier.id)">
+            <div class="row">
+              <div class="col-lg-12">
+                <input style="height: 0.8rem"
+                  type="text"
+                  v-model="unique_id"
+                  class="input"
+                  placeholder="Event ID"
+                />
+              </div>
+              <div class="col-lg-12 text-center">
+                <button
+                  style="width: 50%; background-color: #8604e2 !important;"
+                  v-if="$wait.is('processing')"
+                  type="submit"
+                  class="tbl-btn btn-enable"
+                >
+                  Assigning Event...
+                </button>
+                <button v-else type="submit" class="tbl-btn btn-enable" style="width: 50%; background-color: #8604e2 !important;">
+                  Assign Event
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
+<style scoped src="@/assets/css/styleDashboardSupport.css"></style>
+
 <script>
 import DashboardSidebar from "./DashboardSidebar.vue";
 import DashboardNavbar from "./DashboardNavbar.vue";
 import DashboardFooter from "./DashboardFooter.vue";
+
 import axios from "axios";
 export default {
   components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
@@ -104,10 +171,16 @@ export default {
     return {
       pagination: {},
       myVerifiers: [],
+      selectedVerifier: {},
+      unique_id: ""
     };
   },
 
   methods: {
+    closeModal() {
+      document.getElementById("close").click();
+    },
+
     prepPagination(data) {
       this.pagination = {
         data: data.data,
@@ -137,13 +210,70 @@ export default {
           console.log(error);
         });
     },
-  },
 
-  created() {
-    this.Verifiers();
+    sendInfo(row) {
+      this.selectedVerifier = row
+    },
+
+    async assignEvent(id)
+    {
+      this.$wait.start("processing");
+      this.$Progress.start();
+
+      await axios
+        .post(
+          "verificaton/organization/assign/event/" + id,
+          {
+            event_id: this.unique_id
+          },
+
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.$wait.end("processing");
+          this.$Progress.finish();
+          this.$notify({
+            type: "success",
+            title: response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+          this.closeModal();
+        })
+        .catch((error) => {
+          if (error.response.status == 422) {
+            this.$wait.end("processing");
+            this.$Progress.fail();
+            for (let i in error.response.data.error) {
+              this.$notify({
+                type: "error",
+                title: error.response.data.error[i][0],
+                duration: 5000,
+                speed: 1000,
+              });
+            }
+            this.closeModal();
+          } else {
+            this.$wait.end("processing");
+            this.$Progress.fail();
+            this.$notify({
+              type: "error",
+              title: error.response.data.message,
+              duration: 5000,
+              speed: 1000,
+            });
+            this.closeModal();
+          }
+        });
+    }
   },
 
   mounted() {
+    this.Verifiers();
     window.scrollTo(0, 0);
   },
 };

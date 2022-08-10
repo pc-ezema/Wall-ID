@@ -90,7 +90,6 @@
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
 <script>
-import { mapGetters } from "vuex";
 import axios from "axios";
 
 export default {
@@ -99,10 +98,6 @@ export default {
       baseURL: axios.defaults.baseURL.slice(0, -5),
       user: this.$store.state.user,
     };
-  },
-
-  computed: {
-    //...mapGetters(['user'])
   },
 
   methods: {

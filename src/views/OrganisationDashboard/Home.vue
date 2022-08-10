@@ -140,7 +140,7 @@
                       </div>
                     </div>
                     <div class="crm_body">
-                      <h4>{{ dashboardstats.myidCard }}</h4>
+                      <h4>{{ dashboardstats.createdidCard }}</h4>
                       <p>ID Cards</p>
                     </div>
                   </div>
@@ -409,7 +409,6 @@ export default {
 
   mounted() {
     this.getDashboardStats();
-    console.log(this.getDashboardStats);
     window.scrollTo(0, 0);
 
     const ctx = document.getElementById("myChart").getContext("2d");

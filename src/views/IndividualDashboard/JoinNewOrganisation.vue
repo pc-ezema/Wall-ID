@@ -61,7 +61,14 @@
                     <div class="resultDivDisplay">
                       <div class="resultPicture">
                         <div class="pictureDiv">
-                          <img src="@/assets/img/dp.jpg" />
+                          <img
+                            v-if="row.details.image"
+                            v-bind:src="this.baseURL + row.details.image"
+                            alt="Profile Picture"
+                          />
+                          <div v-else class="profilePicture">
+                              {{row.details.name.substring(0, 1)}}
+                          </div>
                         </div>
                       </div>
                       <div class="resultContent">
@@ -107,6 +114,8 @@ export default {
       pagination: "",
       search: [],
       searchQuery: null,
+      baseURL: axios.defaults.baseURL.slice(0, -5),
+      user: this.$store.state.user || null,
     };
   },
 

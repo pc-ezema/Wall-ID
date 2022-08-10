@@ -270,7 +270,7 @@
                             <button
                               class="viewCardBtn"
                               data-toggle="modal"
-                              data-target="#modalView"
+                              data-target="#DisactivateView"
                               @click="sendInfo(row)"
                             >
                               View Card
@@ -396,6 +396,102 @@
                   <img
                     v-bind:src="this.baseURL + this.selectedCard.cardLogo"
                     />{{ this.selectedCard.organization }}
+                </div>
+              </div>
+              <div class="profile-row" :style="{'background-color': this.selectedCard.background_color, 'filter': 'brightness(90%)'}">
+                <div class="dp">
+                  <div class="dp-arc-outer"></div>
+                  <div class="dp-arc-inner"></div>
+                  <img
+                    v-bind:src="this.baseURL + this.selectedCard.cardImage"
+                  />
+                </div>
+                <div class="desc" style="padding-top: initial">
+                  <div
+                    :style="{
+                      color: this.selectedCard.text_color + '!important',
+                    }"
+                  >
+                    <span>Holder's Name</span>
+                    <p
+                      :style="{
+                        'font-size': '1.1rem !important',
+                        color: this.selectedCard.text_color + '!important',
+                      }"
+                    >
+                      {{ this.selectedCard.name }}
+                    </p>
+                    <span>Job Role</span>
+                    <p
+                      :style="{
+                        color: this.selectedCard.text_color + '!important',
+                      }"
+                    >
+                      {{ this.selectedCard.role }}
+                    </p>
+                    <span>ID No</span>
+                    <p
+                      :style="{
+                        color: this.selectedCard.text_color + '!important',
+                      }"
+                    >
+                      {{ this.selectedCard.id_card_number }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="id-card-footer" :style="{'background-color': this.selectedCard.background_color}">
+                <p
+                  :style="{
+                    color: this.selectedCard.text_color + '!important',
+                  }"
+                >
+                  Join Date: {{ this.selectedCard.issued_date }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="DisactivateView"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content viewCardModal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">ID Card Deactivated</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="id-card-wrapper">
+            <div
+              class="id-card"
+              :style="{
+                'background-color': this.selectedCard.background_color,
+              }"
+            >
+            <div class="centered" :style="{'background-color': this.selectedCard.background_color}">
+              <p>Deactivated</p>
+              </div>
+              <div class="id-card-header" :style="{'background-color': this.selectedCard.background_color}">
+                <div class="header" :style="{color: this.selectedCard.text_color + '!important'}">
+                  <img
+                    v-bind:src="this.baseURL + this.selectedCard.cardLogo" />{{ this.selectedCard.organization }}
                 </div>
               </div>
               <div class="profile-row" :style="{'background-color': this.selectedCard.background_color, 'filter': 'brightness(90%)'}">
@@ -761,6 +857,35 @@ export default {
   max-width: 30em;
   margin: auto;
   /* background-color: red; */
+}
+
+.centered {
+  position: absolute;
+  opacity: 0.5;
+  z-index: 99999;
+  height: 15em;
+  flex-basis: 100%;
+  max-width: 30em;
+  width: 100%;
+  margin: auto;
+  /* transform: rotate(-20deg); */
+}
+
+.centered p {
+  position: absolute;
+  top: 42%;
+  left: 3%;
+  /* transform: translate(-50%, -50%); */
+  font-size: 80px;
+  transform: rotate(-20deg);
+  color: #000;
+}
+
+@media only screen and (max-width: 767px) {
+  .centered p {
+    top: 45%;
+    font-size: 60px;
+  }
 }
 
 .id-card-header {

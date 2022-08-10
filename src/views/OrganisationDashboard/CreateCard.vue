@@ -193,7 +193,7 @@ export default {
           });
           setTimeout(() => {
             this.$router.push("/organisation-dashboard/member-id");
-          }, 6000);
+          }, 1000);
         })
         .catch((error) => {
           console.log(error);

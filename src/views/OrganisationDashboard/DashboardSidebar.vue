@@ -62,6 +62,13 @@
           </li>
           <li>
             <router-link
+              to="/organisation-dashboard/add-card"
+              class="menuRouter"
+              ><a>Add ID Card</a></router-link
+            >
+          </li>
+          <li>
+            <router-link
               to="/organisation-dashboard/member-id"
               class="menuRouter"
               ><a>Member ID</a></router-link
@@ -206,6 +213,13 @@
           </li>
           <li>
             <router-link
+              to="/organisation-dashboard/event-verifier"
+              class="menuRouter"
+              ><a>Event Verifier</a></router-link
+            >
+          </li>
+          <li>
+            <router-link
               to="/organisation-dashboard/pending-request"
               class="menuRouter"
               ><a>Pending Request</a></router-link
@@ -214,25 +228,6 @@
         </ul>
       </li>
       <!--My Wallet-->
-      <!-- <li class="">
-                <router-link to="#" class="has-arrow menuRouter">
-                    <a aria-expanded="false">
-                        <div class="nav_icon_small">
-                            <img src="@/assets/img/dashAssets/menu-wallet.png">
-                        </div>
-                        <div class="nav_title">
-                            <span>My Wallet</span>
-                        </div>
-                    </a>
-                </router-link>
-               <ul>
-                  <li><router-link to="/organisation-dashboard/my-wallet" class="menuRouter"><a>Overview</a></router-link></li>
-                  <li><router-link to="/organisation-dashboard/add-card" class="menuRouter"><a>Add Card</a></router-link></li>
-                  <li><router-link to="/organisation-dashboard/id-cards" class="menuRouter"><a>ID Cards</a></router-link></li>
-                  <li><router-link to="/organisation-dashboard/membership-cards" class="menuRouter"><a>Membership Cards</a></router-link></li>
-                  <li><router-link to="/organisation-dashboard/tickets" class="menuRouter"><a>Tickets</a></router-link></li>
-               </ul>
-           </li> -->
       <!--Log Out-->
       <li class="">
         <router-link to="#" class="menuRouter">
