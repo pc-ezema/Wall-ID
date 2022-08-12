@@ -42,7 +42,7 @@
                       type="text"
                       v-model="searchQuery"
                       class="input searchInput"
-                      placeholder="Search for organisation"
+                      placeholder="Search for organisation with Email, Name, Username and WallID Number"
                     />
                     <!-- <button type="submit" class="searchButton"><i class="bi bi-search"></i></button> -->
                   </div>
