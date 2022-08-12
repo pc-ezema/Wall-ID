@@ -129,12 +129,13 @@ export default {
   computed: {
     resultQuery() {
       if (this.searchQuery) {
-        return this.search.filter((item) => {
-          return this.searchQuery
-            .toLowerCase()
-            .split(" ")
-            .every((v) => item.details.name.toLowerCase().includes(v));
-        });
+        const value= this.searchQuery.charAt(0).toUpperCase() + this.searchQuery.slice(1);
+        return this.search.filter(function(row){
+          return row.email.indexOf(value) > -1 ||
+                row.details.name.indexOf(value) > -1 ||
+                row.details.id_card_number.indexOf(value) > -1 ||
+                row.username.indexOf(value) > -1
+        })
       } else {
         return this.search;
       }
