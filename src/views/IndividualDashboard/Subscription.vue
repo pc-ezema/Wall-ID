@@ -74,7 +74,16 @@
                         <tr v-for="(row, index) in active" v-bind:key="index">
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.subscription_plan.name }}</td>
-                          <td>{{ row.subscription_plan.validity }} days</td>
+                          <td>
+                            <div v-if="row.subscription_plan.validity == '1'">Daily</div>
+                            <div v-if="row.subscription_plan.validity == '7'">Weekly</div>
+                            <div v-if="row.subscription_plan.validity == '30'">Monthly</div>
+                            <div v-if="row.subscription_plan.validity == '90'">Quarterly</div>
+                            <div v-if="row.subscription_plan.validity == '180'">Semi Annually</div>
+                            <div v-if="row.subscription_plan.validity == '365'">Annually</div>
+                            <div v-if="row.subscription_plan.validity == '730'">Biennially</div>
+                            <div v-if="row.subscription_plan.validity == '1095'">Triennially</div>
+                          </td>
                           <td>
                             {{ new Date(row.created_at).toLocaleString() }}
                           </td>

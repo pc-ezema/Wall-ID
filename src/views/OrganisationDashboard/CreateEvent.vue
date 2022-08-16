@@ -69,7 +69,7 @@
                 <div class="col-lg-6 mb-3">
                   <label>Event Category</label>
                   <select class="input" v-model="form.category_id">
-                    <option hidden>Choose Event Category</option>
+                    <option>Choose Event Category</option>
                     <option
                       v-for="category in categories"
                       :key="category.id"
@@ -86,7 +86,7 @@
                 <div class="col-lg-6 mb-3">
                   <label>Event Type</label>
                   <select class="input" v-model="form.type">
-                    <option hidden>Choose Event Visibility</option>
+                    <option>Choose Event Visibility</option>
                     <option value="open">Open</option>
                     <option value="semi-open">Semi-opened</option>
                     <option value="close">Closed</option>

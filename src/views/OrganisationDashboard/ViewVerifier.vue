@@ -53,7 +53,7 @@
                       </thead>
                       <tbody v-if="!myVerifiers || !myVerifiers.length">
                         <tr>
-                          <td class="align-enter text-dark font-13" colspan="6">
+                          <td class="align-enter text-dark font-13" colspan="7">
                             No Verifiers.
                           </td>
                         </tr>
@@ -124,11 +124,11 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body eventCategoryForm">
           <form @submit.prevent="assignEvent(this.selectedVerifier.id)">
             <div class="row">
               <div class="col-lg-12">
-                <select style="height: 0.8rem" class="input" v-model="unique_id">
+                <select class="input" v-model="unique_id">
                   <option>Choose Event ID</option>
                   <option
                     v-for="uniqueid in event_id"

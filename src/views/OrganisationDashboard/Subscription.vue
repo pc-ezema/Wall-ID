@@ -76,7 +76,16 @@
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.name }}</td>
                           <td>{{ row.price }}</td>
-                          <td>{{ row.validity }}days</td>
+                          <td>
+                            <div v-if="row.validity == '1'">Daily</div>
+                            <div v-if="row.validity == '7'">Weekly</div>
+                            <div v-if="row.validity == '30'">Monthly</div>
+                            <div v-if="row.validity == '90'">Quarterly</div>
+                            <div v-if="row.validity == '180'">Semi Annually</div>
+                            <div v-if="row.validity == '365'">Annually</div>
+                            <div v-if="row.validity == '730'">Biennially</div>
+                            <div v-if="row.validity == '1095'">Triennially</div>
+                          </td>
                           <td>{{ row.description }}</td>
                           <td>
                             <div class="action_btns d-flex">
@@ -176,12 +185,17 @@
                 ></textarea>
               </div>
               <div class="col-lg-12">
-                <input
-                  type="number"
-                  v-model="form.validity"
-                  class="input"
-                  placeholder="Subscription Plan Validity (days)"
-                />
+                <select class="input" v-model="form.validity">
+                    <option>Choose Subscription Plan Validity</option>
+                    <option value="1">Daily</option>
+                    <option value="7">Weekly</option>
+                    <option value="30">Monthly</option>
+                    <option value="90">Quarterly</option>
+                    <option value="180">Semi Annually</option>
+                    <option value="365">Annually</option>
+                    <option value="730">Biennially</option>
+                    <option value="1095">Triennially</option>
+                </select>
               </div>
               <div class="col-lg-12 text-center">
                 <button
@@ -257,12 +271,25 @@
                 ></textarea>
               </div>
               <div class="col-lg-12">
-                <input
-                  type="number"
-                  v-model="selectedSusbscriptionPlan.validity"
-                  class="input"
-                  placeholder="Subscription Plan Validity (days)"
-                />
+                <select class="input" v-model="selectedSusbscriptionPlan.validity">
+                    <option v-if="selectedSusbscriptionPlan.validity == '1'" :value="selectedSusbscriptionPlan.validity">Daily</option>
+                    <option v-if="selectedSusbscriptionPlan.validity == '7'" :value="selectedSusbscriptionPlan.validity">Weekly</option>
+                    <option v-if="selectedSusbscriptionPlan.validity == '30'" :value="selectedSusbscriptionPlan.validity">Monthly</option>
+                    <option v-if="selectedSusbscriptionPlan.validity == '90'" :value="selectedSusbscriptionPlan.validity">Quarterly</option>
+                    <option v-if="selectedSusbscriptionPlan.validity == '180'" :value="selectedSusbscriptionPlan.validity">Semi Annually</option>
+                    <option v-if="selectedSusbscriptionPlan.validity == '365'" :value="selectedSusbscriptionPlan.validity">Annually</option>
+                    <option v-if="selectedSusbscriptionPlan.validity == '730'" :value="selectedSusbscriptionPlan.validity">Biennially</option>
+                    <option v-if="selectedSusbscriptionPlan.validity == '1095'" :value="selectedSusbscriptionPlan.validity">Triennially</option>
+                    <option>Choose Subscription Plan Validity</option>
+                    <option value="1">Daily</option>
+                    <option value="7">Weekly</option>
+                    <option value="30">Monthly</option>
+                    <option value="90">Quarterly</option>
+                    <option value="180">Semi Annually</option>
+                    <option value="365">Annually</option>
+                    <option value="730">Biennially</option>
+                    <option value="1095">Triennially</option>
+                </select>
               </div>
               <div class="col-lg-12 text-center">
                 <button
@@ -351,7 +378,7 @@ export default {
         name: null,
         price: null,
         description: null,
-        validity: null,
+        validity: "Choose Subscription Plan Validity",
       },
       selectedSusbscriptionPlan: {
         id: null,
@@ -477,7 +504,9 @@ export default {
       this.selectedSusbscriptionPlan.validity = row.validity;
     },
 
-    async updateSubscriptionPlan() {
+    async updateSubscriptionPlan() 
+    {
+      
       this.$wait.start("processing");
       this.$Progress.start();
 
