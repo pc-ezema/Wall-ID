@@ -95,6 +95,16 @@
                               >
                                 <i class="bi bi-credit-card"></i>
                               </a>
+
+                              <a
+                                href="javascript:void(0)"
+                                @click="makePayment(row.id)"
+                                title="Renew Subscription"
+                                class="action_btn"
+                                style="color: #fff !important; background: #67349d !important;"
+                              >
+                                <i class="bi bi-credit-card"></i>
+                              </a>
                             </div>
                           </td>
                         </tr>
@@ -118,6 +128,7 @@
     </a>
   </div>
   <!--Box 1-->
+
   <div
     class="modal fade"
     id="modalView"
@@ -217,6 +228,37 @@ export default {
 
     showPaymentDetails(data) {
       this.payment_details = data;
+    },
+
+    async makePayment(id) {
+      this.$Progress.start();
+
+      await axios
+        .post(
+          "individuals/organizations/subscription/pay",
+          {
+            subscription_plan_id: id,
+          },
+
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.$Progress.finish();
+          window.location.href = response.data.data.link;
+        })
+        .catch((error) => {
+          this.$Progress.fail();
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+        });
     },
   },
 
