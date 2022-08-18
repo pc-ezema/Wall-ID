@@ -30,7 +30,7 @@
                 <a>
                   <h5>Total Users</h5>
                 </a>
-                <p>1,100</p>
+                <p>{{ dashboardstats.totalUser }}</p>
                 <p class="clear"></p>
               </router-link>
             </div>
@@ -41,7 +41,7 @@
                 <a>
                   <h5>Total Individuals</h5>
                 </a>
-                <p>600</p>
+                <p>{{ dashboardstats.totalIndividualActive }}</p>
                 <p class="clear"></p>
               </router-link>
             </div>
@@ -52,7 +52,7 @@
                 <a>
                   <h5>Total Organisations</h5>
                 </a>
-                <p>500</p>
+                <p>{{ dashboardstats.totalOrganizationActive }}</p>
                 <p class="clear"></p>
               </router-link>
             </div>
@@ -63,7 +63,7 @@
                 <a>
                   <h5>Number of Events</h5>
                 </a>
-                <p>356</p>
+                <p>{{ dashboardstats.totalOrganizationActive }}</p>
                 <p class="clear"></p>
               </router-link>
             </div>
@@ -74,7 +74,7 @@
           <div class="col-xl-12 mb-4">
             <div class="secForm tableAdminHome">
               <div class="col-lg-12 secFormHead">
-                <h5>Latest Users</h5>
+                <h5>Latest Individual Users</h5>
               </div>
               <div class="col-lg-12 mt-3">
                 <div class="white_card card_height_100 mb_30">
@@ -86,17 +86,52 @@
                             <tr>
                               <th scope="col">S/N</th>
                               <th scope="col">Name</th>
-                              <th scope="col">Email</th>
                               <th scope="col">Date Created</th>
                               <th scope="col">Status</th>
                             </tr>
                           </thead>
                           <tbody>
+                            <tr v-for="(row, index) in dashboardstats.firstFiveIndividual" v-bind:key="index">
+                              <th scope="row">{{ index + 1 }}</th>
+                              <td>{{ row.firstname }} {{ row.lastname }}</td>
+                              <td>{{ getDate(row.created_at) }}</td>
+                              <td>
+                                <a href="#" class="status_btn">Active</a>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-12 mb-4">
+            <div class="secForm tableAdminHome">
+              <div class="col-lg-12 secFormHead">
+                <h5>Latest Organization Users</h5>
+              </div>
+              <div class="col-lg-12 mt-3">
+                <div class="white_card card_height_100 mb_30">
+                  <div class="white_card_body">
+                    <div class="QA_section">
+                      <div class="QA_table mb_30">
+                        <table class="table lms_table_active">
+                          <thead>
                             <tr>
-                              <th scope="row">1</th>
-                              <td>Felix Maxwell</td>
-                              <td>felixmaxy@me.com</td>
-                              <td>2022-03-15</td>
+                              <th scope="col">S/N</th>
+                              <th scope="col">Name</th>
+                              <th scope="col">Date Created</th>
+                              <th scope="col">Status</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr v-for="(row, index) in dashboardstats.firstFiveOrganization" v-bind:key="index">
+                              <th scope="row">{{ index + 1 }}</th>
+                              <td>{{ row.name }}</td>
+                              <td>{{ getDate(row.created_at) }}</td>
                               <td>
                                 <a href="#" class="status_btn">Active</a>
                               </td>
@@ -140,9 +175,58 @@
 import DashboardSidebar from "./DashboardSidebar.vue";
 import DashboardNavbar from "./DashboardNavbar.vue";
 import DashboardFooter from "./DashboardFooter.vue";
+import axios from "axios";
+
 export default {
   components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+  
+  data() {
+    return {
+      dashboardstats: {},
+      user: this.$store.state.user,
+    };
+  },
+
+  methods: {
+    getDate(value) {
+      return new Date(value).toLocaleDateString("en-US");
+    },
+
+    getTime() {
+      const d = new Date();
+      const time = d.getHours();
+
+      if (time < 12) {
+        return "Good Morning";
+      } else if (time >= 12 && time <= 17) {
+        return "Good Afternoon";
+      } else if (time >= 17 && time <= 24) {
+        return "Good Evening";
+      }
+    },
+
+    getDashboardStats() {
+      axios
+        .get("admin/mobileStats", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.dashboardstats = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    getUser() {
+      this.user = this.$store.state.user;
+    },
+  },
+
   mounted() {
+    this.getDashboardStats();
     window.scrollTo(0, 0);
 
     const ctx = document.getElementById("myChart").getContext("2d");

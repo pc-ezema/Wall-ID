@@ -293,10 +293,6 @@ export default {
     },
   },
 
-  created() {
-    this.loadAllActiveUsers();
-  },
-
   mounted() {
     this.loadAllActiveUsers();
 

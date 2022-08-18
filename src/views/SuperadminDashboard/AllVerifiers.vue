@@ -41,11 +41,6 @@
               style="width: 100%"
               placeholder="Search..."
             />
-            <!-- <select>
-                            <option hidden>Filter</option>
-                            <option>Activated</option>
-                            <option>Suspended</option>
-                        </select> -->
           </div>
           <div class="col-lg-11 mt-3">
             <div class="white_card card_height_100 mb_30">
@@ -172,11 +167,7 @@ export default {
     },
   },
 
-  created() {
-    this.loadAllVerifiers();
-  },
-
-  mounted() {
+mounted() {
     this.loadAllVerifiers();
 
     window.scrollTo(0, 0);

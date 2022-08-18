@@ -172,10 +172,6 @@ export default {
     },
   },
 
-  created() {
-    this.loadAllMembers();
-  },
-
   mounted() {
     this.loadAllMembers();
 

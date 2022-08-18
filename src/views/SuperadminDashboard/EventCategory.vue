@@ -532,10 +532,6 @@ export default {
     },
   },
 
-  created() {
-    this.loadAllEventCategory();
-  },
-
   mounted() {
     this.loadAllEventCategory();
 

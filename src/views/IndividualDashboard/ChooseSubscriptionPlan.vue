@@ -53,7 +53,14 @@
                           </div>
                           <div class="col-lg-6">
                             <p>Period</p>
-                            <h5>{{ row.validity }} days</h5>
+                            <div v-if="row.validity == '1'"><h5>Daily</h5></div>
+                            <div v-if="row.validity == '7'"><h5>Weekly</h5></div>
+                            <div v-if="row.validity == '30'"><h5>Monthly</h5></div>
+                            <div v-if="row.validity == '90'"><h5>Quarterly</h5></div>
+                            <div v-if="row.validity == '180'"><h5>Semi Annually</h5></div>
+                            <div v-if="row.validity == '365'"><h5>Annually</h5></div>
+                            <div v-if="row.validity == '730'"><h5>Biennially</h5></div>
+                            <div v-if="row.validity == '1095'"><h5>Triennially</h5></div>
                           </div>
                             <div class="col-12">
                                 <button

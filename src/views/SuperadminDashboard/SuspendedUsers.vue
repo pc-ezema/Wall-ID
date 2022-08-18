@@ -290,10 +290,6 @@ export default {
     },
   },
 
-  created() {
-    this.loadAllSuspendedUsers();
-  },
-
   mounted() {
     this.loadAllSuspendedUsers();
     window.scrollTo(0, 0);

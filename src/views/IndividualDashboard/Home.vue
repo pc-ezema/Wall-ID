@@ -352,19 +352,14 @@ import DashboardNavbar from "./DashboardNavbar.vue";
 import DashboardFooter from "./DashboardFooter.vue";
 import axios from "axios";
 
-import { mapGetters } from "vuex";
-
 export default {
   components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
 
   data() {
     return {
       dashboardstats: {},
+      user: this.$store.state.user,
     };
-  },
-
-  computed: {
-    ...mapGetters(["user"]),
   },
 
   methods: {
@@ -406,6 +401,10 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+
+    getUser() {
+      this.user = this.$store.state.user;
     },
   },
 

@@ -215,7 +215,9 @@ import axios from "axios";
 
 export default {
   components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+  
   mounted() {
+    this.loadMyIdCard();
     window.scrollTo(0, 0);
   },
 
@@ -281,9 +283,6 @@ export default {
     },
   },
 
-  created() {
-    this.loadMyIdCard();
-  },
 };
 </script>
 
