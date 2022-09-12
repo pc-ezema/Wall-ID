@@ -86,7 +86,7 @@
                             </button>
                           </td>
                           <td>
-                            {{ new Date(row.issued_date).toLocaleString() }}
+                            {{ getDate(row.created_at) }}
                           </td>
                           <td>
                             <a class="a-approved">{{ row.status }}</a>
@@ -150,7 +150,7 @@
                             </button>
                           </td>
                           <td>
-                            {{ new Date(row.issued_date).toLocaleString() }}
+                            {{ getDate(row.created_at) }}
                           </td>
                           <td>
                             <a class="a-pending">{{ row.status }}</a>
@@ -203,7 +203,7 @@
                             </button>
                           </td>
                           <td>
-                            {{ new Date(row.issued_date).toLocaleString() }}
+                            {{ getDate(row.created_at) }}
                           </td>
                           <td>
                             <a class="a-pending">{{ row.status }}</a>
@@ -277,7 +277,7 @@
                             </button>
                           </td>
                           <td>
-                            {{ new Date(row.issued_date).toLocaleString() }}
+                            {{ getDate(row.created_at) }}
                           </td>
                           <td>
                             <a class="a-pending">{{ row.status }}</a>
@@ -590,6 +590,10 @@ export default {
   },
 
   methods: {
+    getDate(value) {
+      return new Date(value).toLocaleDateString("en-US");
+    },
+
     onChange(event) {
       if (this.key == "Approved") {
         this.pendingcardsInd = false;

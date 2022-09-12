@@ -48,6 +48,7 @@
                           <th scope="col">Event Name</th>
                           <th scope="col">Event Unique ID</th>
                           <th scope="col">Created At</th>
+                          <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody v-if="!myEventVerifiers || !myEventVerifiers.length">
@@ -68,6 +69,25 @@
                           <td>{{ row.event_name }}</td>
                           <td>{{ row.event_unique_id }}</td>
                           <td>{{ getDate(row.created_at) }}</td>
+                          <td>
+                            <button
+                              data-toggle="modal"
+                              data-target="#modalView"
+                              @click="sendInfo(row)"
+                              class="tbl-btn btn-enable"
+                            >
+                              Re-Assign Event
+                            </button>
+
+                            <button
+                              data-toggle="modal"
+                              data-target="#modalDelete"
+                              @click="sendInfo(row)"
+                              class="tbl-btn btn-enable" style="background: red"
+                            >
+                              Delete Event
+                            </button>
+                          </td>
                         </tr>
                       </tbody>
                     </table>
@@ -88,6 +108,111 @@
       <i class="ti-angle-up"></i>
     </a>
   </div>
+
+  <div
+    class="modal fade"
+    id="modalView"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content viewCardModal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Assign Event</h5>
+          <button
+            type="button"
+            class="close"
+            id="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body eventCategoryForm">
+          <form @submit.prevent="reassignEvent(this.selectedEventVerifier.id)">
+            <div class="row">
+              <div class="col-lg-12">
+                <select class="input" v-model="unique_id">
+                  <option>Choose Event ID</option>
+                  <option
+                    v-for="uniqueid in event_id"
+                    :key="uniqueid.id"
+                    :value="uniqueid.unique_id"
+                  >
+                    {{ uniqueid.unique_id }}
+                  </option>
+                </select>
+              </div>
+              <div class="col-lg-12 text-center">
+                <button
+                  style="width: 50%; background-color: #8604e2 !important;"
+                  v-if="$wait.is('processing')"
+                  type="submit"
+                  class="tbl-btn btn-enable"
+                >
+                  Re-Assigning Event...
+                </button>
+                <button v-else type="submit" class="tbl-btn btn-enable" style="width: 50%; background-color: #8604e2 !important;">
+                  Re-Assign Event
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <div
+    class="modal fade"
+    id="modalDelete"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content viewCardModal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabelTitle">
+            Delete EventVerifier
+          </h5>
+          <button
+            type="button"
+            class="close"
+            id="closeDelete"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body eventCategoryForm">
+          <p>Are you sure you want to delete this EventVerifier?</p>
+        </div>
+        <div class="modal-footer eventCategoryForm">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <form
+            @submit.prevent="
+              deleteEventVerifier(this.selectedEventVerifier.id)
+            "
+          >
+            <button
+              type="submit"
+              style="background-color: red !important; color: white"
+            >
+              Delete
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
@@ -104,13 +229,24 @@ export default {
   data() {
     return {
       pagination: {},
+      selectedEventVerifier: {},
       myEventVerifiers: [],
+      unique_id: "Choose Event ID",
+      event_id: [],
     };
   },
 
   methods: {
     getDate(value) {
       return new Date(value).toLocaleDateString("en-US");
+    },
+
+    closeModal() {
+      document.getElementById("close").click();
+    },
+
+    closeDelete() {
+      document.getElementById("closeDelete").click();
     },
 
     prepPagination(data) {
@@ -125,6 +261,27 @@ export default {
         previous_page_url: data.meta.previous_page_url,
         total: data.meta.total,
       };
+    },
+
+    loadAllEventID() 
+    {
+      axios
+        .get("events/mine/eventby/uniqueid", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.event_id = response.data.data;
+        })
+        .catch((error) => {
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+        });
     },
 
     eventVerifiers() {
@@ -142,9 +299,124 @@ export default {
           console.log(error);
         });
     },
+
+    sendInfo(row) {
+      this.selectedEventVerifier = row
+    },
+
+    async reassignEvent(id)
+    {
+      this.$wait.start("processing");
+      this.$Progress.start();
+
+      await axios
+        .post(
+          "verificaton/organization/assign/re-asign/event/" + id,
+          {
+            event_id: this.unique_id
+          },
+
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.$wait.end("processing");
+          this.$Progress.finish();
+          this.$notify({
+            type: "success",
+            title: response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+          this.eventVerifiers();
+          this.closeModal();
+        })
+        .catch((error) => {
+          if (error.response.status == 422) {
+            this.$wait.end("processing");
+            this.$Progress.fail();
+            for (let i in error.response.data.error) {
+              this.$notify({
+                type: "error",
+                title: error.response.data.error[i][0],
+                duration: 5000,
+                speed: 1000,
+              });
+            }
+            this.closeModal();
+          } else {
+            this.$wait.end("processing");
+            this.$Progress.fail();
+            this.$notify({
+              type: "error",
+              title: error.response.data.message,
+              duration: 5000,
+              speed: 1000,
+            });
+            this.closeModal();
+          }
+        });
+    },
+
+    async deleteEventVerifier(id)
+    {
+      this.$wait.start("processing");
+      this.$Progress.start();
+
+      await axios
+        .post(
+          "verificaton/organization/assign/delete/event/" + id,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.$wait.end("processing");
+          this.$Progress.finish();
+          this.$notify({
+            type: "success",
+            title: response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+          this.eventVerifiers();
+          this.closeDelete();
+        })
+        .catch((error) => {
+          if (error.response.status == 422) {
+            this.$wait.end("processing");
+            this.$Progress.fail();
+            for (let i in error.response.data.error) {
+              this.$notify({
+                type: "error",
+                title: error.response.data.error[i][0],
+                duration: 5000,
+                speed: 1000,
+              });
+            }
+            this.closeDelete();
+          } else {
+            this.$wait.end("processing");
+            this.$Progress.fail();
+            this.$notify({
+              type: "error",
+              title: error.response.data.message,
+              duration: 5000,
+              speed: 1000,
+            });
+            this.closeDelete();
+          }
+        });
+    }
   },
 
   mounted() {
+    this.loadAllEventID();
     this.eventVerifiers();
     window.scrollTo(0, 0);
   },

@@ -182,7 +182,8 @@ export default {
   },
 
   methods: {
-    loadAllEventID() {
+    loadAllEventID() 
+    {
       axios
         .get("events/mine/eventby/uniqueid", {
           headers: {
@@ -206,7 +207,8 @@ export default {
       document.getElementById("close").click();
     },
 
-    prepPagination(data) {
+    prepPagination(data) 
+    {
       this.pagination = {
         data: data.data,
         current_page: data.meta.current_page,
@@ -220,7 +222,8 @@ export default {
       };
     },
 
-    Verifiers() {
+    Verifiers() 
+    {
       axios
         .get("verificaton/organization/verifiers", {
           headers: {
@@ -282,6 +285,7 @@ export default {
               });
             }
             this.closeModal();
+            this.Verifiers();
           } else {
             this.$wait.end("processing");
             this.$Progress.fail();
@@ -292,6 +296,7 @@ export default {
               speed: 1000,
             });
             this.closeModal();
+            this.Verifiers();
           }
         });
     }
