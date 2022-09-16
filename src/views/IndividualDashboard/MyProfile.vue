@@ -34,6 +34,10 @@
               />
             </div>
           </div>
+          <div class="col-12 mb-4">
+            <span>ID Number</span>
+            <p>{{ user.details.id_card_number }}</p>
+          </div>
           <div class="col-lg-5 mb-4">
             <span>First Name</span>
             <p>{{ user.details.firstname }}</p>

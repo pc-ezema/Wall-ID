@@ -45,6 +45,7 @@
                     class="input"
                     v-model="form.name"
                     placeholder="Enter the name event"
+                    required
                   />
                   <span style="color: red" v-if="error.name">{{
                     error.name[0]
@@ -59,6 +60,7 @@
                     rows="4"
                     v-model="form.description"
                     class="input"
+                    required
                     placeholder="Write a little note about the event"
                   ></textarea>
                   <span style="color: red" v-if="error.description">{{
@@ -68,7 +70,7 @@
                 <!--Event type-->
                 <div class="col-lg-6 mb-3">
                   <label>Event Category</label>
-                  <select class="input" v-model="form.category_id">
+                  <select class="input" v-model="form.category_id" required>
                     <option hidden>Choose Event Category</option>
                     <option
                       v-for="category in categories"
@@ -85,10 +87,10 @@
                 <!--Visibility-->
                 <div class="col-lg-6 mb-3">
                   <label>Event Type</label>
-                  <select class="input" v-model="form.type">
+                  <select class="input" v-model="form.type" required>
                     <option hidden>Choose Event Visibility</option>
                     <option value="open">Open</option>
-                    <option value="semi-open">Semi-opened</option>
+                    <option value="semi-open">Semi-open</option>
                     <option value="close">Closed</option>
                   </select>
                   <span style="color: red" v-if="error.type"
@@ -122,7 +124,7 @@
                 <!--Venue-->
                 <div class="col-lg-12 mb-3">
                   <label>Venue</label>
-                  <input type="text" class="input" v-model="form.venue" />
+                  <input type="text" class="input" required v-model="form.venue" />
                   <span style="color: red" v-if="error.venue">{{
                     error.venue[0]
                   }}</span>
@@ -146,10 +148,6 @@
                     </div>
                   </div>
                 </div>
-                <!-- <div class="col-lg-12 mb-3">
-                                    <label>Address</label>
-                                    <textarea cols="30" rows="4" v-model="description" class="input" placeholder="Enter the address of the event"></textarea>
-                                </div> -->
               </div>
               <div class="row">
                 <div class="col-lg-12 subHead">
@@ -157,28 +155,28 @@
                 </div>
                 <div class="col-lg-6 mb-3">
                   <label>Time (starts)</label>
-                  <input type="time" class="input" v-model="form.start_time" />
+                  <input type="time" class="input" required v-model="form.start_time" />
                   <span style="color: red" v-if="error.start_time">{{
                     error.start_time[0]
                   }}</span>
                 </div>
                 <div class="col-lg-6 mb-3">
                   <label>Time (ends)</label>
-                  <input type="time" class="input" v-model="form.end_time" />
+                  <input type="time" class="input" required v-model="form.end_time" />
                   <span style="color: red" v-if="error.end_time">{{
                     error.end_time[0]
                   }}</span>
                 </div>
                 <div class="col-lg-6 mb-3">
                   <label>Date (starts)</label>
-                  <input type="date" class="input" v-model="form.start_date" />
+                  <input type="date" class="input" required v-model="form.start_date" />
                   <span style="color: red" v-if="error.start_date">{{
                     error.start_date[0]
                   }}</span>
                 </div>
                 <div class="col-lg-6 mb-3">
                   <label>Date (ends)</label>
-                  <input type="date" class="input" v-model="form.end_date" />
+                  <input type="date" class="input" required v-model="form.end_date" />
                   <span style="color: red" v-if="error.end_date">{{
                     error.end_date[0]
                   }}</span>
@@ -420,6 +418,7 @@ export default {
         alert("File size can not be bigger than 2 MB");
       }
     },
+
     getVenueImg(e) {
       let file = e.target.files[0];
       let reader = new FileReader();

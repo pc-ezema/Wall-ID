@@ -128,14 +128,15 @@
           <form @submit.prevent="assignEvent(this.selectedVerifier.id)">
             <div class="row">
               <div class="col-lg-12">
+                <label>Select Event</label>
                 <select class="input" v-model="unique_id">
-                  <option>Choose Event ID</option>
+                  <option>Choose Event</option>
                   <option
                     v-for="uniqueid in event_id"
                     :key="uniqueid.id"
                     :value="uniqueid.unique_id"
                   >
-                    {{ uniqueid.unique_id }}
+                    {{ uniqueid.unique_id }} - {{ uniqueid.name}}
                   </option>
                 </select>
               </div>

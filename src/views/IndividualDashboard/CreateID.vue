@@ -76,7 +76,8 @@
                   </div>
                 </div>
                 <div class="col-lg-12 text-center mb-3 mt-4">
-                  <button type="submit" class="button">Create ID</button>
+                  <button type="button" class="button" href="javascript:void(0)"
+                    data-toggle="modal" data-target="#modalView">Create ID</button>
                 </div>
               </div>
             </form>
@@ -92,6 +93,37 @@
     <a title="Go to Top" href="#">
       <i class="ti-angle-up"></i>
     </a>
+  </div>
+
+  <div
+    class="modal fade"
+    id="modalView"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content viewCardModal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            View Payment Details
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="view_payment">
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 

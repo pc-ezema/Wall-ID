@@ -34,6 +34,14 @@
               />
             </div>
           </div>
+           <div class="col-12 mb-4">
+            <input style="color: #a221fc; font-weight: 700; cursor: copy; border: none; background-color: transparent; resize: none; outline: none;"
+            v-on:focus="$event.target.select()" 
+            ref="clone" 
+            readonly 
+            @click="copy"
+            :value="user.details.id_card_number"/>
+          </div>
           <div class="col-lg-10 mb-4">
             <span>Company Name</span>
             <p>{{ user.details.name }}</p>
@@ -89,6 +97,20 @@ export default {
       baseURL: axios.defaults.baseURL.slice(0, -5),
       user: this.$store.state.user || null,
     };
+  },
+
+  methods: {
+    copy() {
+      this.$refs.clone.focus();
+      document.execCommand('copy');
+      this.$notify({
+        type: "success",
+        title: "Wall ID Number",
+        text: "Copied Successsfully!",
+        duration: 5000,
+        speed: 1000,
+      });
+    }
   },
 
   mounted() {
