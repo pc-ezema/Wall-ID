@@ -80,13 +80,6 @@
                 </router-link>
               </div>
             </div>
-
-            <!-- Show this page below only if the users select an organisation-->
-            <!--
-                       -------
-                       check page in OrganisationVerifier.vue
-                       -------
-                       -->
           </div>
         </div>
       </div>

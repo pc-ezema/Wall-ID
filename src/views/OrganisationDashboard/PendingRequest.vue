@@ -39,6 +39,7 @@
               <option hidden>Filter</option>
               <option value="Declined">Declined</option>
               <option value="Pending">Pending</option>
+              <option value="PendingToInd">Pending To Individual</option>
             </select>
           </div>
           <div v-if="declinedrequest" class="col-lg-11 mt-3">
@@ -116,7 +117,7 @@
                       >
                         <tr>
                           <td class="align-enter text-dark font-13" colspan="6">
-                            No Pending Request.
+                            No Pending Request from Individual.
                           </td>
                         </tr>
                       </tbody>
@@ -155,6 +156,50 @@
               </div>
             </div>
           </div>
+          <div v-if="pendingrequesttoind" class="col-lg-11 mt-3">
+            <div class="white_card card_height_100 mb_30">
+              <div class="white_card_body">
+                <div class="QA_section">
+                  <div class="QA_table mb_30">
+                    <table class="table lms_table_active">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Phone</th>
+                          <th scope="col">Request Date</th>
+                          <th scope="col">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody
+                        v-if="!myPendingRequestToInd || !myPendingRequestToInd.length"
+                      >
+                        <tr>
+                          <td class="align-enter text-dark font-13" colspan="6">
+                            No Pending request sent to individual.
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr
+                          v-for="(row, index) in myPendingRequestToInd"
+                          v-bind:key="index"
+                        >
+                          <th scope="row">{{ index + 1 }}</th>
+                          <td>{{ row.name }}</td>
+                          <td>{{ row.created_by_individual.phone }}</td>
+                          <td>{{ row.created_at }}</td>
+                          <td>
+                            <a class="a-pending">{{ row.status }}</a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -182,9 +227,11 @@ export default {
     return {
       pagination: {},
       myPendingRequest: [],
+      myPendingRequestToInd: [],
       myDeclineRequest: [],
       pendingrequest: true,
       declinedrequest: false,
+      pendingrequesttoind: false,
       key: "",
     };
   },
@@ -194,8 +241,9 @@ export default {
       if (this.key == "Pending") {
         this.pendingrequest = true;
         this.declinedrequest = false;
+        this.pendingrequesttoind = false;
         axios
-          .get("verificaton/organization/pending", {
+          .get("verificaton/organization/pending/request/individual", {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
@@ -212,6 +260,7 @@ export default {
       if (this.key == "Declined") {
         this.pendingrequest = false;
         this.declinedrequest = true;
+        this.pendingrequesttoind = false;
         axios
           .get("verificaton/organization/decline", {
             headers: {
@@ -221,6 +270,25 @@ export default {
           .then((response) => {
             this.prepPagination(response.data);
             this.myDeclineRequest = response.data.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
+      if (this.key == "PendingToInd") {
+        this.pendingrequest = false;
+        this.declinedrequest = false;
+        this.pendingrequesttoind = true;
+        axios
+          .get("verificaton/organization/pending/request", {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then((response) => {
+            this.prepPagination(response.data);
+            this.myPendingRequestToInd = response.data.data;
           })
           .catch((error) => {
             console.log(error);
@@ -244,7 +312,7 @@ export default {
 
     MyPendingRequest() {
       axios
-        .get("verificaton/organization/pending", {
+        .get("verificaton/organization/pending/request/individual", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

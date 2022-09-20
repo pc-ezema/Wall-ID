@@ -195,6 +195,13 @@
           </li>
           <li>
             <router-link
+              to="/individual-dashboard/verifier"
+              class="menuRouter"
+              ><a>Verifier</a></router-link
+            >
+          </li>
+          <li>
+            <router-link
               to="/individual-dashboard/view-verifier-event"
               class="menuRouter"
               ><a>View Verify Event</a></router-link

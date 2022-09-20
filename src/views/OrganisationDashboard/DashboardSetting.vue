@@ -86,6 +86,14 @@
                       placeholder="Enter Address"
                     ></textarea>
                   </div>
+                  <div class="col-12 mb-3">
+                    <label>Access Type</label>
+                    <select v-model="type" class="input">
+                      <option>Select Access Type</option>
+                      <option value="0">Free Pass / Open</option>
+                      <option value="1">Restricted / Closed</option>
+                    </select>
+                  </div>
                   <!--Button-->
                   <div class="col-12 text-center mb-3">
                     <button
@@ -176,6 +184,7 @@ export default {
       name: null,
       phone: null,
       address: null,
+      type: null,
       avatar: "",
       new_password: null,
       new_password_confirmation: null,
@@ -236,6 +245,8 @@ export default {
       this.$wait.start("processing");
       this.$Progress.start();
 
+      console.log(this.type);
+      
       await axios
         .post(
           "profile/organization/update",
@@ -243,6 +254,7 @@ export default {
             name: this.name,
             phone: this.phone,
             address: this.address,
+            type: this.type
           },
           {
             headers: {
@@ -344,6 +356,7 @@ export default {
     this.name = this.user.details.name;
     this.phone = this.user.details.phone;
     this.address = this.user.details.address;
+    this.type = this.user.details.type;
     window.scrollTo(0, 0);
   },
 };

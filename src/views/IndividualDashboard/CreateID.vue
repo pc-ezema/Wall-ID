@@ -76,8 +76,9 @@
                   </div>
                 </div>
                 <div class="col-lg-12 text-center mb-3 mt-4">
-                  <button type="button" class="button" href="javascript:void(0)"
-                    data-toggle="modal" data-target="#modalView">Create ID</button>
+                  <!-- <button type="button" class="button" href="javascript:void(0)" @click="sendInfo()"
+                    data-toggle="modal" data-target="#modalView">Create ID</button> -->
+                    <button type="submit" class="button">Create ID</button>
                 </div>
               </div>
             </form>
@@ -119,8 +120,6 @@
           </button>
         </div>
         <div class="modal-body">
-          <div class="view_payment">
-          </div>
         </div>
       </div>
     </div>
@@ -149,6 +148,7 @@ export default {
 
   methods: {
     async createID() {
+
       let id = this.$route.params.id;
 
       const fd = new FormData();
@@ -208,6 +208,7 @@ export default {
     onFileChange(e) {
       this.id.passport = e.target.files[0];
     },
+
   },
 
   mounted() {

@@ -46,6 +46,7 @@ import IndividualMembershipSubscriptionHistory from "../views/IndividualDashboar
 import IndividualVerificationRequest from "../views/IndividualDashboard/VerificationRequest.vue";
 import IndividualOrganisationVerifier from "../views/IndividualDashboard/OrganisationVerifier.vue";
 import IndividualViewVerificationRequest from "../views/IndividualDashboard/ViewVerificationRequest.vue";
+import IndividualVerifier from "../views/IndividualDashboard/Verifier.vue";
 import IndividualEventVerifier from "../views/IndividualDashboard/EventVerifier.vue";
 // my wallet
 /*
@@ -501,6 +502,15 @@ const routes = [
     component: IndividualViewVerificationRequest,
     meta: {
       title: "View Verification Request - Individual Dashboard | WALLID",
+      middleware: auth,
+    },
+  },
+  {
+    path: "/individual-dashboard/verifier",
+    name: "IndividualVerifier",
+    component: IndividualVerifier,
+    meta: {
+      title: "Verifier - Individual Dashboard | WALLID",
       middleware: auth,
     },
   },

@@ -34,14 +34,14 @@
               >
             </h5>
           </div>
-          <!-- <div class="col-lg-11 filterSelect">
-                        <select>
-                            <option hidden>Filter</option>
-                            <option>Approved</option>
-                            <option>Pending</option>
-                        </select>
-                   </div> -->
-          <div class="col-lg-11 mt-3">
+          <div class="col-lg-11 filterSelect">
+              <select @change="onChange($event)" v-model="key">
+                  <option hidden>Filter</option>
+                  <option value="Pending">Pending</option>
+                  <option value="PendingFromOrg">Pending From Organization</option>
+              </select>
+          </div>
+          <div v-if="pendingrequest" class="col-lg-11 mt-3">
             <div class="white_card card_height_100 mb_30">
               <div class="white_card_body">
                 <div class="QA_section">
@@ -95,6 +95,76 @@
               </div>
             </div>
           </div>
+          <div v-if="pendingrequestfromorg" class="col-lg-11 mt-3">
+            <div class="white_card card_height_100 mb_30">
+              <div class="white_card_body">
+                <div class="QA_section">
+                  <div class="QA_table mb_30">
+                    <table class="table lms_table_active">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Role</th>
+                          <th scope="col">Organization Name</th>
+                          <th scope="col">Request Date</th>
+                          <th scope="col">Status</th>
+                          <th scope="col">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="!RequestFromOrg || !RequestFromOrg.length">
+                        <tr>
+                          <td class="align-enter text-dark font-13" colspan="6">
+                            No Verification Request From Organization.
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr
+                          v-for="(row, index) in RequestFromOrg"
+                          v-bind:key="index"
+                        >
+                          <th scope="row">{{ index + 1 }}</th>
+                          <td>{{ row.name }}</td>
+                          <td>{{ row.role }}</td>
+                          <td>{{ row.organization.name }}</td>
+                          <td>{{ row.created_at }}</td>
+                          <td>
+                            <span v-if="row.status == 'Pending'">
+                              <a class="a-pending">{{ row.status }}</a>
+                            </span>
+                            <span v-else-if="row.status == 'Approved'">
+                              <a class="a-approved">{{ row.status }}</a>
+                            </span>
+                            <span v-else>
+                              <a style="background: red; color: #fff">{{
+                                row.status
+                              }}</a>
+                            </span>
+                          </td>
+                          <td>
+                            <button
+                              @click="declineRequest(row.id)"
+                              class="tbl-btn btn-disable"
+                            >
+                              Decline
+                            </button>
+                            <button
+                              @click="approveRequest(row.id)"
+                              class="tbl-btn btn-enable"
+                            >
+                              Approve
+                            </button>
+                            <!-- <button class="tbl-btn btn-delete">Delete</button> -->
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -125,10 +195,52 @@ export default {
     return {
       pagination: {},
       myRequest: [],
+      RequestFromOrg: [],
+      pendingrequest: true,
+      pendingrequestfromorg: false,
+      key: "",
     };
   },
 
   methods: {
+    onChange(event) {
+      if (this.key == "Pending") {
+        this.pendingrequest = true;
+        this.pendingrequestfromorg = false;
+        axios
+          .get("verificaton/view-request", {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then((response) => {
+            this.prepPagination(response.data);
+            this.myRequest = response.data.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
+      if (this.key == "PendingFromOrg") {
+        this.pendingrequest = false;
+        this.pendingrequestfromorg = true;
+        axios
+          .get("verificaton/view-request-from-org", {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then((response) => {
+            this.prepPagination(response.data);
+            this.RequestFromOrg = response.data.data;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    },
+
     prepPagination(data) {
       this.pagination = {
         data: data.data,
@@ -156,6 +268,66 @@ export default {
         })
         .catch((error) => {
           console.log(error);
+        });
+    },
+
+    async approveRequest(data) {
+      this.$Progress.start();
+
+      await axios
+        .post("verificaton/organization/approve/" + data, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.$Progress.finish();
+          this.$notify({
+            type: "success",
+            title: response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+          this.MyRequest();
+        })
+        .catch((error) => {
+          this.$Progress.fail();
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+        });
+    },
+
+    async declineRequest(data) {
+      this.$Progress.start();
+
+      await axios
+        .post("verificaton/organization/decline/" + data, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.$Progress.finish();
+          this.$notify({
+            type: "success",
+            title: response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+          this.MyRequest();
+        })
+        .catch((error) => {
+          this.$Progress.fail();
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
         });
     },
   },

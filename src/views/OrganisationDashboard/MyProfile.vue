@@ -42,27 +42,32 @@
             @click="copy"
             :value="user.details.id_card_number"/>
           </div>
-          <div class="col-lg-10 mb-4">
+          <div class="col-lg-6 mb-4">
             <span>Company Name</span>
             <p>{{ user.details.name }}</p>
           </div>
-          <div class="col-lg-5 mb-4">
+          <div class="col-lg-6 mb-4">
             <span>Email</span>
             <p>{{ user.email }}</p>
           </div>
-          <div class="col-lg-5 mb-4">
+          <div class="col-lg-6 mb-4">
             <span>Phone</span>
             <p>{{ user.details.phone }}</p>
           </div>
-          <div class="col-lg-5 mb-4">
+          <div class="col-lg-6 mb-4">
             <span>Registered</span>
             <p>{{ new Date(user.details.created_at).toLocaleString() }}</p>
           </div>
-          <div class="col-lg-5 mb-4">
+          <div class="col-lg-6 mb-4">
             <span>Type</span>
             <p>Organisation</p>
           </div>
-          <div class="col-lg-5 mb-4 mt-2">
+          <div class="col-lg-6 mb-4">
+            <span>Access Type</span>
+            <p v-if="user.details.type == 1">Restricted / Closed</p>
+            <p v-else>Free Pass / Open</p>
+          </div>
+          <div class="col-lg-6 mb-4 mt-2">
             <router-link to="/organisation-dashboard/settings"
               ><a class="editProfile">Edit Profile</a></router-link
             >
