@@ -62,7 +62,14 @@
                         </tr>
                       </thead>
                       <tbody v-if="!Subscriptions || !Subscriptions.length">
-                        <tr>
+                        <tr v-if="loading" >
+                          <td colspan="6">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
                           <td class="align-enter text-dark font-13" colspan="6">
                             No Subscription Plan
                           </td>
@@ -387,6 +394,7 @@ export default {
         description: null,
         validity: null,
       },
+      loading: false
     };
   },
 
@@ -403,7 +411,9 @@ export default {
       document.getElementById("closeDelete").click();
     },
 
-    loadAllSubscription() {
+    loadAllSubscription() 
+    {
+      this.loading = true;
       axios
         .get("organizations/subscriptions/plans", {
           headers: {
@@ -411,9 +421,11 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
           this.Subscriptions = response.data.data;
         })
         .catch((error) => {
+          this.loading = false;
           this.$notify({
             type: "error",
             title: error.response.data.message,

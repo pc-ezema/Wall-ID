@@ -96,25 +96,20 @@ export default {
   data() {
     return {
       baseURL: axios.defaults.baseURL.slice(0, -5),
-      user: this.$store.state.user,
+      user: JSON.parse(localStorage.getItem('user')) || [],
     };
   },
 
   methods: {
     logoutClick() {
-      localStorage.removeItem("token");
-      this.$store.dispatch("user", null);
+      localStorage.removeItem("token", "user");
       axios.post("logout");
       this.$router.replace("/");
-    },
-    getUser() {
-      this.user = this.$store.state.user;
     },
   },
 
   mounted() {
     window.scrollTo(0, 0);
-    this.getUser();
     let externalScriptJquery = document.createElement("script");
     let externalScriptMetisMenu = document.createElement("script");
     let externalScriptCustom = document.createElement("script");

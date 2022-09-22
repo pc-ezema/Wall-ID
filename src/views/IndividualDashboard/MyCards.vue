@@ -66,7 +66,14 @@
                         </tr>
                       </thead>
                       <tbody v-if="!myidcards || !myidcards.length">
-                        <tr>
+                        <tr v-if="loading" >
+                          <td colspan="7">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
                           <td class="align-enter text-dark font-13" colspan="7">
                             No Approved ID Card.
                           </td>
@@ -120,16 +127,16 @@
                           <th scope="col">Status</th>
                         </tr>
                       </thead>
-                      <tbody v-if="!myidcards || !myidcards.length">
+                      <tbody v-if="!mydeapprovedidcards || !mydeapprovedidcards.length">
                         <tr>
                           <td class="align-enter text-dark font-13" colspan="7">
-                            No Approved ID Card.
+                            No Deapproved ID Card.
                           </td>
                         </tr>
                       </tbody>
                       <tbody v-else>
                         <tr
-                          v-for="(row, index) in myidcards"
+                          v-for="(row, index) in mydeapprovedidcards"
                           v-bind:key="index"
                         >
                           <th scope="row">{{ index + 1 }}</th>
@@ -379,6 +386,7 @@ export default {
       baseURL: axios.defaults.baseURL.slice(0, -5),
       pagination: {},
       myidcards: [],
+      mydeapprovedidcards: [],
       disapproved: false,
       approved: true,
       key: "Filter",
@@ -393,6 +401,7 @@ export default {
         cardImage: "",
         organization: null,
       },
+      loading: false
     };
   },
 
@@ -401,33 +410,11 @@ export default {
       if (this.key == "Approved") {
         this.approved = true;
         this.disapproved = false;
-        axios
-          .get("id-card-management")
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.myidcards = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
 
       if (this.key == "Disapproved") {
         this.approved = false;
         this.disapproved = true;
-        axios
-          .get("id-card-management/deactivate/id-card", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.myidcards = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
     },
 
@@ -446,11 +433,31 @@ export default {
     },
 
     loadMyCard() {
+      this.loading = true;
       axios
         .get("id-card-management")
         .then((response) => {
+          this.loading = false;
           this.prepPagination(response.data);
           this.myidcards = response.data.data;
+        })
+        .catch((error) => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
+
+    loadDeapprovedCard()
+    {
+      axios
+        .get("id-card-management/deactivate/id-card", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.prepPagination(response.data);
+          this.mydeapprovedidcards = response.data.data;
         })
         .catch((error) => {
           console.log(error);
@@ -472,6 +479,7 @@ export default {
 
   mounted() {
     this.loadMyCard();
+    this.loadDeapprovedCard();
     window.scrollTo(0, 0);
   },
 };

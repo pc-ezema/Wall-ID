@@ -58,7 +58,14 @@
                         </tr>
                       </thead>
                       <tbody v-if="!myRequest || !myRequest.length">
-                        <tr>
+                        <tr v-if="loading" >
+                          <td colspan="6">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
                           <td class="align-enter text-dark font-13" colspan="6">
                             No Verification Request.
                           </td>
@@ -199,6 +206,7 @@ export default {
       pendingrequest: true,
       pendingrequestfromorg: false,
       key: "",
+      loading: false
     };
   },
 
@@ -207,37 +215,11 @@ export default {
       if (this.key == "Pending") {
         this.pendingrequest = true;
         this.pendingrequestfromorg = false;
-        axios
-          .get("verificaton/view-request", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.myRequest = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
 
       if (this.key == "PendingFromOrg") {
         this.pendingrequest = false;
         this.pendingrequestfromorg = true;
-        axios
-          .get("verificaton/view-request-from-org", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.RequestFromOrg = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
     },
 
@@ -256,6 +238,7 @@ export default {
     },
 
     MyRequest() {
+      this.loading = true;
       axios
         .get("verificaton/view-request", {
           headers: {
@@ -263,8 +246,27 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
           this.prepPagination(response.data);
           this.myRequest = response.data.data;
+        })
+        .catch((error) => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
+
+    PendingFromOrganization()
+    {
+      axios
+        .get("verificaton/view-request-from-org", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.prepPagination(response.data);
+          this.RequestFromOrg = response.data.data;
         })
         .catch((error) => {
           console.log(error);
@@ -334,6 +336,7 @@ export default {
 
   mounted() {
     this.MyRequest();
+    this.PendingFromOrganization();
     window.scrollTo(0, 0);
   },
 };

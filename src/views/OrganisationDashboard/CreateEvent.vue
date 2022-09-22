@@ -418,6 +418,7 @@ export default {
         alert("File size can not be bigger than 2 MB");
       }
     },
+
     getVenueImg(e) {
       let file = e.target.files[0];
       let reader = new FileReader();
@@ -451,7 +452,7 @@ export default {
       fd.append("image", this.form.image);
       fd.append("category_id", this.form.category_id);
       fd.append("venue_image", this.form.venue_image);
-      fd.append("ticketCategories", this.form.ticketCategories);
+      fd.append("ticketCategories", JSON.stringify(this.form.ticketCategories));
 
       this.$Progress.start();
       this.$wait.start("processing");
@@ -476,6 +477,8 @@ export default {
           }, 1200);
         })
         .catch((err) => {
+          this.$wait.end("processing");
+          this.$Progress.fail();
           console.log(err.response.data);
           this.error = err.response.data.error;
           this.$notify({
@@ -484,8 +487,6 @@ export default {
             duration: 5000,
             speed: 1000,
           });
-          this.$wait.end("processing");
-          this.$Progress.fail();
         });
     },
 
@@ -516,7 +517,6 @@ export default {
   },
 
   mounted() {
-    this.loadAllEventCategory();
     window.scrollTo(0, 0);
 
     $(".image-box").click(function (event) {

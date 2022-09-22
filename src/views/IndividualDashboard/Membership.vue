@@ -65,7 +65,14 @@
                         </tr>
                       </thead>
                       <tbody v-if="!membership || !membership.length">
-                        <tr>
+                        <tr v-if="loading" >
+                          <td colspan="6">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
                           <td class="align-enter text-dark font-13" colspan="6">
                             No Joined Memebership
                           </td>
@@ -133,7 +140,7 @@ export default {
     return {
       pagination: {},
       membership: [],
-      showLoading: false
+      loading: false
     };
   },
 
@@ -153,7 +160,7 @@ export default {
     },
 
     loadMyCard() {
-      // this.showLoading = true;
+      this.loading = true;
       axios
         .get("individuals/organizations/join-requests", {
           headers: {
@@ -161,11 +168,12 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
           this.prepPagination(response.data);
           this.membership = response.data.data;
-          // this.showLoading = false;
         })
         .catch((error) => {
+          this.loading = false;
           console.log(error);
         });
     },

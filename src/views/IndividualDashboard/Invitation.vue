@@ -102,7 +102,14 @@
                         </tr>
                       </thead>
                       <tbody v-if="!invites || !invites.length">
-                        <tr>
+                        <tr v-if="loading" >
+                          <td colspan="7">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
                           <td class="align-enter text-dark font-13" colspan="8">
                             No Event Invitation.
                           </td>
@@ -173,7 +180,7 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody v-if="!invites || !invites.length">
+                      <tbody v-if="!acceptedinvites || !acceptedinvites.length">
                         <tr>
                           <td class="align-enter text-dark font-13" colspan="8">
                             No Approved Event Invitation.
@@ -181,7 +188,7 @@
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr v-for="(row, index) in invites"
+                        <tr v-for="(row, index) in acceptedinvites"
                           v-bind:key="index" >
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.event.name }}</td>
@@ -241,7 +248,7 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody v-if="!invites || !invites.length">
+                      <tbody v-if="!declinedinvites || !declinedinvites.length">
                         <tr>
                           <td class="align-enter text-dark font-13" colspan="8">
                             No Decline Event Invitation.
@@ -249,7 +256,7 @@
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr v-for="(row, index) in invites"
+                        <tr v-for="(row, index) in declinedinvites"
                           v-bind:key="index" >
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.event.name }}</td>
@@ -406,6 +413,7 @@ export default {
         event_id: "Choose Event ID",
         username: "Choose Username",
       },
+      loading: false
     };
   },
 
@@ -415,54 +423,18 @@ export default {
         this.all = true;
         this.accepted = false;
         this.declined = false;
-        axios
-          .get("events/invites", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.invites = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
 
       if (this.key == "Accepted") {
         this.all = false;
         this.accepted = true;
         this.declined = false;
-        axios
-          .get("events/invites/accepted", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.invites = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
 
       if (this.key == "Declined") {
         this.all = false;
         this.accepted = false;
         this.declined = true;
-        axios
-          .get("events/invites/declined", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.invites = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
     },
 
@@ -471,6 +443,7 @@ export default {
     },
 
     loadAllInvites() {
+      this.loading = true;
       axios
         .get("events/invites", {
           headers: {
@@ -478,9 +451,11 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
           this.invites = response.data.data;
         })
         .catch((error) => {
+          this.loading = false;
           this.$notify({
             type: "error",
             title: error.response.data.message,
@@ -530,6 +505,37 @@ export default {
         });
     },
 
+    loadAccepted()
+    {
+      axios
+        .get("events/invites/accepted", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.acceptedinvites = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    loadDeclined()
+    {
+      axios
+        .get("events/invites/declined", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.declinedinvites = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
     async sendInvites() {
       this.$Progress.start();
 
@@ -657,6 +663,8 @@ export default {
     this.loadAllInvites();
     this.loadAllEventID();
     this.loadAllUsername();
+    this.loadAccepted();
+    this.loadDeclined();
     window.scrollTo(0, 0);
   },
 };

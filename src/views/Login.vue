@@ -162,10 +162,13 @@ export default {
 
             localStorage.setItem(
               "token",
-              response.data.data.tokens.access_token
+              response.data.data.tokens.access_token,
             );
 
-            this.$store.dispatch("user", response.data.data.user);
+            localStorage.setItem(
+              "user",
+              JSON.stringify(response.data.data.user),
+            );
 
             if (response.data.data.user.type == "individual") {
               // go to dashboard page
@@ -185,15 +188,14 @@ export default {
           })
           .catch((error) => {
             localStorage.removeItem("token");
-            //this.validationError = [];
+            this.$wait.end("processing");
+            this.$Progress.fail();
             this.$notify({
               type: "error",
               title: error.response.data.message,
               duration: 5000,
               speed: 1000,
             });
-            this.$wait.end("processing");
-            this.$Progress.fail();
           });
       }
     },

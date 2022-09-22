@@ -34,7 +34,7 @@
               />
             </div>
           </div>
-           <div class="col-12 mb-4">
+          <div class="col-12 mb-4">
             <input style="color: #a221fc; font-weight: 700; cursor: copy; border: none; background-color: transparent; resize: none; outline: none;"
             v-on:focus="$event.target.select()" 
             ref="clone" 
@@ -100,7 +100,7 @@ export default {
   data() {
     return {
       baseURL: axios.defaults.baseURL.slice(0, -5),
-      user: this.$store.state.user || null,
+      user: JSON.parse(localStorage.getItem('user')) || [],
     };
   },
 

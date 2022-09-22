@@ -62,7 +62,7 @@
                         v-if="!myDeclineRequest || !myDeclineRequest.length"
                       >
                         <tr>
-                          <td class="align-enter text-dark font-13" colspan="6">
+                          <td class="align-center text-dark font-13" colspan="6">
                             No Decline Request.
                           </td>
                         </tr>
@@ -115,8 +115,15 @@
                       <tbody
                         v-if="!myPendingRequest || !myPendingRequest.length"
                       >
-                        <tr>
-                          <td class="align-enter text-dark font-13" colspan="6">
+                        <tr v-if="loading" >
+                          <td colspan="6">
+                            <div style="text-align: center" class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td class="align-center text-dark font-13" colspan="6">
                             No Pending Request from Individual.
                           </td>
                         </tr>
@@ -175,7 +182,7 @@
                         v-if="!myPendingRequestToInd || !myPendingRequestToInd.length"
                       >
                         <tr>
-                          <td class="align-enter text-dark font-13" colspan="6">
+                          <td class="align-center text-dark font-13" colspan="6">
                             No Pending request sent to individual.
                           </td>
                         </tr>
@@ -233,6 +240,7 @@ export default {
       declinedrequest: false,
       pendingrequesttoind: false,
       key: "",
+      loading: false
     };
   },
 
@@ -242,57 +250,18 @@ export default {
         this.pendingrequest = true;
         this.declinedrequest = false;
         this.pendingrequesttoind = false;
-        axios
-          .get("verificaton/organization/pending/request/individual", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.myPendingRequest = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
 
       if (this.key == "Declined") {
         this.pendingrequest = false;
         this.declinedrequest = true;
         this.pendingrequesttoind = false;
-        axios
-          .get("verificaton/organization/decline", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.myDeclineRequest = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
 
       if (this.key == "PendingToInd") {
         this.pendingrequest = false;
         this.declinedrequest = false;
         this.pendingrequesttoind = true;
-        axios
-          .get("verificaton/organization/pending/request", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.myPendingRequestToInd = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
     },
 
@@ -311,6 +280,7 @@ export default {
     },
 
     MyPendingRequest() {
+      this.loading = true;
       axios
         .get("verificaton/organization/pending/request/individual", {
           headers: {
@@ -318,8 +288,44 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
           this.prepPagination(response.data);
           this.myPendingRequest = response.data.data;
+        })
+        .catch((error) => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
+
+    MyDeclinedRequest()
+    {
+      axios
+        .get("verificaton/organization/decline", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.prepPagination(response.data);
+          this.myDeclineRequest = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    MyPendingReqeustToInd()
+    {
+      axios
+        .get("verificaton/organization/pending/request", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.prepPagination(response.data);
+          this.myPendingRequestToInd = response.data.data;
         })
         .catch((error) => {
           console.log(error);
@@ -387,11 +393,10 @@ export default {
     },
   },
 
-  created() {
-    this.MyPendingRequest();
-  },
-
   mounted() {
+    this.MyPendingRequest();
+    this.MyDeclinedRequest();
+    this.MyPendingReqeustToInd();
     window.scrollTo(0, 0);
   },
 };

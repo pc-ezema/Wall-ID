@@ -51,7 +51,14 @@
                         </tr>
                       </thead>
                       <tbody v-if="!myEventVerifiers || !myEventVerifiers.length">
-                        <tr>
+                        <tr v-if="loading" >
+                          <td colspan="6">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
                           <td class="align-enter text-dark font-13" colspan="6">
                             No Event Verifiers.
                           </td>
@@ -105,6 +112,7 @@ export default {
     return {
       pagination: {},
       myEventVerifiers: [],
+      loading: false
     };
   },
 
@@ -128,6 +136,7 @@ export default {
     },
 
     eventVerifiers() {
+      this.loading = true;
       axios
         .get("verificaton/view-verifier/assign/event", {
           headers: {
@@ -135,10 +144,12 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
         //   this.prepPagination(response.data);
           this.myEventVerifiers = response.data.data;
         })
         .catch((error) => {
+          this.loading = false;
           console.log(error);
         });
     },

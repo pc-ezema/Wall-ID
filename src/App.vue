@@ -20,13 +20,5 @@ export default {
     }, 3500);
   },
 
-  async created() {
-    const response = await axios.get("user", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    this.$store.dispatch("user", response.data.data.user);
-  },
 };
 </script>
