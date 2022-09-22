@@ -38,6 +38,7 @@
               <select @change="onChange($event)" v-model="key">
                   <option hidden>Filter</option>
                   <option value="Pending">Pending</option>
+                  <option value="Decline">Decline</option>
                   <option value="PendingFromOrg">Pending From Organization</option>
               </select>
           </div>
@@ -172,6 +173,60 @@
               </div>
             </div>
           </div>
+          <div v-if="generaldeclinerequest" class="col-lg-11 mt-3">
+            <div class="white_card card_height_100 mb_30">
+              <div class="white_card_body">
+                <div class="QA_section">
+                  <div class="QA_table mb_30">
+                    <table class="table lms_table_active">
+                      <thead>
+                        <tr>
+                          <th scope="col">ID</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Role</th>
+                          <th scope="col">Organization Name</th>
+                          <th scope="col">Request Date</th>
+                          <th scope="col">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody v-if="!requestDeclined || !requestDeclined.length">
+                        <tr>
+                          <td class="align-enter text-dark font-13" colspan="6">
+                            No Decline Request.
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr
+                          v-for="(row, index) in requestDeclined"
+                          v-bind:key="index"
+                        >
+                          <th scope="row">{{ index + 1 }}</th>
+                          <td>{{ row.name }}</td>
+                          <td>{{ row.role }}</td>
+                          <td>{{ row.organization.name }}</td>
+                          <td>{{ row.created_at }}</td>
+                          <td>
+                            <span v-if="row.status == 'Pending'">
+                              <a class="a-pending">{{ row.status }}</a>
+                            </span>
+                            <span v-else-if="row.status == 'Approved'">
+                              <a class="a-approved">{{ row.status }}</a>
+                            </span>
+                            <span v-else>
+                              <a style="background: red; color: #fff">{{
+                                row.status
+                              }}</a>
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -203,8 +258,10 @@ export default {
       pagination: {},
       myRequest: [],
       RequestFromOrg: [],
+      requestDeclined: [],
       pendingrequest: true,
       pendingrequestfromorg: false,
+      generaldeclinerequest: false,
       key: "",
       loading: false
     };
@@ -214,12 +271,20 @@ export default {
     onChange(event) {
       if (this.key == "Pending") {
         this.pendingrequest = true;
+        this.generaldeclinerequest = false;
         this.pendingrequestfromorg = false;
       }
 
       if (this.key == "PendingFromOrg") {
         this.pendingrequest = false;
+        this.generaldeclinerequest = false;
         this.pendingrequestfromorg = true;
+      }
+
+      if (this.key == "Decline") {
+        this.pendingrequest = false;
+        this.generaldeclinerequest = true;
+        this.pendingrequestfromorg = false;
       }
     },
 
@@ -267,6 +332,23 @@ export default {
         .then((response) => {
           this.prepPagination(response.data);
           this.RequestFromOrg = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    DeclineRequest()
+    {
+      axios
+        .get("verificaton/decline/request", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.prepPagination(response.data);
+          this.requestDeclined = response.data.data;
         })
         .catch((error) => {
           console.log(error);
@@ -337,6 +419,7 @@ export default {
   mounted() {
     this.MyRequest();
     this.PendingFromOrganization();
+    this.DeclineRequest();
     window.scrollTo(0, 0);
   },
 };
