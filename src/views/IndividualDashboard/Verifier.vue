@@ -51,7 +51,14 @@
                         </tr>
                       </thead>
                       <tbody v-if="!myVerifier || !myVerifier.length">
-                        <tr>
+                        <tr v-if="loading" >
+                          <td colspan="6">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
                           <td class="align-enter text-dark font-13" colspan="6">
                             No Verifier.
                           </td>
@@ -117,7 +124,8 @@ export default {
   data() {
     return {
       pagination: {},
-      myVerifier: []
+      myVerifier: [],
+      loading: false
     };
   },
 
@@ -137,6 +145,7 @@ export default {
     },
 
     Verifier() {
+      this.loading = true;
       axios
         .get("verificaton/verifier", {
           headers: {
@@ -144,10 +153,12 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
           this.prepPagination(response.data);
           this.myVerifier = response.data.data;
         })
         .catch((error) => {
+          this.loading = false;
           console.log(error);
         });
     },

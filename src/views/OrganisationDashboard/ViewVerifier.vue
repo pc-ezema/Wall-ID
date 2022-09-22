@@ -52,8 +52,15 @@
                         </tr>
                       </thead>
                       <tbody v-if="!myVerifiers || !myVerifiers.length">
-                        <tr>
-                          <td class="align-enter text-dark font-13" colspan="7">
+                        <tr v-if="loading" >
+                          <td colspan="7">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td class="align-center text-dark font-13" colspan="7">
                             No Verifiers.
                           </td>
                         </tr>
@@ -179,6 +186,7 @@ export default {
       selectedVerifier: {},
       unique_id: "Choose Event ID",
       event_id: [],
+      loading: false
     };
   },
 
@@ -225,6 +233,7 @@ export default {
 
     Verifiers() 
     {
+      this.loading = true;
       axios
         .get("verificaton/organization/verifiers", {
           headers: {
@@ -232,10 +241,12 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
           this.prepPagination(response.data);
           this.myVerifiers = response.data.data;
         })
         .catch((error) => {
+          this.loading = false;
           console.log(error);
         });
     },

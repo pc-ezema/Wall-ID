@@ -54,7 +54,14 @@
                         </tr>
                       </thead>
                       <tbody v-if="!expired || !expired.length">
-                        <tr>
+                        <tr v-if="loading" >
+                          <td colspan="7">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
                           <td class="align-enter text-dark font-13" colspan="7">
                             No Expired Subscription
                           </td>
@@ -192,6 +199,7 @@ export default {
       pagination: "",
       expired: [],
       payment_details: {},
+      loading: false
     };
   },
 
@@ -211,6 +219,7 @@ export default {
     },
 
     loadExpireSubscription(page = 1) {
+      this.loading = true;
       axios
         .get("individuals/organizations/subscriptions/expired/all", {
           headers: {
@@ -218,10 +227,12 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
           this.prepPagination(response.data);
           this.expired = response.data.data;
         })
         .catch((error) => {
+          this.loading = false;
           console.log(error);
         });
     },

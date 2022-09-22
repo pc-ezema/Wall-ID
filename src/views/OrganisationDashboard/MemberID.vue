@@ -63,15 +63,22 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody v-if="!memberid || !memberid.length">
-                        <tr>
-                          <td class="align-enter text-dark font-13" colspan="7">
+                      <tbody v-if="!approvedid || !approvedid.length">
+                        <tr v-if="loading" >
+                          <td colspan="7">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td class="align-center text-dark font-13" colspan="7">
                             No Approved ID Card
                           </td>
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr v-for="(row, index) in memberid" v-bind:key="index">
+                        <tr v-for="(row, index) in approvedid" v-bind:key="index">
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.name }}</td>
                           <td><img :src="this.baseURL + row.path" /></td>
@@ -127,15 +134,22 @@
                           <th scope="col">Status</th>
                         </tr>
                       </thead>
-                      <tbody v-if="!memberid || !memberid.length">
-                        <tr>
-                          <td class="align-enter text-dark font-13" colspan="7">
+                      <tbody v-if="!declineid || !declineid.length">
+                        <tr v-if="loading" >
+                          <td colspan="7">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td class="align-center text-dark font-13" colspan="7">
                             No Declined ID Card
                           </td>
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr v-for="(row, index) in memberid" v-bind:key="index">
+                        <tr v-for="(row, index) in declineid" v-bind:key="index">
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.name }}</td>
                           <td><img :src="this.baseURL + row.path" /></td>
@@ -181,13 +195,21 @@
                         </tr>
                       </thead>
                       <tbody v-if="!memberid || !memberid.length">
-                        <tr>
-                          <td class="align-enter text-dark font-13" colspan="7">
+                        <tr v-if="loading" >
+                          <td colspan="7">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td class="align-center text-dark font-13" colspan="7">
                             No Pending ID Card
                           </td>
                         </tr>
                       </tbody>
                       <tbody v-else>
+                        <div style="text-align: center" v-if="loading">Loading...</div>
                         <tr v-for="(row, index) in memberid" v-bind:key="index">
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.name }}</td>
@@ -254,15 +276,22 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody v-if="!memberid || !memberid.length">
-                        <tr>
-                          <td class="align-enter text-dark font-13" colspan="7">
+                      <tbody v-if="!deactivatedid || !deactivatedid.length">
+                        <tr v-if="loading" >
+                          <td colspan="7">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td class="align-center text-dark font-13" colspan="7">
                             No Deactivated ID Card
                           </td>
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr v-for="(row, index) in memberid" v-bind:key="index">
+                        <tr v-for="(row, index) in deactivatedid" v-bind:key="index">
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.name }}</td>
                           <td><img :src="this.baseURL + row.path" /></td>
@@ -569,6 +598,9 @@ export default {
       baseURL: axios.defaults.baseURL.slice(0, -5),
       pagination: {},
       memberid: [],
+      approvedid: [],
+      declineid: [],
+      deactivatedid: [],
       pendingcardsInd: true,
       pendingcardsOrg: false,
       approvedcards: false,
@@ -586,6 +618,7 @@ export default {
         cardImage: "",
         organization: null,
       },
+      loading: false
     };
   },
 
@@ -601,19 +634,6 @@ export default {
         this.approvedcards = true;
         this.declinedcards = false;
         this.deactivatedcards = false
-        axios
-          .get("id-card-management/organization/approved/id-card", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.memberid = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
 
       if (this.key == "PendingInd") {
@@ -622,19 +642,6 @@ export default {
         this.approvedcards = false;
         this.declinedcards = false;
         this.deactivatedcards = false
-        axios
-          .get("id-card-management/organization/pending/id-card", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.memberid = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
 
       if (this.key == "PendingOrg") {
@@ -643,19 +650,6 @@ export default {
         this.approvedcards = false;
         this.declinedcards = false;
         this.deactivatedcards = false
-        axios
-          .get("id-card-management/organization/pending/id-card", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.memberid = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
 
       if (this.key == "Declined") {
@@ -664,19 +658,6 @@ export default {
         this.approvedcards = false;
         this.declinedcards = true;
         this.deactivatedcards = false
-        axios
-          .get("id-card-management/organization/declined/id-card", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.memberid = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
 
       if (this.key == "Deactivate") {
@@ -685,19 +666,6 @@ export default {
         this.approvedcards = false;
         this.declinedcards = false;
         this.deactivatedcards = true
-        axios
-          .get("id-card-management/organization/deactivate/id-card", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.memberid = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
     },
 
@@ -716,6 +684,41 @@ export default {
     },
 
     loadPendingCards() {
+      this.loading = true;
+      axios
+        .get("id-card-management/organization/pending/id-card", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.loading = false;
+          this.prepPagination(response.data);
+          this.memberid = response.data.data;
+        })
+        .catch((error) => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
+
+    loadApprovedCards() {
+      axios
+        .get("id-card-management/organization/approved/id-card", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.prepPagination(response.data);
+          this.approvedid = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    loadPendingOrgCards() {
       axios
         .get("id-card-management/organization/pending/id-card", {
           headers: {
@@ -725,6 +728,38 @@ export default {
         .then((response) => {
           this.prepPagination(response.data);
           this.memberid = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    loadDeclineCards() {
+      axios
+        .get("id-card-management/organization/declined/id-card", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.prepPagination(response.data);
+          this.declineid = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    loadDeactivateCards() {
+      axios
+        .get("id-card-management/organization/deactivate/id-card", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.prepPagination(response.data);
+          this.deactivatedid = response.data.data;
         })
         .catch((error) => {
           console.log(error);
@@ -848,6 +883,10 @@ export default {
 
   mounted() {
     this.loadPendingCards();
+    this.loadApprovedCards();
+    this.loadPendingOrgCards();
+    this.loadDeclineCards();
+    this.loadDeactivateCards();
     window.scrollTo(0, 0);
   },
 };

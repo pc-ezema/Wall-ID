@@ -452,7 +452,7 @@ export default {
       fd.append("image", this.form.image);
       fd.append("category_id", this.form.category_id);
       fd.append("venue_image", this.form.venue_image);
-      fd.append("ticketCategories", this.form.ticketCategories);
+      fd.append("ticketCategories", JSON.stringify(this.form.ticketCategories));
 
       this.$Progress.start();
       this.$wait.start("processing");

@@ -58,7 +58,7 @@
                         </tr>
                       </thead>
                       <tbody
-                        v-if="!mypendingidcards || !mypendingidcards.length"
+                        v-if="!mypendingorgidcards || !mypendingorgidcards.length"
                       >
                         <tr>
                           <td class="align-enter text-dark font-13" colspan="7">
@@ -68,7 +68,7 @@
                       </tbody>
                       <tbody v-else>
                         <tr
-                          v-for="(row, index) in mypendingidcards"
+                          v-for="(row, index) in mypendingorgidcards"
                           v-bind:key="index"
                         >
                           <th scope="row">{{ index + 1 }}</th>
@@ -127,7 +127,14 @@
                       <tbody
                         v-if="!mypendingidcards || !mypendingidcards.length"
                       >
-                        <tr>
+                        <tr v-if="loading" >
+                          <td colspan="6">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
                           <td class="align-enter text-dark font-13" colspan="6">
                             No Pending ID Card.
                           </td>
@@ -183,9 +190,11 @@ export default {
     return {
       pagination: {},
       mypendingidcards: [],
+      mypendingorgidcards: [],
       organization: false,
       individual: true,
       key: "Filter",
+      loading: false
     };
   },
 
@@ -194,35 +203,11 @@ export default {
       if (this.key == "Individual") {
         this.organization = false;
         this.individual = true;
-        axios
-          .get("id-card-management/pending/id-card/individual", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.mypendingidcards = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
 
       if (this.key == "Organization") {
         this.individual = false;
         this.organization = true;
-        axios
-          .get("id-card-management/pending/id-card/organization", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.mypendingidcards = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
     },
 
@@ -241,6 +226,7 @@ export default {
     },
 
     loadIndPendingCard(page = 1) {
+      this.loading = true;
       axios
         .get(
           "id-card-management/pending/id-card/individual" + "?page=" + page,
@@ -251,8 +237,25 @@ export default {
           }
         )
         .then((response) => {
+          this.loading = false;
           this.prepPagination(response.data);
           this.mypendingidcards = response.data.data;
+        })
+        .catch((error) => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
+
+    loadingOrgPendingCard(page =1) {
+      axios
+        .get("id-card-management/pending/id-card/organization", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.mypendingorgidcards = response.data.data;
         })
         .catch((error) => {
           console.log(error);
@@ -333,6 +336,7 @@ export default {
 
   mounted() {
     this.loadIndPendingCard();
+    this.loadingOrgPendingCard();
     window.scrollTo(0, 0);
   },
 };

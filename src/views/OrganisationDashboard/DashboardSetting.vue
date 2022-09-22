@@ -188,7 +188,7 @@ export default {
       avatar: "",
       new_password: null,
       new_password_confirmation: null,
-      user: this.$store.state.user || null,
+      user: JSON.parse(localStorage.getItem('user')) || [],
     };
   },
 

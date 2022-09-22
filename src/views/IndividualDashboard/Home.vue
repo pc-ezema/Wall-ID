@@ -358,7 +358,7 @@ export default {
   data() {
     return {
       dashboardstats: {},
-      user: this.$store.state.user,
+      user: JSON.parse(localStorage.getItem('user')) || [],
     };
   },
 
@@ -401,10 +401,6 @@ export default {
         .catch((error) => {
           console.log(error);
         });
-    },
-
-    getUser() {
-      this.user = this.$store.state.user;
     },
   },
 

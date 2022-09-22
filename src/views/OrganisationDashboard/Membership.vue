@@ -62,16 +62,16 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody v-if="!membership || !membership.length">
+                      <tbody v-if="!activated || !activated.length">
                         <tr>
-                          <td class="align-enter text-dark font-13" colspan="6">
+                          <td class="align-center text-dark font-13" colspan="6">
                             No Approved Member
                           </td>
                         </tr>
                       </tbody>
                       <tbody v-else>
                         <tr
-                          v-for="(row, index) in membership"
+                          v-for="(row, index) in activated"
                           v-bind:key="index"
                         >
                           <th scope="row">{{ index + 1 }}</th>
@@ -127,9 +127,16 @@
                         </tr>
                       </thead>
                       <tbody v-if="!membership || !membership.length">
-                        <tr>
-                          <td class="align-enter text-dark font-13" colspan="7">
-                            No Pending Membership Request
+                        <tr v-if="loading" >
+                          <td colspan="7">
+                            <div style="text-align: center" class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td class="align-center text-dark font-13" colspan="7">
+                            No Pending Member
                           </td>
                         </tr>
                       </tbody>
@@ -203,16 +210,16 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody v-if="!membership || !membership.length">
+                      <tbody v-if="!deactivated || !deactivated.length">
                         <tr>
-                          <td class="align-enter text-dark font-13" colspan="7">
+                          <td class="align-center text-dark font-13" colspan="7">
                             No Deactivated Member
                           </td>
                         </tr>
                       </tbody>
                       <tbody v-else>
                         <tr
-                          v-for="(row, index) in membership"
+                          v-for="(row, index) in deactivated"
                           v-bind:key="index"
                         >
                           <th scope="row">{{ index + 1 }}</th>
@@ -271,16 +278,16 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody v-if="!membership || !membership.length">
+                      <tbody v-if="!declined || !declined.length">
                         <tr>
-                          <td class="align-enter text-dark font-13" colspan="7">
-                            No Pending Membership Request
+                          <td class="align-center text-dark font-13" colspan="7">
+                            No Declined Member
                           </td>
                         </tr>
                       </tbody>
                       <tbody v-else>
                         <tr
-                          v-for="(row, index) in membership"
+                          v-for="(row, index) in declined"
                           v-bind:key="index"
                         >
                           <th scope="row">{{ index + 1 }}</th>
@@ -350,11 +357,15 @@ export default {
     return {
       pagination: {},
       membership: [],
+      declined: [],
+      activated: [],
+      deactivated: [],
       approvedMember: false,
       deactivateMember: false,
       declineMember: false,
       pendingMember: true,
       key: "Filter",
+      loading: false
     };
   },
 
@@ -365,19 +376,6 @@ export default {
         this.deactivateMember = false;
         this.declineMember = false;
         this.approvedMember = true;
-        axios
-          .get("organizations/members/active", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.membership = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
 
       if (this.key == "Pending") {
@@ -385,19 +383,6 @@ export default {
         this.deactivateMember = false;
         this.declineMember = false;
         this.pendingMember = true;
-        axios
-          .get("organizations/members/requests/get", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.membership = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
 
       if (this.key == "Declined") {
@@ -405,19 +390,6 @@ export default {
         this.deactivateMember = false;
         this.declineMember = true;
         this.pendingMember = false;
-        axios
-          .get("organizations/members/decline", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.membership = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
 
       if (this.key == "Deactivated") {
@@ -425,19 +397,6 @@ export default {
         this.deactivateMember = true;
         this.declineMember = false;
         this.pendingMember = false;
-        axios
-          .get("organizations/members/unactive", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.membership = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
     },
 
@@ -456,6 +415,7 @@ export default {
     },
 
     loadMembership(page = 1) {
+      this.loading = true;
       axios
         .get("organizations/members/requests/get" + "?page=" + page, {
           headers: {
@@ -463,8 +423,58 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
           this.prepPagination(response.data);
           this.membership = response.data.data;
+        })
+        .catch((error) => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
+
+    loadActivated(page = 1) {
+      axios
+        .get("organizations/members/active" + "?page=" + page, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.prepPagination(response.data);
+          this.activated = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    loadDeclined(page = 1) {
+      axios
+        .get("organizations/members/decline" + "?page=" + page, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.prepPagination(response.data);
+          this.declined = response.data.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
+    loadDeactivated(page = 1) {
+      axios
+        .get("organizations/members/unactive" + "?page=" + page, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.prepPagination(response.data);
+          this.deactivated = response.data.data;
         })
         .catch((error) => {
           console.log(error);
@@ -590,6 +600,9 @@ export default {
 
   mounted() {
     this.loadMembership();
+    this.loadActivated();
+    this.loadDeclined();
+    this.loadDeactivated();
     window.scrollTo(0, 0);
   },
 };

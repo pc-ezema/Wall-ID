@@ -95,9 +95,14 @@
                             {{ item.unique_id }}
                           </td>
                           <td>
+                            <span v-if="item.image == null">
+                                None
+                            </span>
+                            <span v-else>
                             <img
-                              :src="this.baseURL + '/events/' + item.image"
+                              :src="this.baseURL + '/storage/events/' + item.image"
                             />
+                            </span>
                           </td>
                           <td>
                             <div class="action_btns d-flex">

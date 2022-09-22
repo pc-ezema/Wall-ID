@@ -47,7 +47,10 @@
                 </div>
               </form>
               <div class="col-lg-12 mt-2">
-                <div
+                <div v-if="loading" style="text-align: center"  class="fa-3x">
+                    <i class="fas fa-spinner fa-spin"></i>
+                </div>
+                <div v-else
                   class="mb-2"
                   v-for="row in resultQuery"
                   v-bind:key="row.id"
@@ -116,8 +119,9 @@ export default {
       pagination: "",
       search: [],
       searchQuery: null,
+      loading: false,
       baseURL: axios.defaults.baseURL.slice(0, -5),
-      user: this.$store.state.user || null,
+      user: JSON.parse(localStorage.getItem('user')) || [],
     };
   },
 
@@ -153,6 +157,7 @@ export default {
     },
 
     loadMembers(page = 1) {
+      this.loading = true;
       axios
         .get("organizations/members", {
           headers: {
@@ -160,10 +165,12 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
           this.prepPagination(response.data);
           this.search = response.data.data;
         })
         .catch((error) => {
+          this.loading = false;
           console.log(error);
         });
     },

@@ -61,15 +61,22 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody v-if="!membersubscriptions || !membersubscriptions.length">
-                        <tr>
+                      <tbody v-if="!memberactivesubscriptions || !memberactivesubscriptions.length">
+                        <tr v-if="loading" >
+                          <td colspan="8">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
                           <td class="align-enter text-dark font-13" colspan="7">
                             No Active Subscription
                           </td>
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr v-for="(row, index) in membersubscriptions" v-bind:key="index">
+                        <tr v-for="(row, index) in memberactivesubscriptions" v-bind:key="index">
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.individual.firstname }} {{ row.individual.lastname }}</td>
                           <td>{{ row.subscription_plan.name }}</td>
@@ -90,7 +97,7 @@
                             {{ new Date(row.expiry_date).toLocaleString() }}
                           </td>
                           <td>
-                            <a class="a-approved">{{ row.status }}</a>
+                            <a class="a-pending">{{ row.status }}</a>
                           </td>
                           <td>
                             <div class="action_btns d-flex">
@@ -132,7 +139,7 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody v-if="!membersubscriptions || !membersubscriptions.length">
+                      <tbody v-if="!pastsubscriptions || !pastsubscriptions.length">
                         <tr>
                           <td class="align-enter text-dark font-13" colspan="7">
                             No Expired Subscription
@@ -140,7 +147,7 @@
                         </tr>
                       </tbody>
                       <tbody v-else>
-                        <tr v-for="(row, index) in membersubscriptions" v-bind:key="index">
+                        <tr v-for="(row, index) in pastsubscriptions" v-bind:key="index">
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.individual.firstname }} {{ row.individual.lastname }}</td>
                           <td>{{ row.subscription_plan.name }}</td>
@@ -260,11 +267,13 @@ export default {
   data() {
     return {
       pagination: "",
-      membersubscriptions: [],
+      memberactivesubscriptions: [],
+      pastsubscriptions: [],
       payment_details: {},
       key: "Filter",
       active: true,
-      past: false
+      past: false,
+      loading: false
     };
   },
 
@@ -273,37 +282,11 @@ export default {
       if (this.key == "Active") {
         this.active = true;
         this.past = false;
-        axios
-          .get("organizations/subscriptions/active", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.membersubscriptions = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
 
       if (this.key == "Past") {
         this.past = true;
         this.active = false;
-        axios
-          .get("organizations/subscriptions/expired", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.prepPagination(response.data);
-            this.membersubscriptions = response.data.data;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
       }
     },
 
@@ -321,7 +304,8 @@ export default {
       };
     },
 
-    loadActiveSubscription(page = 1) {
+    loadActiveSubscription() {
+      this.loading = true;
       axios
         .get("organizations/subscriptions/active", {
           headers: {
@@ -329,8 +313,26 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
           this.prepPagination(response.data);
-          this.membersubscriptions = response.data.data;
+          this.memberactivesubscriptions = response.data.data;
+        })
+        .catch((error) => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
+
+    loadPastSubscription() {
+      axios
+        .get("organizations/subscriptions/expired", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.prepPagination(response.data);
+          this.pastsubscriptions = response.data.data;
         })
         .catch((error) => {
           console.log(error);
@@ -342,9 +344,9 @@ export default {
     },
   },
 
-
   mounted() {
     this.loadActiveSubscription();
+    this.loadPastSubscription();
     window.scrollTo(0, 0);
   },
 };

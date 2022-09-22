@@ -92,14 +92,14 @@ export default {
   data() {
     return {
       baseURL: axios.defaults.baseURL.slice(0, -5),
-      user: this.$store.state.user || null,
+      user: JSON.parse(localStorage.getItem('user')) || [],
     };
   },
 
   methods: {
     logoutClick() {
-      localStorage.removeItem("token");
-      this.$store.dispatch("user", null);
+      localStorage.removeItem("token","user");
+      // this.$store.dispatch("user", null);
       axios.post("logout");
       this.$router.replace("/");
     },
@@ -107,7 +107,6 @@ export default {
 
   mounted() {
     window.scrollTo(0, 0);
-
     let externalScriptJquery = document.createElement("script");
     let externalScriptMetisMenu = document.createElement("script");
     let externalScriptCustom = document.createElement("script");
