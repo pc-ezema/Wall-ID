@@ -177,3 +177,4 @@ if ($("#switch-toggle").length) {
     toggleHandle();
   });
 }
+

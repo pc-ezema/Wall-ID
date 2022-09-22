@@ -6,6 +6,7 @@ import "./axios";
 import "@/assets/css/style.css";
 import "@/assets/css/bootstrap.min.css";
 import "@/assets/js/bootstrap.min.js";
+import "@/assets/js/last.js";
 import "@/assets/themify-icons/themify-icons.css";
 import "@/assets/css/metisMenu.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
