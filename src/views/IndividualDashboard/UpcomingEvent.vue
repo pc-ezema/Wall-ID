@@ -68,7 +68,21 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody v-if="!events || !events.length">
+                        <tr v-if="loading" >
+                          <td colspan="11">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td class="align-center text-dark font-13" colspan="11">
+                            No Upcoming Event
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
                         <tr v-for="(item, i) in resultQuery" :key="item.id">
                           <th scope="row">
                             {{ i + 1 }}
@@ -96,7 +110,7 @@
                           </td>
                           <td>
                             <img
-                              :src="this.baseURL + '/events/' + item.image"
+                              :src="this.baseURL + '/storage/events/' + item.image"
                             />
                           </td>
                           <td>
@@ -146,6 +160,7 @@ export default {
       category: [],
       categoryName: "",
       searchQuery: null,
+      loading: false
     };
   },
   computed: {
@@ -162,15 +177,13 @@ export default {
     },
   },
 
-  mounted() {
-    window.scrollTo(0, 0);
-    this.getUpcomingEvent();
-  },
   methods: {
     getDate(value) {
       return new Date(value).toLocaleDateString("en-US");
     },
+
     getUpcomingEvent() {
+      this.loading = true;
       axios
         .get(`events/upcoming`, {
           headers: {
@@ -178,7 +191,8 @@ export default {
           },
         })
         .then((res) => {
-          //console.log(res.data.data)
+          // console.log(res.data.data)
+          this.loading = false;
           this.events = res.data.data;
           this.category = res.data.data.category;
           for (let x of this.events) {
@@ -186,8 +200,16 @@ export default {
             //console.log(this.category)
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          this.loading = true;
+          console.log(err);
+        });
     },
+  },
+  
+  mounted() {
+    this.getUpcomingEvent();
+    window.scrollTo(0, 0);
   },
 };
 </script>

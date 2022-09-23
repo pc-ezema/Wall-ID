@@ -54,7 +54,21 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody v-if="!events || !events.length">
+                        <tr v-if="loading" >
+                          <td colspan="10">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td class="align-center text-dark font-13" colspan="10">
+                            No Event History
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
                         <tr v-for="(item, i) in events" :key="item.id">
                           <th scope="row">
                             {{ i + 1 }}
@@ -79,7 +93,7 @@
                           </td>
                           <td>
                             <img
-                              :src="this.baseURL + '/events/' + item.image"
+                              :src="this.baseURL + '/storage/events/' + item.image"
                             />
                           </td>
                           <td>
@@ -122,23 +136,23 @@ import DashboardFooter from "./DashboardFooter.vue";
 import axios from "axios";
 export default {
   components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
-  mounted() {
-    window.scrollTo(0, 0);
-    this.getPastEvent();
-  },
+  
   data() {
     return {
       events: "",
       baseURL: axios.defaults.baseURL.slice(0, -5),
       category: [],
       categoryName: "",
+      loading: false
     };
   },
   methods: {
     getDate(value) {
       return new Date(value).toLocaleDateString("en-US");
     },
+
     getPastEvent() {
+      this.loading = true;
       axios
         .get(`/events/past`, {
           headers: {
@@ -147,6 +161,7 @@ export default {
         })
         .then((res) => {
           //console.log(res.data.data)
+          this.loading = false;
           this.events = res.data.data;
           this.category = res.data.data.category;
           for (let x of this.events) {
@@ -154,8 +169,16 @@ export default {
             //console.log(this.category)
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          this.loading = false;
+          console.log(err);
+        });
     },
   },
+
+  mounted() {
+    window.scrollTo(0, 0);
+    this.getPastEvent();
+  }
 };
 </script>

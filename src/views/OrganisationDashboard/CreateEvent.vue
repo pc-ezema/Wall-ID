@@ -109,7 +109,7 @@
                       <div class="controls" style="display: none">
                         <input
                           type="file"
-                          @change="getEventImg($event)"
+                          @change="getEventImg"
                           name="contact_image_1"
                         />
                       </div>
@@ -141,7 +141,7 @@
                       <div class="controls" style="display: none">
                         <input
                           type="file"
-                          @change="getVenueImg($event)"
+                          @change="getVenueImg"
                           name="contact_image_1"
                         />
                       </div>
@@ -404,16 +404,10 @@ export default {
     },
 
     getEventImg(e) {
-      //this.form.image = event.target.files[0]
       let file = e.target.files[0];
-      let reader = new FileReader();
 
       if (file["size"] < 2111775) {
-        reader.onloadend = (file) => {
-          //console.log('RESULT', reader.result)
-          this.form.image = reader.result;
-        };
-        reader.readAsDataURL(file);
+        this.form.image = e.target.files[0];
       } else {
         alert("File size can not be bigger than 2 MB");
       }
@@ -421,14 +415,9 @@ export default {
 
     getVenueImg(e) {
       let file = e.target.files[0];
-      let reader = new FileReader();
-
+      
       if (file["size"] < 2111775) {
-        reader.onloadend = (file) => {
-          //console.log('RESULT', reader.result)
-          this.form.venue_image = reader.result;
-        };
-        reader.readAsDataURL(file);
+        this.form.venue_image = e.target.files[0];
       } else {
         alert("File size can not be bigger than 2 MB");
       }

@@ -68,7 +68,21 @@
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody>
+                      <tbody v-if="!events || !events.length">
+                        <tr v-if="loading" >
+                          <td colspan="11">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td class="align-center text-dark font-13" colspan="11">
+                            No Event Gallery
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
                         <tr v-for="(item, i) in resultQuery" :key="item.id">
                           <th scope="row">
                             {{ i + 1 }}
@@ -155,6 +169,7 @@ export default {
       category: [],
       categoryName: "",
       searchQuery: null,
+      loading: true
     };
   },
 
@@ -176,7 +191,9 @@ export default {
     getDate(value) {
       return new Date(value).toLocaleDateString("en-US");
     },
+
     getAllEvent() {
+      this.loading = true;
       axios
         .get(`/events/mine`, {
           headers: {
@@ -184,6 +201,7 @@ export default {
           },
         })
         .then((res) => {
+          this.loading = false;
           this.events = res.data.data;
           this.category = res.data.data.category;
           for (let x of this.events) {
@@ -191,7 +209,10 @@ export default {
             // console.log(this.category);
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          this.loading = false;
+          console.log(err);
+        });
     },
   },
 };
