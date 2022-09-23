@@ -1,7 +1,7 @@
 <template>
   <MainHeader />
     <!--section for the hero-banner-->
-     <!--section for the hero-banner-->
+    <!--section for the hero-banner-->
      <section class="hero-section">
       <div class="container">
         <div class="row hero-banner">
@@ -34,7 +34,7 @@
           </div>
         </div>
       </div>
-    </section>
+      </section>
     <!--section for id management-->
     <!--section for id management-->
     <section class="section pt-1 id-man-sec">
@@ -109,7 +109,7 @@
                     <img src="@/assets/images/serv1.png" alt="" />
                   </div>
                   <div class="col-8 pb-0">
-                    <p class="pt-1 mb-2 pb-0">Membership</p>
+                    <p class="pt-1 mb-2 pb-0" id="member">Membership</p>
                   </div>
                 </div>
                 <div
@@ -120,7 +120,7 @@
                     <img src="@/assets/images/serv2.png" alt="" class="pt-2" />
                   </div>
                   <div class="col-8">
-                    <p class="pt-3">Subscription</p>
+                    <p class="pt-3" @click="toggleDropDown">Subscription</p>
                   </div>
                 </div>
                 <div
@@ -180,21 +180,23 @@
                 </div>
               </div>
               <div class="col-8 lap-divs">
-                <div class="lap-div mem-div position-relative">
+                <a href="#member">
+                  <div class="lap-div mem-div position-relative">
                   <h5 class="font-600">Membership</h5>
                   <p class="pt-4 pb-3">
                     This feature allows individuals to become members of social
-                    groups or organisations registered on the platform.
-                    Memberships can either have a defined or undefined lifespan,
-                    and can be based on subscription too.
+                      groups or organisations registered on the platform.
+                      Memberships can either have a defined or undefined lifespan,
+                      and can be based on subscription too.
                   </p>
                   <button class="btn btn-dark py-1 px">Get Started</button>
                   <div class="position-absolute bottom-25 left-30 w-75">
                     <img src="@/assets/images/mem.png" alt="" width="100%" />
                   </div>
                 </div>
+                  </a>
                 <div class="lap-div sus-div position-relative">
-                  <h5 class="font-600">Subscription</h5>
+                  <h5 class="font-600" v-if="dropdowndd == true">Subscription</h5>
                   <p class="pt-4 pb-3">
                     Different groups and organisations have varying commercial
                     packages (products/services) which people subscribe to, some
@@ -791,7 +793,6 @@
         </div>
       </div>
     </section>
-
     <!--app download section-->
     <section class="section app-section position-relative overflow-hidden">
       <div class="container">

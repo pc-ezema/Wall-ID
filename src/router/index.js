@@ -148,7 +148,7 @@ const routes = [
   },
   {
     path: "/about",
-    name: "About",
+    name: "#About",
     component: About,
     meta: {
       title: "About | WALLID",
