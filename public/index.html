@@ -60,5 +60,36 @@
       referrerpolicy="no-referrer"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../src/assets/js/main.js"></script>
+    <script>
+      let slideIndex = 1;
+      slideShow(slideIndex);
+
+      function currentSlide(n) {
+        slideShow((slideIndex = n));
+      }
+
+      function slideShow(n) {
+        let i;
+        let slides = document.querySelectorAll(".lap-div");
+        let dot = document.querySelectorAll(".dot");
+        if (n > slides.length) {
+          slideIndex = 1;
+        }
+        if (n < 1) {
+          slideIndex = slides.length;
+        }
+
+        for (i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+        for (i = 0; i < dot.length; i++) {
+          dot[i].className = dot[i].className.replace("active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dot[slideIndex - 1].className += " active";
+}
+     
+    </script>
   </body>
 </html>

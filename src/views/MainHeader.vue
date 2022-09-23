@@ -24,33 +24,29 @@
             >
               <span class="navbar-toggler-icon"></span>
             </button>
-
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ml-auto main-menu align-items-center">
                 <li class="nav-item">
                   <router-link :to="{ name: 'Home' }"
-                    ><a class="nav-link page-scroll">Home</a></router-link
+                    ><a class="nav-link page-scroll"><b>
+                      Home
+                    </b></a></router-link
                   >
                 </li>
                 <li class="nav-item">
-                  <router-link :to="{ name: 'About' }">
-                    <a class="nav-link page-scroll">About Us</a>
-                  </router-link>
+                  <a class="nav-link page-scroll" href="#services">
+                      Services
+                  </a>
                 </li>
                 <li class="nav-item">
-                  <router-link :to="{ name: 'Pricing' }">
-                    <a class="nav-link page-scroll">Pricing</a>
-                  </router-link>
+                  <a class="nav-link page-scroll" href="#faq-sec"><b>
+                    FAQs
+                  </b></a>
                 </li>
                 <li class="nav-item">
-                  <router-link :to="{ name: 'Faq' }">
-                    <a class="nav-link page-scroll">FAQs</a>
-                  </router-link>
-                </li>
-                <li class="nav-item">
-                  <router-link :to="{ name: 'Contact' }">
-                    <a class="nav-link page-scroll">Contact</a>
-                  </router-link>
+                  <a class="nav-link page-scroll"  href="#contact"><b>
+                    Contact
+                  </b></a>
                 </li>
               </ul>
               <ul class="nav_btn">

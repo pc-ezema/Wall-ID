@@ -1,519 +1,895 @@
 <template>
   <MainHeader />
-
-  <img class="blob_img" src="@/assets/images/blob.svg" alt="" />
-  <!-- Welcome Screen -->
-  <section class="hero-area hero-bg d-flex align-items-center dot-bg mb-5">
-    <div class="container">
-      <div class="row align-items-center">
-        <div class="col-lg-6">
-          <div class="hero-content">
-            <h1>Tech Driven <span>Identity Management</span> Solution</h1>
-            <p class="section__desc pt-3">
+    <!--section for the hero-banner-->
+    <!--section for the hero-banner-->
+     <section class="hero-section">
+      <div class="container">
+        <div class="row hero-banner">
+          <div class="col-lg-6 order-lg-2 hero-img">
+            <img src="@/assets/images/wall-hero.jpeg" alt="hero-img" />
+          </div>
+          <div class="col-lg-6 order-lg-1 hero-text">
+            <h1>
+              <span style="color: #ac28fb">Wall-ID</span> helps individuals,
+              groups and organisations easily manage membership and facilitate
+              access control.
+            </h1>
+            <p class="d-none">
               Wall-ID helps individuals, groups and organisations easily manage
               membership and facilitate access control via a simple mobile
               application.
             </p>
-            <div class="btn-div">
-              <router-link to="/signup-option" class="routerLink"
-                ><a>Sign Up For Free! <i class="fas fa-sign-in-alt"></i></a
-              ></router-link>
-            </div>
-            <div class="section-btn-box hero-btn-box pt-2">
-              <a class="download-btn" href="#"
-                ><img src="@/assets/images/btn-app-store.svg" alt="App Store"
-              /></a>
-              <a class="download-btn" href="#"
-                ><img
-                  src="@/assets/images/btn-google-playstore.svg"
-                  alt="App Store"
-              /></a>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-1"></div>
-        <div class="col-lg-5 phone-design">
-          <img
-            class="phone-img"
-            src="@/assets/images/welcome-phone.png"
-            data-aos="fade-left"
-            data-aos-duration="3000"
-            data-aos-delay="500"
-          />
-          <div class="phone-box">
-            <img src="@/assets/images/welcome-icon1.png" alt="icon" />
-            Electronic Wall ID
-          </div>
-          <div class="phone-box2">
-            <img src="@/assets/images/welcome-icon2.png" alt="icon" />
-            Ticket Management
-          </div>
-          <div class="clear"></div>
-          <div class="phone-box3">
-            <img src="@/assets/images/welcome-icon3.png" alt="icon" />
-            Access Control
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- Welcome Screen Ends -->
-
-  <!-- Our Use Case -->
-  <section class="use-case">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-4">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="heading">
-                <h1>Some Use Cases</h1>
-                <div class="line-hr"></div>
-                <p>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                  Soluta optio tempore totam, ea libero itaque obcaecati non
-                  voluptas. Fuga magnam debitis veritatis accusamus ipsa enim
-                  odio, impedit adipisci sequi laudantium.
-                </p>
-                <div class="dropdown">
-                  <a
-                    class="btn-download-mobile-app dropdown-toggle"
-                    href="#"
-                    role="button"
-                    id="dropdownMenuLink"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false"
-                  >
-                    Mobile App <i class="fas fa-download"></i>
-                  </a>
-                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <li>
-                      <a class="dropdown-item" href="#"
-                        ><img
-                          src="@/assets/images/btn-app-store.svg"
-                          alt="App Store"
-                      /></a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#"
-                        ><img
-                          src="@/assets/images/btn-google-playstore.svg"
-                          alt="Google Playstore"
-                      /></a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#"
-                        ><img
-                          src="@/assets/images/btn-direct-download.png"
-                          alt="Direct Download"
-                      /></a>
-                    </li>
-                  </ul>
-                </div>
+            <div class="d-flex mt-5">
+              <div class="btn-img me-4">
+                <a href="#"
+                  ><img src="@/assets/images/play-store.jpg" alt="play-store"
+                /></a>
               </div>
-            </div>
-            <div class="col-md-12">
-              <div class="heading-below">
-                <img src="@/assets/images/use-case-img.png" alt="image" />
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="row">
-            <div class="col-md-12">
-              <div
-                class="box box1"
-                data-aos="fade-right"
-                data-aos-duration="1000"
-                data-aos-delay="500"
-              >
-                <img src="@/assets/images/use-case-icon1.png" alt="icon" />
-                <h4>Electronic ID Wallet</h4>
-                <p>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Ratione consectetur eum officiis, nihil voluptatem quam nisi.
-                </p>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div
-                class="box box2"
-                data-aos="fade-up"
-                data-aos-duration="1000"
-                data-aos-delay="1500"
-              >
-                <img src="@/assets/images/use-case-icon2.png" alt="icon" />
-                <h4>Access Control</h4>
-                <p>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Ratione consectetur eum officiis, nihil voluptatem quam nisi.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-lg-4">
-          <div class="row">
-            <div class="col-md-12">
-              <div
-                class="box box3"
-                data-aos="fade-left"
-                data-aos-duration="1000"
-                data-aos-delay="1000"
-              >
-                <img src="@/assets/images/use-case-icon3.png" alt="icon" />
-                <h4>Ticket Management</h4>
-                <p>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Ratione consectetur eum officiis, nihil voluptatem quam nisi.
-                </p>
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div
-                class="box box4"
-                data-aos="fade-down"
-                data-aos-duration="1000"
-                data-aos-delay="2000"
-              >
-                <img src="@/assets/images/use-case-icon4.png" alt="icon" />
-                <h4>Membership & Subscription</h4>
-                <p>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Ratione consectetur eum officiis, nihil voluptatem quam nisi.
-                </p>
+              <div class="btn-img">
+                <a href="#"
+                  ><img src="@/assets/images/app-store.jpg" alt=" app-store"
+                /></a>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-  <!-- Our Use Case Ends -->
-
-  <!-- Feature Content -->
-  <section class="feature-content">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6">
-          <div class="row">
-            <div class="col-lg-6">
-              <div
-                class="feat-box feat-box1"
-                data-aos="fade-right"
-                data-aos-duration="1000"
-                data-aos-delay="1000"
-              >
-                <img src="@/assets/images/icon-feat1.png" alt="icon" />
-                <h5>User Friendly</h5>
-                <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. In
-                  dolores modi facere.
-                </p>
-                <a href="#">Learn More</a>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <div
-                class="feat-box feat-box2"
-                data-aos="fade-down"
-                data-aos-duration="1000"
-                data-aos-delay="500"
-              >
-                <img src="@/assets/images/icon-feat2.png" alt="icon" />
-                <h5>Secure Electronic ID's</h5>
-                <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. In
-                  dolores modi facere.
-                </p>
-                <a href="#">Learn More</a>
-              </div>
-              <div
-                class="feat-box"
-                data-aos="fade-up"
+      </section>
+    <!--section for id management-->
+    <!--section for id management-->
+    <section class="section pt-1 id-man-sec">
+      <div class="container">
+        <div class="id-head text-center">
+          <h2>Providing Solution for Businesses and Individuals</h2>
+        </div>
+        <div class="row id-rows">
+          <div class="col-lg-6 right g-0 id1-con" data-aos="fade-right"
                 data-aos-duration="500"
-                data-aos-delay="1200"
-              >
-                <img src="@/assets/images/icon-feat3.png" alt="icon" />
-                <h5>24/7 Support</h5>
-                <p>
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. In
-                  dolores modi facere.
+                data-aos-delay="500">
+            <div class="id1">
+              <img src="@/assets/images/id1.png" alt="" />
+            </div>
+            <div class="id1-text">
+              <h5>Enjoyed by over 2 thousand business and individuals</h5>
+              <p>
+                Wall-ID helps individuals, and business to manage and handle
+                identity management.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-6 g-0 id11-con">
+            <div class="d-flex id2-con left" data-aos="fade-down"
+                data-aos-duration="500"
+                data-aos-delay="5500">
+              <div class="w-50 id2-text">
+                <h5>Simply Happy</h5>
+                <p>Making card management easier for our customers</p>
+              </div>
+              <div class="w-50 id2">
+                <img src="@/assets/images/id2.png" alt="" />
+              </div>
+            </div>
+            <div class="d-flex id3-con down" data-aos="fade-top"
+                data-aos-duration="500"
+                data-aos-delay="500">
+              <div class="w-50 id3">
+                <img src="@/assets/images/id3.png" alt="" />
+              </div>
+              <div class="w-50 id3-text">
+                <h5>Over 120 events managed in app</h5>
+                <p>More than a thousand digital ID cards created by users</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--section heading for the various services-->
+    <section class="section" id="services">
+      <div class="container">
+        <div class="id-head text-center">
+          <h3>
+            More Than Just A Digital Version of Your Wallet ;
+            <span style="color: #ac28fb">Bridging the identification gap</span>
+          </h3>
+        </div>
+      </div>
+      <!--section for large screens services-->
+      <!--section for large screens services-->
+      <div class="large-view">
+        <section class="section py-0">
+          <div class="container lap-view-con">
+            <div class="row">
+              <div class="col-4 indicators align-self-center">
+                <div
+                  class="dot mem-lg row justify-content-end pt-2"
+                  onclick="currentSlide(1)"
+                >
+                  <div class="col-2">
+                    <img src="@/assets/images/serv1.png" alt="" />
+                  </div>
+                  <div class="col-8 pb-0">
+                    <p class="pt-1 mb-2 pb-0" id="member">Membership</p>
+                  </div>
+                </div>
+                <div
+                  class="dot sub-lg row justify-content-end"
+                  onclick="currentSlide(2)"
+                >
+                  <div class="col-2">
+                    <img src="@/assets/images/serv2.png" alt="" class="pt-2" />
+                  </div>
+                  <div class="col-8">
+                    <p class="pt-3" @click="toggleDropDown">Subscription</p>
+                  </div>
+                </div>
+                <div
+                  class="dot cm-lg row justify-content-end pt-1"
+                  onclick="currentSlide(3)"
+                >
+                  <div class="col-2">
+                    <img src="@/assets/images/serv3.png" alt="" />
+                  </div>
+                  <div class="col-8">
+                    <p class="pt-2">ID Card Management</p>
+                  </div>
+                </div>
+                <div
+                  class="dot em-lg row py-2 justify-content-end pt-2"
+                  onclick="currentSlide(4)"
+                >
+                  <div class="col-2">
+                    <img src="@/assets/images/serv4.png" alt="" />
+                  </div>
+                  <div class="col-8">
+                    <p class="my-0 mb-1">Event Management</p>
+                  </div>
+                </div>
+                <div
+                  class="dot acv-lg row py-2 justify-content-end pt-2"
+                  onclick="currentSlide(5)"
+                >
+                  <div class="col-2 mt-1">
+                    <img src="@/assets/images/serv5.png" alt="" />
+                  </div>
+                  <div class="col-8">
+                    <p class="my-0">Access Control & Verification</p>
+                  </div>
+                </div>
+                <div
+                  class="dot lrc-lg row justify-content-end pt-2"
+                  onclick="currentSlide(6)"
+                >
+                  <div class="col-2">
+                    <img src="@/assets/images/serv6.png" alt="" />
+                  </div>
+                  <div class="col-8">
+                    <p>Loyalty and Reward Cards</p>
+                  </div>
+                </div>
+                <div
+                  class="dot cdc-lg row justify-content-end pt-2"
+                  onclick="currentSlide(7)"
+                >
+                  <div class="col-2">
+                    <img src="@/assets/images/serv7.png" alt="" />
+                  </div>
+                  <div class="col-8">
+                    <p>Credit and Debit Cards</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-8 lap-divs">
+                <a href="#member">
+                  <div class="lap-div mem-div position-relative">
+                  <h5 class="font-600">Membership</h5>
+                  <p class="pt-4 pb-3">
+                    This feature allows individuals to become members of social
+                      groups or organisations registered on the platform.
+                      Memberships can either have a defined or undefined lifespan,
+                      and can be based on subscription too.
+                  </p>
+                  <button class="btn btn-dark py-1 px">Get Started</button>
+                  <div class="position-absolute bottom-25 left-30 w-75">
+                    <img src="@/assets/images/mem.png" alt="" width="100%" />
+                  </div>
+                </div>
+                  </a>
+                <div class="lap-div sus-div position-relative">
+                  <h5 class="font-600" v-if="dropdowndd == true">Subscription</h5>
+                  <p class="pt-4 pb-3">
+                    Different groups and organisations have varying commercial
+                    packages (products/services) which people subscribe to, some
+                    even provide free packages. This feature allows users to
+                    creative a wide variety of packages and manage them too.
+                  </p>
+                  <button class="btn btn-dark py-1 px">Get Started</button>
+                  <div class="position-absolute bottom-0 w-50 end-0">
+                    <img src="/assets/images/sus.png" alt="" width="110%" />
+                  </div>
+                </div>
+                <div class="lap-div cm-div position-relative">
+                  <h5 class="font-600">ID Card Management</h5>
+                  <p class="pt-4 pb-3">
+                    Groups and organizations will be able to create and define
+                    varying ID card categories. With this feature, you won’t
+                    need to carry ID cards around any longer, and groups or
+                    organisations will better manage the identification of their
+                    members.
+                  </p>
+                  <button class="btn btn-dark py-1 px">Get Started</button>
+                  <div class="position-absolute top-15 end-0">
+                    <img src="@/assets/images/cm.png" alt="" width="100%" />
+                  </div>
+                </div>
+                <div class="lap-div em-div position-relative">
+                  <h5 class="font-600">Event Management</h5>
+                  <p class="pt-4 pb-3">
+                    This feature enables individuals register and or purchase
+                    tickets for a wide variety of events. Groups and
+                    organisations can better manage these events using this
+                    platform. This feature keeps a database of all your events
+                    and their variations.
+                  </p>
+                  <button class="btn btn-dark py-1 px-3">Get Started</button>
+                  <div class="position-absolute top-15 end-0 w-75">
+                    <img src="@/assets/images/em.png" alt="" width="100%" />
+                  </div>
+                </div>
+                <div class="lap-div acv-div position-relative">
+                  <h5 class="font-600">Access Control & Verification</h5>
+                  <p class="pt-4 pb-3">
+                    Whatever your need, this feature provides just the right
+                    tools to manage access control, and with an embedded
+                    verification module, everyone on the app can be duly
+                    identified. Now, you have records and time stamps for events
+                    and regular access.
+                  </p>
+                  <button class="btn btn-dark py-1 px-3">Get Started</button>
+                  <div class="position-absolute end-0 top-15">
+                    <img src="@/assets/images/acv.png" alt="" width="100%" />
+                  </div>
+                </div>
+                <div class="lap-div lrc-div position-relative">
+                  <button
+                    class="btn text-white py-0 px-3 mb-3"
+                    style="background-color: #a324f2; border-radius: 10px"
+                  >
+                    In View
+                  </button>
+                  <h5 class="font-600">Loyalty and Rewards Card</h5>
+                  <p class="pt-4 pb-3">
+                    This earns you points (usually monetized) for every time you
+                    patronize a certain customer. With this feature, groups and
+                    organisations can also effectively manage individuals
+                    subscribed to these loyalty cards, and the entire scheme
+                    too.
+                  </p>
+                  <div class="text-end position-absolute bottom-0 end-0">
+                    <img src="@/assets/images/card1.png" alt="" width="85%" />
+                  </div>
+                </div>
+                <div class="lap-div cdc-div position-relative">
+                  <button
+                    class="btn text-white py-0 px-3 mb-3"
+                    style="background-color: #a324f2; border-radius: 10px"
+                  >
+                    In View
+                  </button>
+                  <h5 class="font-600">Credit and Debit Cards</h5>
+                  <p class="pt-4 pb-3">
+                    Imagine having all your cards available to you with a few
+                    clicks? Yes, that’s now possible. To make it better, you can
+                    now spend from any card – directly and indirectly. No need
+                    to carry any more cards in your wallet – your cards just
+                    went virtual.
+                  </p>
+
+                  <div class="text-end position-absolute bottom-0 end-0">
+                    <img src="@/assets/images/card2.png" alt="" width="90%" class="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+      <!--section for mobile view services-->
+      <!--section for mobile view services-->
+      <div class="mobile-view">
+        <!--section for digital version-->
+        <section class="section pt-0">
+          <div class="container">
+            <div class="row digital-con pt-3">
+              <div class="col-lg-4 order-lg-2">
+                <img src="@/assets/images/mem.png" alt="" width="100%" />
+              </div>
+              <div class="col-lg-8 order-lg-1 member-div">
+                <h4>Membership</h4>
+                <p class="py-4">
+                  This feature allows individuals to become members of social
+                  groups or organisations registered on the platform.
+                  Memberships can either have a defined or undefined lifespan,
+                  and can be based on subscription too.
                 </p>
-                <a href="#">Learn More</a>
+                <a href="#"
+                  ><button class="btn btn-dark px-5">Get Started</button></a
+                >
               </div>
             </div>
           </div>
-        </div>
-        <div class="col-lg-1"></div>
-        <div class="col-lg-5">
-          <img
-            class="phone-img"
-            src="@/assets/images/feat-phone.webp"
-            alt="mobile phone"
-            data-aos="zoom"
-            data-aos-duration="1000"
-          />
-        </div>
+        </section>
+        <!--section for subscription-->
+        <section class="section pt-0">
+          <div class="container">
+            <div class="row my-3 pt-3">
+              <div class="col-lg-6 sub-img">
+                <img src="@/assets/images/sus.png" alt="sus" width="100%" />
+              </div>
+              <div class="col-lg-6 pt-3 sub-text">
+                <h4 class="font-600">Subscription</h4>
+                <p class="my-4">
+                  Different groups and organisations have varying commercial
+                  packages (products/services) which people subscribe to, some
+                  even provide free packages. This feature allows users to
+                  creative a wide variety of packages and manage them too.
+                </p>
+                <a href="#"
+                  ><button
+                    class="btn text-white px-4"
+                    style="background-color: #ac28fb"
+                  >
+                    Get Started
+                  </button></a
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+        <!--section for cards management-->
+        <section class="section pt-0">
+          <div class="container">
+            <div class="row card-man-con pt-3">
+              <div class="col-lg-4 order-lg-2">
+                <img src="@/assets/images/cm.png" alt="cm" width="80%" />
+              </div>
+              <div class="col-lg-8 order-lg-1 member-div">
+                <h4>ID Cards Management</h4>
+                <p class="py-4">
+                  Groups and organizations will be able to create and define
+                  varying ID card categories. With this feature, you won’t need
+                  to carry ID cards around any longer, and groups or
+                  organisations will better manage the identification of their
+                  members.
+                </p>
+                <a href="#"
+                  ><button class="btn btn-dark px-5">Get Started</button></a
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+        <!--section for event management-->
+        <section class="section pt-0">
+          <div class="container">
+            <div class="row my-3 pt-3">
+              <div class="col-lg-6 event-img">
+                <img src="@/assets/images/em.png" alt="em" width="100%" />
+              </div>
+              <div class="col-lg-6 event-text pt-3">
+                <h4 class="font-600">Event Management</h4>
+                <p class="my-4">
+                  This feature enables individuals register and or purchase
+                  tickets for a wide variety of events. Groups and organisations
+                  can better manage these events using this platform. This
+                  feature keeps a database of all your events and their
+                  variations.
+                </p>
+                <a href="#"
+                  ><button
+                    class="btn text-white px-4"
+                    style="background-color: #ac28fb"
+                  >
+                    Get Started
+                  </button></a
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+        <!--section for access control-->
+        <section class="section pt-0">
+          <div class="container">
+            <div class="row access-con pt-3">
+              <div class="col-lg-6 order-lg-2">
+                <img src="@/assets/images/acv.png" alt="acn" width="100%" />
+              </div>
+              <div class="col-lg-6 order-lg-1 member-div">
+                <h4>Access Control & Verification</h4>
+                <p class="py-4">
+                  Whatever your need, this feature provides just the right tools
+                  to manage access control, and with an embedded verification
+                  module, everyone on the app can be duly identified. Now, you
+                  have records and time stamps for events and regular access.
+                </p>
+                <a href="#"
+                  ><button class="btn btn-dark px-5">Get Started</button></a
+                >
+              </div>
+            </div>
+          </div>
+        </section>
+        <!--section for credit-cards -->
+        <section class="section pb-0">
+          <div class="container">
+            <div class="d-lg-flex justify-content-between">
+              <div class="card-one border mb-4">
+                <a href="#"
+                  ><button
+                    class="btn text-white py-0 px-3"
+                    style="background-color: #ac28fb; font-size: 13px"
+                  >
+                    In View
+                  </button></a
+                >
+                <h4 class="font-600 my-4">Loyalty and Reward Cards</h4>
+                <p>
+                  This earns you points (usually monetized) for every time you
+                  patronize a certain customer. With this feature, groups and
+                  organisations can also effectively manage individuals
+                  subscribed to these loyalty cards, and the entire scheme too.
+                </p>
+                <img src="@/assets/images/card1.png" alt="" />
+              </div>
+              <div class="card-two border">
+                <a href="#"
+                  ><button
+                    class="btn text-white py-0 px-3"
+                    style="background-color: #ac28fb; font-size: 13px"
+                  >
+                    In View
+                  </button></a
+                >
+                <h4 class="font-600 my-4">Credit and Debit Cards</h4>
+                <p>
+                  Imagine having all your cards available to you with a few
+                  clicks? Yes, that’s now possible. To make it better, you can
+                  now spend from any card – directly and indirectly. No need to
+                  carry any more cards in your wallet – your cards just went
+                  virtual.
+                </p>
+                <img src="@/assets/images/card2.png" alt="" />
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
-    </div>
-  </section>
-  <!-- Feature Content Ends -->
-
-  <!-- For Individual And Organisation -->
-  <section class="for-indi-org">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-6">
-          <span class="stroke-text">WALL-ID</span>
-          <h2
-            class="text-lg mb-3 mt-3 fw-bold"
-            style="color: #000; font-weight: 700"
-          >
-            Manage Your ID's
+    </section>
+     <!--simplifying managment section-->
+     <section class="section position-relative">
+      <div class="container pb-5">
+        <div class="text-center id-head">
+          <h2>
+            Simplifying ID Management for
+            <span style="color: #ac28fb">Businesses</span> and
+            <span style="color: #ac28fb">Individuals</span>
           </h2>
-          <p class="text-p">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam
-            minima saepe atque sint, beatae tempora perspiciatis aperiam ea iure
-            nostrum tempore illum, maxime et esse molestias labore aut
-            recusandae eum!
+        </div>
+        <div class="mt-4 mb-4 font-600"><h5>Get started with wall-id</h5></div>
+        <div class="row justify-content-between">
+          <div class="col-lg-2 steps text-center step-one">
+            <div class="step-img">
+              <div class="poly">
+                <img src="@/assets/images/polygon.png" alt="" width="100%" />
+              </div>
+              <div class="gif">
+                <img
+                  src="@/assets/images/animation_500_l812mfrm.gif"
+                  alt=""
+                  width="40%"
+                />
+              </div>
+            </div>
+            <p>Download the app for andriod or ios</p>
+          </div>
+          <div class="col-1 arrow align-self-center">
+            <img src="@/assets/images/arrow.png" alt="" width="130%" />
+          </div>
+          <div class="col-lg-2 steps step-two text-center">
+            <div class="step-img">
+              <div class="poly">
+                <img src="@/assets/images/polygon.png" alt="" width="100%" />
+              </div>
+              <div class="gif">
+                <img
+                  src="@/assets/images/animation_500_l811bl8l.gif"
+                  alt=""
+                  width="45%"
+                />
+              </div>
+            </div>
+            <p>Choose to sign up as either an individual or business</p>
+          </div>
+          <div class="col-1 arrow align-self-center">
+            <img src="@/assets/images/arrow.png" alt="" width="130%" />
+          </div>
+          <div class="col-lg-2 steps step-three text-center">
+            <div class="step-img">
+              <div class="poly">
+                <img src="@/assets/images/polygon.png" alt="" width="100%" />
+              </div>
+              <div class="gif">
+                <img
+                  src="@/assets/images/animation_500_l811w7go.gif"
+                  alt=""
+                  width="40%"
+                />
+              </div>
+            </div>
+            <p>Verify your business or personal indentity</p>
+          </div>
+          <div class="col-1 arrow align-self-center">
+            <img src="@/assets/images/arrow.png" alt="" width="130%" />
+          </div>
+          <div class="col-lg-2 steps step-four text-center">
+            <div class="step-img">
+              <div class="poly">
+                <img src="@/assets/images/polygon.png" alt="" width="100%" />
+              </div>
+              <div class="gif">
+                <img
+                  src="@/assets/images/animation_500_l810q856.gif"
+                  alt=""
+                  width="40%"
+                />
+              </div>
+            </div>
+            <p>Your account is ready. Enjoy all Wall-ID features</p>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="d-lg-flex mt-7 justify-content-between">
+          <div class="register1 right card-one text-center">
+            <h4 class="font-600 my-4 text-center">Register As A Business</h4>
+            <p class="text-center">
+              Get signed up as a business and enjoy the seamless identification
+              of your members and much more.
+            </p>
+            <a href="#"
+              ><button
+                class="btn text-white py-2 px-3"
+                style="background-color: #ac28fb; font-size: 14px"
+              >
+                Get Started
+              </button></a
+            >
+            <img src="@/assets/images/register.png" alt="" class="" />
+          </div>
+          <div class="register2 left card-two border text-center">
+            <h4 class="font-600 my-4">Sign Up As An Individual</h4>
+            <p>
+              Register as an individal to get proper management of IDs, event
+              tickets and much more.
+            </p>
+            <a href="#"
+              ><button
+                class="btn text-white py-2 px-3"
+                style="background-color: #ac28fb; font-size: 14px"
+              >
+                Get Started
+              </button></a
+            >
+            <div class="d-flex sign-ind-img mt-10">
+              <img src="@/assets/images/suaai1.png" class="move" alt=""  />
+              <img src="@/assets/images/suaai2.png" alt="" class="cloth"  />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bg-style"></div>
+    </section>
+     <!--section for faq-->
+     <section class="section" id="faq-sec">
+      <div class="container">
+        <div class="id-head text-center">
+          <h2>Frequently Asked Question (FAQs)</h2>
+          <p class="text-center px-3 py-4">
+            Here are some of the Frequently asked questions about Wall-ID
           </p>
-          <div class="category">
-            <h2>
-              <i style="color: #000" class="fas fa-check-circle"></i> For
-              Individual
-            </h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore,
-              perspiciatis! Dolorum optio in tempora illum saepe minus iure eum
-              consectetur facilis temporibus voluptatum nihil ipsam impedit,
-              ratione molestias dolore maiores sit, veniam odio animi voluptate.
+        </div>
+        <div class="row pt-3 justify-content-between">
+          <div class="col-lg-7 order-lg-2">
+            <div class="accordion accordion-flush" id="accordionFlush">
+              <div class="accordion-item py-2">
+                <h2 class="accordion-header" id="flush-headingOne">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseOne"
+                    aria-expanded="false"
+                    aria-controls="flush-collapseOne"
+                  >
+                    What Is Wall-ID for ?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseOne"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="flush-headingOne"
+                  data-bs-parent="#accordionFlush"
+                >
+                  <div class="accordion-body">
+                    Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                    Animi a itaque quasi, veniam commodi ipsa labore numquam ad
+                    autem officiis veritatis earum vitae. Aliquid maiores soluta
+                    dolore autem necessitatibus earum! Lorem ipsum dolor sit
+                    amet consectetur adipisicing elit. Voluptatum quisquam,
+                    sapiente ipsa corporis minima pariatur. Id necessitatibus
+                    optio tempora magnam, fuga dolorem veniam! Obcaecati iure
+                    fugiat dolorem nostrum nobis cum!
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item py-2">
+                <h2 class="accordion-header" id="flush-headingTwo">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseTwo"
+                    aria-expanded="false"
+                    aria-controls="flush-collapseTwo"
+                  >
+                    How can I create an account ?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseTwo"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="flush-headingTwo"
+                  data-bs-parent="#accordionFlush"
+                >
+                  <div class="accordion-body">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Quos, unde velit consectetur asperiores ut suscipit facere
+                    natus iusto modi laudantium. Esse quas dolorem aperiam
+                    tempora consequatur ut a officia facilis. Lorem ipsum dolor,
+                    sit amet consectetur adipisicing elit. Perferendis expedita
+                    quidem beatae possimus, dolores animi velit modi tenetur ad
+                    nam, autem numquam sed! Aliquam adipisci repudiandae fugiat
+                    libero, accusamus dolorum.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item py-2">
+                <h2 class="accordion-header" id="flush-headingThree">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseThree"
+                    aria-expanded="false"
+                    aria-controls="flush-collapseThree"
+                  >
+                    How can I buy event tickets ?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseThree"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="flush-headingThree"
+                  data-bs-parent="#accordionFlush"
+                >
+                  <div class="accordion-body">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Illo odio suscipit soluta sed neque temporibus autem qui
+                    totam, ad facere possimus non error delectus praesentium
+                    nulla nam quos sit? Ipsa? Lorem ipsum dolor sit amet
+                    consectetur adipisicing elit. Molestiae in corporis nihil
+                    odit iure unde voluptate vel laborum sit fuga soluta
+                    explicabo sequi dolorum, est sint vitae voluptatibus
+                    mollitia! Architecto. Lorem ipsum dolor sit, amet
+                    consectetur adipisicing elit.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item py-2">
+                <h2 class="accordion-header" id="flush-headingFour">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseFour"
+                    aria-expanded="false"
+                    aria-controls="flush-collapseFour"
+                  >
+                    Can I have an account for business and individual ?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseFour"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="flush-headingFour"
+                  data-bs-parent="#accordionFlush"
+                >
+                  <div class="accordion-body">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                    Ipsa rerum dolores ex inventore, dolore, tempore facere ad
+                    laudantium rem omnis molestias eaque minus hic enim eligendi
+                    sapiente ab minima sunt!
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item py-2">
+                <h2 class="accordion-header" id="flush-headingFive">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseFive"
+                    aria-expanded="false"
+                    aria-controls="flush-collapseFive"
+                  >
+                    Can I create a memebership for my business ?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseFive"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="flush-headingFive"
+                  data-bs-parent="#accordionFlush"
+                >
+                  <div class="accordion-body">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Libero vitae iusto sed ab? Expedita maxime exercitationem
+                    consequuntur tenetur amet, voluptatum alias facilis atque
+                    itaque adipisci quasi eum, sit suscipit nihil?
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item py-2">
+                <h2 class="accordion-header" id="flush-headingSix">
+                  <button
+                    class="accordion-button collapsed"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapseSix"
+                    aria-expanded="false"
+                    aria-controls="flush-collapseSix"
+                  >
+                    How secure Is the Wall-ID app ?
+                  </button>
+                </h2>
+                <div
+                  id="flush-collapseSix"
+                  class="accordion-collapse collapse"
+                  aria-labelledby="flush-headingSix"
+                  data-bs-parent="#accordionFlush"
+                >
+                  <div class="accordion-body">
+                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab
+                    voluptas debitis magnam mollitia aperiam quis quam dolore,
+                    saepe ad assumenda harum velit itaque, iure vero at ducimus
+                    cupiditate, a quia?
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 order-lg-1 pt-5">
+            <h5 class="py-4">Need to contact us?</h5>
+            <p class="p-2 px-3 need-1">
+              <i class="fa-solid fa-phone pe-2"></i>+234 809 660 2599
             </p>
-            <h2>
-              <i style="color: #000" class="fas fa-check-circle"></i> For
-              Organisation
-            </h2>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Magni
-              assumenda ratione debitis exercitationem animi distinctio tenetur
-              delectus expedita illo accusantium deleniti voluptates eos enim
-              non ipsum pariatur hic.
+            <p class="p-2 px-3 need-2">
+              <i class="fa-regular fa-envelope pe-2"></i>infodesk@wall-ID.com
+            </p>
+            <p class="p-2 px-3 need-3">
+              <i class="fa-solid fa-location-dot pe-2"></i>Suite 335A Mulliner
+              Towers, Alfred Rewane, Ikoyi, Lagos
             </p>
           </div>
         </div>
-        <div class="col-lg-2"></div>
-        <div class="col-lg-4">
-          <div class="about-img position-relative">
-            <img
-              class="phone-img"
-              src="@/assets/images/individual-organisation.png"
-              data-aos="fade-up"
-              data-aos-duration="2000"
-            />
-          </div>
-        </div>
       </div>
-    </div>
-  </section>
-  <!-- For Individual And Organisation Ends -->
-
-  <!-- Faq Content -->
-  <section class="faq-section">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12 text-center">
-          <span
-            class="stroke-text"
-            style="font-size: 35px; -webkit-text-stroke-width: 1px"
-            >FAQs</span
-          >
-          <h1>Frequently Asked Questions</h1>
-          <div class="line-hr"></div>
-        </div>
-        <div class="col-lg-8 offset-lg-2">
-          <div class="accordion" id="accordionExample">
-            <!-- Faq 1 -->
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingOne">
-                <button
-                  class="accordion-button"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseOne"
-                  aria-expanded="true"
-                  aria-controls="collapseOne"
-                >
-                  <span>Material types can you work with?</span
-                  ><i
-                    style="float: right !important"
-                    class="fas fa-chevron-down"
-                  ></i>
-                </button>
-              </h2>
-              <div
-                id="collapseOne"
-                class="accordion-collapse collapse show"
-                aria-labelledby="headingOne"
-                data-bs-parent="#accordionExample"
-              >
-                <div class="accordion-body">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Quis ipsum suspendisse ultrices gravida.
-                  </p>
-                </div>
-              </div>
+    </section>
+    <!--app download section-->
+    <section class="section app-section position-relative overflow-hidden">
+      <div class="container">
+        <div class="row align-items-center py-4">
+          <div class="col-lg-6 order-lg-2 d-lg-flex">
+            <div class="download-img-mob right">
+              <img src="@/assets/images/avail-mob.png" alt="" />
             </div>
-            <!-- Faq 2 -->
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingTwo">
-                <button
-                  class="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseTwo"
-                  aria-expanded="false"
-                  aria-controls="collapseTwo"
-                >
-                  <span>Is Smart Lock required for instant apps?</span
-                  ><i
-                    style="float: right !important"
-                    class="fas fa-chevron-down"
-                  ></i>
-                </button>
-              </h2>
-              <div
-                id="collapseTwo"
-                class="accordion-collapse collapse"
-                aria-labelledby="headingTwo"
-                data-bs-parent="#accordionExample"
-              >
-                <div class="accordion-body">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Quis ipsum suspendisse ultrices gravida.
-                  </p>
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Quis ipsum suspendisse ultrices gravida.
-                  </p>
-                </div>
-              </div>
+            <div class="download-img-lap down position-absolute">
+              <img src="@/assets/images/avail-lap.png" alt="" />
             </div>
-            <!-- Faq 3 -->
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingThree">
-                <button
-                  class="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseThree"
-                  aria-expanded="false"
-                  aria-controls="collapseThree"
-                >
-                  <span
-                    >Can I have multiple activities in a single feature?</span
-                  ><i
-                    style="float: right !important"
-                    class="fas fa-chevron-down"
-                  ></i>
-                </button>
-              </h2>
-              <div
-                id="collapseThree"
-                class="accordion-collapse collapse"
-                aria-labelledby="headingThree"
-                data-bs-parent="#accordionExample"
-              >
-                <div class="accordion-body">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Quis ipsum suspendisse ultrices gravida.
-                  </p>
-                </div>
+          </div>
+          <div class="col-lg-6 order-lg-1 px-4">
+            <h2 class="my-3 w-75 font-600">Available On Web and Mobile</h2>
+            <p class="my-3">
+              Sign Up to use Wall-ID on web or use the links below to download
+              the Wall-ID application
+            </p>
+            <div class="d-flex mt-5">
+              <div class="btn-img me-4">
+                <a href="#"
+                  ><img src="@/assets/images/play-store.jpg" alt="play-store"
+                /></a>
               </div>
-            </div>
-            <!-- Faq 4 -->
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingFour">
-                <button
-                  class="accordion-button collapsed"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#collapseFour"
-                  aria-expanded="false"
-                  aria-controls="collapseFour"
-                >
-                  <span>Can I share resources between features?</span
-                  ><i
-                    style="float: right !important"
-                    class="fas fa-chevron-down"
-                  ></i>
-                </button>
-              </h2>
-              <div
-                id="collapseFour"
-                class="accordion-collapse collapse"
-                aria-labelledby="headingFour"
-                data-bs-parent="#accordionExample"
-              >
-                <div class="accordion-body">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Quis ipsum suspendisse ultrices gravida.
-                  </p>
-                </div>
+              <div class="btn-img">
+                <a href="#"
+                  ><img src="@/assets/images/app-store.jpg" alt=" app-store"
+                /></a>
               </div>
             </div>
           </div>
         </div>
-        <div class="col-lg-12 text-center faq-button">
-          <router-link :to="{ name: 'Faq' }"
-            ><button>View More <i class="fas fa-angle-double-right"></i></button
-          ></router-link>
-        </div>
       </div>
-    </div>
-  </section>
-  <!-- Faq Content Ends -->
-
-  <!-- Download Mobile App -->
-  <section class="download-mobile">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-7">
-          <h1>Your ID's @ Your <span>Fingertips</span></h1>
-          <h5>Download The App!</h5>
-          <div class="download-div">
-            <a class="download-btn" href="#"
-              ><img src="@/assets/images/btn-app-store.svg" alt="App Store"
-            /></a>
-            <a class="download-btn" href="#"
-              ><img
-                src="@/assets/images/btn-google-playstore.svg"
-                alt="App Store"
-            /></a>
+    </section>
+    <!--footer section-->
+      <footer class="footer-section" id="contact">
+        <div class="container text-center">
+          <div class="row">
+            <div class="col-lg-2">
+              <img src="@/assets/images/logo1.png" alt="" width="150" />
+            </div>
+            <div class="col-lg-6 pt-2">
+              <ul class="d-lg-flex foot-nav list-unstyled">
+                <li class="px-3">
+                  <router-link to="/"  class="text-decoration-none">Home</router-link>
+                  
+                </li>
+                <li class="px-3">
+                  <router-link to="/"  class="text-decoration-none">Features</router-link>
+                </li>
+                <li class="px-3">
+                  <router-link class="text-decoration-none" to="/">FAQs</router-link>
+                </li>
+                <li class="px-3">
+                  <router-link to="/"  class="text-decoration-none">Contact Us</router-link>
+                </li>
+              </ul>
+            </div>
+            <div class="col-lg-4">
+              <ul
+                class="d-flex justify-content-lg-end list-unstyled justify-content-center"
+              >
+                <li class="social">
+                  <a href="#">
+                    <img src="@/assets/images/iglogon.png" alt="" width="30"
+                  /></a>
+                </li>
+                <li class="social">
+                  <a href="#"
+                    ><img src="@/assets/images/twtlogo.png" alt="" width="30"
+                  /></a>
+                </li>
+                <li class="social">
+                  <a href="#"
+                    ><img src="@/assets/images/linklogo.png" alt="" width="30"
+                  /></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <hr  class="leftt">
+          <div class="row pt-2">
+            <div class="col-lg-6 order-lg-2 d-lg-flex justify-content-end">
+              <p class="px-2">
+                <router-link class="text-decoration-none" to="/">Terms & Conditions</router-link>
+              </p>
+              <p class="px-2">
+                <router-link class="text-decoration-none" to="/">Privacy Policy</router-link>
+              </p>
+            </div>
+            <div class="col-lg-6 order-lg-1">
+              <p style="color:#000">Copyright © 2022 Wall-ID. All rights reserved</p>
+            </div>
           </div>
         </div>
-        <div class="col-lg-5">
-          <img
-            class="phone-img"
-            src="@/assets/images/subscribe-img.png"
-            alt=""
-          />
-        </div>
-      </div>
-    </div>
-  </section>
-  <!-- Download Mobile App Ends -->
-
-  <MainFooter />
+      </footer>
+    <!--section for id management-->
 </template>
 
 <script>
