@@ -498,6 +498,9 @@ export default {
           });
           this.$Progress.finish();
           this.loadMembership();
+          this.loadActivated();
+          this.loadDeclined();
+          this.loadDeactivated();
         })
         .catch((error) => {
           this.$notify({
@@ -527,6 +530,9 @@ export default {
           });
           this.$Progress.finish();
           this.loadMembership();
+          this.loadActivated();
+          this.loadDeclined();
+          this.loadDeactivated();
         })
         .catch((error) => {
           this.$notify({
@@ -556,6 +562,9 @@ export default {
           });
           this.$Progress.finish();
           this.loadMembership();
+          this.loadActivated();
+          this.loadDeclined();
+          this.loadDeactivated();
         })
         .catch((error) => {
           this.$notify({
@@ -585,6 +594,9 @@ export default {
           });
           this.$Progress.finish();
           this.loadMembership();
+          this.loadActivated();
+          this.loadDeclined();
+          this.loadDeactivated();
         })
         .catch((error) => {
           this.$notify({

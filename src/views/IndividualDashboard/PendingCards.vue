@@ -286,6 +286,7 @@ export default {
             speed: 1000,
           });
           this.loadIndPendingCard();
+          this.loadingOrgPendingCard();
         })
         .catch((error) => {
           this.$Progress.fail();
@@ -321,6 +322,7 @@ export default {
             speed: 1000,
           });
           this.loadIndPendingCard();
+          this.loadingOrgPendingCard();
         })
         .catch((error) => {
           this.$Progress.fail();

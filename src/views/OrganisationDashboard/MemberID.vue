@@ -64,14 +64,7 @@
                         </tr>
                       </thead>
                       <tbody v-if="!approvedid || !approvedid.length">
-                        <tr v-if="loading" >
-                          <td colspan="7">
-                            <div style="text-align: center"  class="fa-3x">
-                                <i class="fas fa-spinner fa-spin"></i>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr v-else>
+                        <tr>
                           <td class="align-center text-dark font-13" colspan="7">
                             No Approved ID Card
                           </td>
@@ -135,14 +128,7 @@
                         </tr>
                       </thead>
                       <tbody v-if="!declineid || !declineid.length">
-                        <tr v-if="loading" >
-                          <td colspan="7">
-                            <div style="text-align: center"  class="fa-3x">
-                                <i class="fas fa-spinner fa-spin"></i>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr v-else>
+                        <tr>
                           <td class="align-center text-dark font-13" colspan="7">
                             No Declined ID Card
                           </td>
@@ -277,14 +263,7 @@
                         </tr>
                       </thead>
                       <tbody v-if="!deactivatedid || !deactivatedid.length">
-                        <tr v-if="loading" >
-                          <td colspan="7">
-                            <div style="text-align: center"  class="fa-3x">
-                                <i class="fas fa-spinner fa-spin"></i>
-                            </div>
-                          </td>
-                        </tr>
-                        <tr v-else>
+                        <tr>
                           <td class="align-center text-dark font-13" colspan="7">
                             No Deactivated ID Card
                           </td>
@@ -789,6 +768,10 @@ export default {
             speed: 1000,
           });
           this.loadPendingCards();
+          this.loadApprovedCards();
+          this.loadPendingOrgCards();
+          this.loadDeclineCards();
+          this.loadDeactivateCards();
         })
         .catch((error) => {
           this.$Progress.fail();
@@ -824,6 +807,10 @@ export default {
             speed: 1000,
           });
           this.loadPendingCards();
+          this.loadApprovedCards();
+          this.loadPendingOrgCards();
+          this.loadDeclineCards();
+          this.loadDeactivateCards();
         })
         .catch((error) => {
           this.$Progress.fail();
@@ -856,6 +843,10 @@ export default {
             speed: 1000,
           });
           this.loadPendingCards();
+          this.loadApprovedCards();
+          this.loadPendingOrgCards();
+          this.loadDeclineCards();
+          this.loadDeactivateCards();
         })
         .catch((error) => {
           this.$Progress.fail();

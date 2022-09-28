@@ -34,9 +34,32 @@
           <div class="col-lg-11 secFormHead">
             <h5>Please input ID card details</h5>
           </div>
-          <div class="col-lg-11 mt-3">
+          <div v-if="loading" class="row showOrgDtl">
+              <div class="col-lg-12 text-center fa-3x">
+                <i class="fas fa-spinner fa-spin"></i>
+              </div>
+          </div>
+          <div v-else class="col-lg-11 mt-3">
             <form @submit.prevent="createID()">
               <div class="row">
+                <div class="col-lg-12 mb-3">
+                  <label>Organization Name</label>
+                  <input
+                    type="text"
+                    v-model="id.organizationname"
+                    class="input"
+                    readonly
+                  />
+                </div>
+                <div class="col-lg-12 mb-3">
+                  <label>Role</label>
+                  <input
+                    type="text"
+                    v-model="id.role"
+                    class="input"
+                    readonly
+                  />
+                </div>
                 <div class="col-lg-12 mb-3">
                   <label>Holders Full Name</label>
                   <input
@@ -50,25 +73,25 @@
                 <div class="col-lg-6 mb-3">
                   <label>Date Joined</label>
                   <input
-                    type="date"
                     v-model="id.issued_date"
                     class="input"
-                    required
+                    readonly
                   />
                 </div>
                 <div class="col-lg-12 mb-3">
                   <label>Select ID Image</label>
                   <div class="col-ting">
                     <div class="control-group file-upload" id="file-upload1">
-                      <div class="image-box text-center">
+                      <!-- <div class="image-box text-center">
                         <p>Upload Photo</p>
                         <img src="" alt="" />
-                      </div>
-                      <div class="controls" style="display: none">
+                      </div> -->
+                      <div class="controls" style="display: block">
                         <input
                           type="file"
                           @change="onFileChange"
                           name="contact_image_1"
+                          class="input"
                           required
                         />
                       </div>
@@ -142,11 +165,66 @@ export default {
         name: "",
         issued_date: "",
         passport: "",
+        organizationname: "",
+        role: ""
       },
+      organization: {},
+      loading: false
     };
   },
 
   methods: {
+    getDate(value) {
+      return new Date(value).toLocaleDateString("en-US");
+    },
+    displayOrganization() {
+      this.loading = true;
+      let username = this.$route.params.username;
+      axios
+        .get(
+          "users/organization/getbyid",
+          {
+            params: {
+              id: username,
+            },
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.loading = false;
+          this.organization = response.data.data[0];
+          this.id.organizationname = this.organization.details.name;
+        })
+        .catch((error) => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
+
+    displayRole() {
+      let id = this.$route.params.id;
+      axios
+        .get(
+          "users/organization/joined/role/" + id,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.id.role = response.data.data.role;
+          this.id.issued_date = response.data.data.created_at;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+
     async createID() {
 
       let id = this.$route.params.id;
@@ -209,6 +287,11 @@ export default {
       this.id.passport = e.target.files[0];
     },
 
+  },
+
+  created() {
+    this.displayOrganization();
+    this.displayRole();
   },
 
   mounted() {

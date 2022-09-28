@@ -331,7 +331,7 @@ const routes = [
     },
   },
   {
-    path: "/individual-dashboard/create-id/:id",
+    path: "/individual-dashboard/create-id/:id/:username",
     name: "IndividualCreateID",
     component: IndividualCreateID,
     meta: {

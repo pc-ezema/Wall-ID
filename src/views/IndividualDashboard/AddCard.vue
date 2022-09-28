@@ -14,7 +14,7 @@
               <div class="row">
                 <div class="col-lg-12">
                   <div class="dashboard_header_title">
-                    <h3>All Organisation</h3>
+                    <h3>All Joined Organisation</h3>
                     <p>
                       <router-link to="/individual-dashboard/id-card-management"
                         ><a
@@ -32,6 +32,16 @@
 
         <!--Boxes Section-->
         <div class="row justify-content-center mt-1 secForm">
+          <div class="col-lg-11 secFormHead">
+            <h5>
+              <router-link to="/individual-dashboard/join-new-organisation"
+                ><a
+                  ><i class="bi bi-plus-circle-fill"></i> Join New
+                  Organisation</a
+                ></router-link
+              >
+            </h5>
+          </div>
           <div class="col-lg-11 mt-3">
             <div class="row">
               <form>
@@ -49,8 +59,13 @@
                 </div>
               </form>
               <div class="col-lg-12 mt-2">
-                <div v-if="loading" style="text-align: center"  class="fa-3x">
-                    <i class="fas fa-spinner fa-spin"></i>
+                <div v-if="!resultQuery || !resultQuery.length">
+                  <div v-if="loading" style="text-align: center"  class="fa-3x">
+                      <i class="fas fa-spinner fa-spin"></i>
+                  </div>
+                  <div v-else style="text-align: center"  class="fa-3x">
+                      <p style="margin-top: 1rem; font-size: 20px; font-weight: 700; color: #000;">No Joined Organization</p>
+                  </div>
                 </div>
                 <div v-else
                   class="mb-2"
@@ -60,28 +75,28 @@
                   <router-link
                     :to="
                       '/individual-dashboard/organisation-details/' +
-                      row.username
+                      row.organization.user.id
                     "
                   >
                     <div class="resultDivDisplay">
                       <div class="resultPicture">
                         <div class="pictureDiv">
                           <img
-                            v-if="row.details.image"
-                            v-bind:src="this.baseURL + row.details.image"
+                            v-if="row.organization.image"
+                            v-bind:src="this.baseURL + row.organization.image"
                             alt="Profile Picture"
                           />
                           <!-- <img v src="@/assets/img/dp.jpg" /> -->
                           <div v-else class="profilePicture">
-                              {{row.details.name.substring(0, 1)}}
+                              {{row.organization.name.substring(0, 1)}}
                           </div>
                         </div>
                       </div>
                       <div class="resultContent">
                         <p>Name</p>
-                        <h5>{{ row.details.name }}</h5>
+                        <h5>{{ row.organization.name }}</h5>
                         <p>Email</p>
-                        <h5>{{ row.email }}</h5>
+                        <h5>{{ row.organization.user.email }}</h5>
                       </div>
                       <div class="clear"></div>
                     </div>
@@ -132,10 +147,10 @@ export default {
       if (this.searchQuery) {
         const value= this.searchQuery.charAt(0).toUpperCase() + this.searchQuery.slice(1);
         return this.search.filter(function(row){
-          return row.email.indexOf(value) > -1 ||
-                row.details.name.indexOf(value) > -1 ||
-                row.details.id_card_number.indexOf(value) > -1 ||
-                row.username.indexOf(value) > -1
+          return row.organization.user.email.indexOf(value) > -1 ||
+                row.organization.name.indexOf(value) > -1 ||
+                row.organization.id_card_number.indexOf(value) > -1 ||
+                row.organization.name.indexOf(value) > -1
         })
       } else {
         return this.search;
@@ -161,7 +176,7 @@ export default {
     loadOrganizations(page = 1) {
       this.loading = true;
       axios
-        .get("users/organization/get", {
+        .get("individuals/organizations", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
