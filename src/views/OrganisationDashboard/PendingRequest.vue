@@ -75,7 +75,7 @@
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.name }}</td>
                           <td>{{ row.created_by_individual.phone }}</td>
-                          <td>{{ row.created_at }}</td>
+                          <td>{{ getDate(row.created_at) }}</td>
                           <td>
                             <a class="a-pending">{{ row.status }}</a>
                           </td>
@@ -136,7 +136,7 @@
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.name }}</td>
                           <td>{{ row.created_by_individual.phone }}</td>
-                          <td>{{ row.created_at }}</td>
+                          <td>{{ getDate(row.created_at) }}</td>
                           <td>
                             <a class="a-pending">{{ row.status }}</a>
                           </td>
@@ -195,7 +195,7 @@
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.name }}</td>
                           <td>{{ row.created_by_individual.phone }}</td>
-                          <td>{{ row.created_at }}</td>
+                          <td>{{ getDate(row.created_at) }}</td>
                           <td>
                             <a class="a-pending">{{ row.status }}</a>
                           </td>
@@ -239,12 +239,16 @@ export default {
       pendingrequest: true,
       declinedrequest: false,
       pendingrequesttoind: false,
-      key: "",
+      key: "Filter",
       loading: false
     };
   },
 
   methods: {
+    getDate(value) {
+      return new Date(value).toLocaleDateString("en-US");
+    },
+
     onChange(event) {
       if (this.key == "Pending") {
         this.pendingrequest = true;
@@ -350,6 +354,8 @@ export default {
             speed: 1000,
           });
           this.MyPendingRequest();
+          this.MyDeclinedRequest();
+          this.MyPendingReqeustToInd();
         })
         .catch((error) => {
           this.$Progress.fail();
@@ -380,6 +386,8 @@ export default {
             speed: 1000,
           });
           this.MyPendingRequest();
+          this.MyDeclinedRequest();
+          this.MyPendingReqeustToInd();
         })
         .catch((error) => {
           this.$Progress.fail();

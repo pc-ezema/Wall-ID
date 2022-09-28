@@ -52,7 +52,6 @@
                         <tr>
                           <th scope="col">ID</th>
                           <th scope="col">Name</th>
-                          <th scope="col">Role</th>
                           <th scope="col">Organization Name</th>
                           <th scope="col">Request Date</th>
                           <th scope="col">Status</th>
@@ -79,9 +78,8 @@
                         >
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.name }}</td>
-                          <td>{{ row.role }}</td>
                           <td>{{ row.organization.name }}</td>
-                          <td>{{ row.created_at }}</td>
+                          <td>{{ getDate(row.created_at) }}</td>
                           <td>
                             <span v-if="row.status == 'Pending'">
                               <a class="a-pending">{{ row.status }}</a>
@@ -136,7 +134,7 @@
                           <td>{{ row.name }}</td>
                           <td>{{ row.role }}</td>
                           <td>{{ row.organization.name }}</td>
-                          <td>{{ row.created_at }}</td>
+                          <td>{{ getDate(row.created_at) }}</td>
                           <td>
                             <span v-if="row.status == 'Pending'">
                               <a class="a-pending">{{ row.status }}</a>
@@ -205,7 +203,7 @@
                           <td>{{ row.name }}</td>
                           <td>{{ row.role }}</td>
                           <td>{{ row.organization.name }}</td>
-                          <td>{{ row.created_at }}</td>
+                          <td>{{ getDate(row.created_at) }}</td>
                           <td>
                             <span v-if="row.status == 'Pending'">
                               <a class="a-pending">{{ row.status }}</a>
@@ -256,18 +254,22 @@ export default {
   data() {
     return {
       pagination: {},
-      myRequest: [],
+      myRequest: {},
       RequestFromOrg: [],
       requestDeclined: [],
       pendingrequest: true,
       pendingrequestfromorg: false,
       generaldeclinerequest: false,
-      key: "",
+      key: "Filter",
       loading: false
     };
   },
 
   methods: {
+    getDate(value) {
+      return new Date(value).toLocaleDateString("en-US");
+    },
+
     onChange(event) {
       if (this.key == "Pending") {
         this.pendingrequest = true;
@@ -373,6 +375,8 @@ export default {
             speed: 1000,
           });
           this.MyRequest();
+          this.PendingFromOrganization();
+          this.DeclineRequest();
         })
         .catch((error) => {
           this.$Progress.fail();
@@ -403,6 +407,8 @@ export default {
             speed: 1000,
           });
           this.MyRequest();
+          this.PendingFromOrganization();
+          this.DeclineRequest();
         })
         .catch((error) => {
           this.$Progress.fail();

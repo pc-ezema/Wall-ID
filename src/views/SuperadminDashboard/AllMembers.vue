@@ -41,11 +41,6 @@
               style="width: 100%"
               placeholder="Search..."
             />
-            <!-- <select>
-                            <option hidden>Filter</option>
-                            <option>Activated</option>
-                            <option>Suspended</option>
-                        </select> -->
           </div>
           <div class="col-lg-11 mt-3">
             <div class="white_card card_height_100 mb_30">
@@ -64,7 +59,14 @@
                         </tr>
                       </thead>
                       <tbody v-if="!members || !members.length">
-                        <tr>
+                        <tr v-if="loading" >
+                          <td colspan="7">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
                           <td class="align-enter text-dark font-13" colspan="5">
                             No Joined Member
                           </td>
@@ -119,6 +121,7 @@
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
+<style scoped src="@/assets/css/styleDashboardSupport.css"></style>
 <script>
 import DashboardSidebar from "./DashboardSidebar.vue";
 import DashboardNavbar from "./DashboardNavbar.vue";
@@ -132,11 +135,13 @@ export default {
     return {
       members: [],
       pagination: {},
+      loading: false
     };
   },
 
   methods: {
     loadAllMembers(page = 1) {
+      this.loading = true;
       axios
         .get("admin/all/members" + "?page=" + page, {
           headers: {
@@ -144,10 +149,12 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false
           this.prepPagination(response.data);
           this.members = response.data.data;
         })
         .catch((error) => {
+          this.loading = false
           this.$notify({
             type: "error",
             title: error.response.data.message,

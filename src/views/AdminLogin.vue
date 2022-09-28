@@ -108,7 +108,10 @@ export default {
 
           localStorage.setItem("token", response.data.data.tokens.access_token);
 
-          this.$store.dispatch("user", response.data.data.user);
+          localStorage.setItem(
+            "user",
+            JSON.stringify(response.data.data.user),
+          );
 
           setTimeout(() => {
             this.$router.push("/superadmin-dashboard/home");

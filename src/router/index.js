@@ -524,7 +524,7 @@ const routes = [
     },
   },
   {
-    path: "/individual-dashboard/organisation-verifier/:username/:id",
+    path: "/individual-dashboard/organisation-verifier/:id",
     name: "IndividualOrganisationVerifier",
     component: IndividualOrganisationVerifier,
     meta: {

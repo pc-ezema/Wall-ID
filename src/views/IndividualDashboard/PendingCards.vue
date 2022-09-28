@@ -72,7 +72,7 @@
                           v-bind:key="index"
                         >
                           <th scope="row">{{ index + 1 }}</th>
-                          <td>{{ row.id_card_number }}</td>
+                          <td>{{ row.created_by_individual.id_card_number }}</td>
                           <td>{{ row.name }}</td>
                           <td>{{ row.issued_date }}</td>
                           <td>{{ row.role }}</td>
@@ -146,7 +146,7 @@
                           v-bind:key="index"
                         >
                           <th scope="row">{{ index + 1 }}</th>
-                          <td>{{ row.id_card_number }}</td>
+                          <td>{{ row.created_by_individual.id_card_number }}</td>
                           <td>{{ row.name }}</td>
                           <td>{{ row.issued_date }}</td>
                           <td>{{ row.role }}</td>

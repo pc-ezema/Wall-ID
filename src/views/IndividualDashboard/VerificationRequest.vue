@@ -32,6 +32,16 @@
 
         <!--Boxes Section-->
         <div class="row justify-content-center mt-1 secForm">
+          <div class="col-lg-11 secFormHead">
+            <h5>
+              <router-link to="/individual-dashboard/join-new-organisation"
+                ><a
+                  ><i class="bi bi-plus-circle-fill"></i> Join New
+                  Organisation</a
+                ></router-link
+              >
+            </h5>
+          </div>
           <div class="col-lg-11 mt-3">
             <div class="row">
               <form>
@@ -53,30 +63,27 @@
               <div v-else class="mb-2" v-for="row in resultQuery" v-bind:key="row.id">
                 <router-link
                   :to="
-                    '/individual-dashboard/organisation-verifier/' +
-                    row.username +
-                    '/' +
-                    row.details.id
+                    '/individual-dashboard/organisation-verifier/' + row.organization.user.id
                   "
                 >
                   <div class="resultDivDisplay">
                     <div class="resultPicture">
                       <div class="pictureDiv">
                         <img
-                          v-if="row.details.image"
-                          v-bind:src="this.baseURL + row.details.image"
+                          v-if="row.organization.image"
+                          v-bind:src="this.baseURL + row.organization.image"
                           alt="Profile Picture"
                         />
                         <div v-else class="profilePicture">
-                            {{row.details.name.substring(0, 1)}}
+                            {{row.organization.name.substring(0, 1)}}
                         </div>
                       </div>
                     </div>
                     <div class="resultContent">
                       <p>Name</p>
-                      <h5>{{ row.details.name }}</h5>
+                      <h5>{{ row.organization.name }}</h5>
                       <p>Email</p>
-                      <h5>{{ row.email }}</h5>
+                      <h5>{{ row.organization.user.email }}</h5>
                     </div>
                     <div class="clear"></div>
                   </div>
@@ -154,7 +161,7 @@ export default {
     loadOrganizations(page = 1) {
       this.loading = true;
       axios
-        .get("users/organization/get", {
+        .get("individuals/organizations", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

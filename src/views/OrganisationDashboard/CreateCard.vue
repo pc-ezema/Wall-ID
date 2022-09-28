@@ -31,83 +31,92 @@
 
         <!--Boxes Section-->
         <div class="row justify-content-center mt-3 secForm">
-          <div class="col-lg-11 secFormHead">
-            <h5>
-              {{ individual.individual.firstname }}
-              {{ individual.individual.lastname }} details
-            </h5>
+          <div v-if="loading">
+            <div class="col-lg-11 secFormHead">
+                <div class="text-center fa-3x">
+                  <i class="fas fa-spinner fa-spin"></i>
+                </div>
+            </div>
           </div>
-          <div class="col-lg-11 mt-3">
-            <form @submit.prevent="createCard()">
-              <div class="row justify-content-center">
-                <!--Name-->
-                <div class="col-lg-6 mb-3">
-                  <label>Full Name</label>
-                  <input
-                    type="text"
-                    class="input"
-                    :value="
-                      individual.individual.firstname +
-                      ' ' +
-                      individual.individual.lastname
-                    "
-                    placeholder="Enter name"
-                    readonly
-                  />
+          <div v-else>
+            <div class="col-lg-11 secFormHead">
+              <h5>
+                {{ individual.individual.firstname }}
+                {{ individual.individual.lastname }} Details
+              </h5>
+            </div>
+            <div class="col-lg-11 mt-3">
+              <form @submit.prevent="createCard()">
+                <div class="row justify-content-center">
+                  <!--Name-->
+                  <div class="col-lg-6 mb-3">
+                    <label>Full Name</label>
+                    <input
+                      type="text"
+                      class="input"
+                      :value="
+                        individual.individual.firstname +
+                        ' ' +
+                        individual.individual.lastname
+                      "
+                      placeholder="Enter name"
+                      readonly
+                    />
+                  </div>
+                  <!--Username-->
+                  <div class="col-lg-6 mb-3">
+                    <label>Username</label>
+                    <input
+                      type="text"
+                      class="input"
+                      :value="individual.individual.user.name"
+                      placeholder="Enter username"
+                      readonly
+                    />
+                  </div>
+                  <!--Phone number-->
+                  <div class="col-lg-6 mb-3">
+                    <label>Phone Number</label>
+                    <input
+                      type="tel"
+                      class="input"
+                      :value="individual.individual.phone"
+                      placeholder="Enter phone number"
+                      readonly
+                    />
+                  </div>
+                  <!--Date joined-->
+                  <div class="col-lg-6 mb-3">
+                    <label>Date Joined</label>
+                    <input
+                      type="text"
+                      class="input"
+                      :value="individual.created_at"
+                      placeholder="Enter username"
+                      readonly
+                    />
+                  </div>
+                  <!--Passport-->
+                  <div class="col-12 mb-3">
+                    <label>Passport</label>
+                    <input type="file" class="input" @change="onFileChange" />
+                  </div>
+                  <!--Button-->
+                  <div class="col-lg-3 text-center mb-3">
+                    <button
+                      v-if="$wait.is('processing')"
+                      type="button"
+                      class="button"
+                    >
+                      Creating Card...
+                    </button>
+                    <button v-else type="submit" class="button">
+                      Create Card
+                    </button>
+                  </div>
                 </div>
-                <!--Username-->
-                <div class="col-lg-6 mb-3">
-                  <label>Username</label>
-                  <input
-                    type="text"
-                    class="input"
-                    :value="individual.individual.user.name"
-                    placeholder="Enter username"
-                    readonly
-                  />
-                </div>
-                <!--Phone number-->
-                <div class="col-lg-6 mb-3">
-                  <label>Phone Number</label>
-                  <input
-                    type="tel"
-                    class="input"
-                    :value="individual.individual.phone"
-                    placeholder="Enter phone number"
-                    readonly
-                  />
-                </div>
-                <!--Date joined-->
-                <div class="col-lg-6 mb-3">
-                  <label>Date Joined</label>
-                  <input
-                    type="text"
-                    class="input"
-                    :value="individual.created_at"
-                    placeholder="Enter username"
-                    readonly
-                  />
-                </div>
-                <!--Passport-->
-                <div class="col-12 mb-3">
-                  <label>Passport</label>
-                  <input type="file" class="input" @change="onFileChange" />
-                </div>
-                <!--Button-->
-                <div class="col-lg-3 text-center mb-3">
-                  <button
-                    v-if="$wait.is('processing')"
-                    type="button"
-                    class="button"
-                  >
-                    Creating Card...
-                  </button>
-                  <button v-else type="submit" class="button">
-                    Create Card
-                  </button>
-                </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -137,11 +146,14 @@ export default {
     return {
       individual: {},
       passport: "",
+      loading: false
     };
   },
 
   methods: {
     displayIndividual() {
+      this.loading = true;
+
       let id = this.$route.params.id;
 
       axios
@@ -159,6 +171,7 @@ export default {
           }
         )
         .then((response) => {
+          this.loading = false;
           this.individual = response.data.data[0];
         })
         .catch((error) => {

@@ -74,7 +74,7 @@
                           <td>{{ row.name }}</td>
                           <td>{{ row.created_by_individual.phone }}</td>
                           <td>{{ row.role }}</td>
-                          <td>{{ row.created_at }}</td>
+                          <td>{{ getDate(row.created_at) }}</td>
                           <td>
                             <a class="tbl-btn btn-enable">{{ row.status }}</a>
                           </td>
@@ -191,6 +191,10 @@ export default {
   },
 
   methods: {
+    getDate(value) {
+      return new Date(value).toLocaleDateString("en-US");
+    },
+
     loadAllEventID() 
     {
       axios
@@ -283,6 +287,13 @@ export default {
             speed: 1000,
           });
           this.closeModal();
+          this.loadAllEventID();
+          this.Verifiers();
+          setTimeout(() => {
+            this.$router.push(
+              "/organisation-dashboard/event-verifier"
+            );
+          }, 1000);
         })
         .catch((error) => {
           if (error.response.status == 422) {
@@ -297,7 +308,6 @@ export default {
               });
             }
             this.closeModal();
-            this.Verifiers();
           } else {
             this.$wait.end("processing");
             this.$Progress.fail();
@@ -308,7 +318,6 @@ export default {
               speed: 1000,
             });
             this.closeModal();
-            this.Verifiers();
           }
         });
     }

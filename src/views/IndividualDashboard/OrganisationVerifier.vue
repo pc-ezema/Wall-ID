@@ -33,7 +33,12 @@
         <!--Boxes Section-->
         <div class="row justify-content-center mt-1 secForm">
           <div class="col-lg-11 mt-3">
-            <div class="row showOrgDtl">
+            <div v-if="loading" class="row showOrgDtl">
+                <div class="col-lg-12 text-center fa-3x">
+                  <i class="fas fa-spinner fa-spin"></i>
+                </div>
+            </div>
+            <div v-else class="row showOrgDtl">
               <div class="col-lg-12 text-center">
                 <div class="orgPicture">
                   <img
@@ -66,6 +71,10 @@
                       new Date(organization.details.created_at).toLocaleString()
                     }}
                   </p>
+                </div>
+                <div class="txtCnt">
+                  <h5>ID Card Number</h5>
+                  <p>{{ organization.details.id_card_number }}</p>
                 </div>
                 <div class="txtCnt selectRoles">
                   <form
@@ -108,22 +117,23 @@ export default {
   data() {
     return {
       organization: {},
-      id: "",
       baseURL: axios.defaults.baseURL.slice(0, -5),
-      user: this.$store.state.user || null,
+      user: JSON.parse(localStorage.getItem('user')) || [],
+      loading: false
     };
   },
 
   methods: {
     displayOrganization() {
-      let username = this.$route.params.username;
+      this.loading = true;
+      let id = this.$route.params.id;
 
       axios
         .get(
-          "users/organization/get",
+          "users/organization/getbyid",
           {
             params: {
-              username: username,
+              id: id,
             },
           },
           {
@@ -133,9 +143,11 @@ export default {
           }
         )
         .then((response) => {
+          this.loading = false;
           this.organization = response.data.data[0];
         })
         .catch((error) => {
+          this.loading = false;
           console.log(error);
         });
     },
@@ -191,7 +203,6 @@ export default {
   },
 
   mounted() {
-    this.displayOrganization();
     window.scrollTo(0, 0);
   },
 };

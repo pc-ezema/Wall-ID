@@ -227,7 +227,9 @@
                       <tbody>
                         <tr v-for="(row, index) in users" v-bind:key="index">
                           <th scope="row">{{ index + 1 }}</th>
-                          <td>{{ row.details.id_card_number }}</td>
+                          <td>
+                              {{ row.details.id_card_number }}
+                          </td>
                           <td>
                             <span v-if="row.details.name">
                               {{ row.details.name }}
@@ -412,7 +414,7 @@ export default {
 
   data() {
     return {
-      users: [],
+      users: {},
       pagination: {},
       all: true,
       active: false,
@@ -425,6 +427,7 @@ export default {
         indname: null,
         orgname: null,
       },
+      loading: false
     };
   },
 
@@ -514,27 +517,6 @@ export default {
       }
     },
 
-    loadAllUsers(page = 1) {
-      axios
-        .get("admin/users" + "?page=" + page, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then((response) => {
-          this.prepPagination(response.data);
-          this.users = response.data.data;
-        })
-        .catch((error) => {
-          this.$notify({
-            type: "error",
-            title: error.response.data.message,
-            duration: 5000,
-            speed: 1000,
-          });
-        });
-    },
-
     prepPagination(data) {
       this.pagination = {
         data: data.data,
@@ -547,6 +529,30 @@ export default {
         previous_page_url: data.meta.previous_page_url,
         total: data.meta.total,
       };
+    },
+
+    loadAllUsers(page = 1) {
+      this.loading = true;
+      axios
+        .get("admin/users" + "?page=" + page, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.loading = false;
+          this.prepPagination(response.data);
+          this.users = response.data.data;
+        })
+        .catch((error) => {
+          this.loading = false;
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+        });
     },
 
     sendInfo(row) {

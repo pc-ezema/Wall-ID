@@ -58,7 +58,7 @@
                   <router-link
                     :to="
                       '/individual-dashboard/choose-organisation/' +
-                      row.username
+                      row.id
                     "
                   >
                     <div class="resultDivDisplay">
