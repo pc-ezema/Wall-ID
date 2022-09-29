@@ -60,14 +60,14 @@
                       </thead>
                       <tbody v-if="!members || !members.length">
                         <tr v-if="loading" >
-                          <td colspan="7">
+                          <td colspan="6">
                             <div style="text-align: center"  class="fa-3x">
                                 <i class="fas fa-spinner fa-spin"></i>
                             </div>
                           </td>
                         </tr>
                         <tr v-else>
-                          <td class="align-enter text-dark font-13" colspan="5">
+                          <td class="align-enter text-dark font-13" colspan="6">
                             No Joined Member
                           </td>
                         </tr>

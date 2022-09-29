@@ -59,7 +59,14 @@
                         </tr>
                       </thead>
                       <tbody v-if="!eventCategories || !eventCategories.length">
-                        <tr>
+                        <tr v-if="loading" >
+                          <td colspan="5">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
                           <td class="align-enter text-dark font-13" colspan="5">
                             No Event Category
                           </td>
@@ -319,6 +326,7 @@ export default {
         name: "",
         description: "",
       },
+      loading: false
     };
   },
 
@@ -336,6 +344,7 @@ export default {
     },
 
     loadAllEventCategory() {
+      this.loading = true;
       axios
         .get("admin/events/category/all", {
           headers: {
@@ -343,10 +352,12 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
           // this.prepPagination(response.data.data);
           this.eventCategories = response.data.data.data;
         })
         .catch((error) => {
+          this.loading = false;
           this.$notify({
             type: "error",
             title: error.response.data.message,
@@ -534,7 +545,6 @@ export default {
 
   mounted() {
     this.loadAllEventCategory();
-
     window.scrollTo(0, 0);
   },
 };

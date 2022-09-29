@@ -58,8 +58,15 @@
                         </tr>
                       </thead>
                       <tbody v-if="!template || !template.length">
-                        <tr>
-                          <td class="align-enter text-dark font-13" colspan="6">
+                        <tr v-if="loading" >
+                          <td colspan="5">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td class="align-enter text-dark font-13" colspan="5">
                             No Template Added
                           </td>
                         </tr>
@@ -218,6 +225,7 @@ export default {
         text_color: "",
         cardLogo: "",
       },
+      loading: false
     };
   },
 
@@ -237,6 +245,7 @@ export default {
     },
 
     loadMyTemplate() {
+      this.loading = true;
       axios
         .get("admin/all/templates", {
           headers: {
@@ -244,10 +253,12 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
           this.prepPagination(response.data);
           this.template = response.data.data;
         })
         .catch((error) => {
+          this.loading = false;
           console.log(error);
         });
     },

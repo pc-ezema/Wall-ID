@@ -57,13 +57,20 @@
                         </tr>
                       </thead>
                       <tbody v-if="!subscriptions || !subscriptions.length">
-                        <tr>
+                        <tr v-if="loading" >
+                          <td colspan="9">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
                           <td class="align-enter text-dark font-13" colspan="9">
                             No Subscription Payment
                           </td>
                         </tr>
                       </tbody>
-                      <tbody>
+                      <tbody v-else >
                         <tr
                           v-for="(row, index) in subscriptions"
                           v-bind:key="index"
@@ -121,13 +128,15 @@ export default {
 
   data() {
     return {
-      subscriptions: [],
+      subscriptions: {},
       pagination: {},
+      loading: false
     };
   },
 
   methods: {
     loadAllSubscriptionPayments(page = 1) {
+      this.loading = true;
       axios
         .get("admin/payments/subscriptions" + "?page=" + page, {
           headers: {
@@ -135,10 +144,12 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
           this.prepPagination(response.data);
           this.subscriptions = response.data.data;
         })
         .catch((error) => {
+          this.loading = false;
           this.$notify({
             type: "error",
             title: error.response.data.message,
@@ -163,13 +174,9 @@ export default {
     },
   },
 
-  created() {
-    this.loadAllSubscriptionPayments();
-  },
 
   mounted() {
     this.loadAllSubscriptionPayments();
-
     window.scrollTo(0, 0);
   },
 };

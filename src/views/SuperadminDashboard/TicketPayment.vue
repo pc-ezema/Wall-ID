@@ -56,13 +56,20 @@
                         </tr>
                       </thead>
                       <tbody v-if="!tickets || !tickets.length">
-                        <tr>
+                        <tr v-if="loading" >
+                          <td colspan="8">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
                           <td class="align-enter text-dark font-13" colspan="8">
                             No Ticket Payment
                           </td>
                         </tr>
                       </tbody>
-                      <tbody>
+                      <tbody v-else>
                         <tr v-for="(row, index) in tickets" v-bind:key="index">
                           <th scope="row">{{ row.id }}</th>
                           <td>
@@ -121,11 +128,13 @@ export default {
     return {
       tickets: [],
       pagination: {},
+      loading: false
     };
   },
 
   methods: {
     loadAllTicketPayments(page = 1) {
+      this.loading = true;
       axios
         .get("admin/payments/tickets" + "?page=" + page, {
           headers: {
@@ -133,10 +142,12 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
           this.prepPagination(response.data);
           this.tickets = response.data.data;
         })
         .catch((error) => {
+          this.loading = false;
           this.$notify({
             type: "error",
             title: error.response.data.message,
@@ -161,13 +172,8 @@ export default {
     },
   },
 
-  created() {
-    this.loadAllTicketPayments();
-  },
-
   mounted() {
     this.loadAllTicketPayments();
-
     window.scrollTo(0, 0);
   },
 };

@@ -60,8 +60,15 @@
                         </tr>
                       </thead>
                       <tbody v-if="!memberid || !memberid.length">
-                        <tr>
-                          <td class="align-enter text-dark font-13" colspan="6">
+                        <tr v-if="loading" >
+                          <td colspan="7">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td class="align-enter text-dark font-13" colspan="7">
                             No ID Card
                           </td>
                         </tr>
@@ -236,6 +243,7 @@ export default {
         cardImage: "",
         organization: null,
       },
+      loading: false
     };
   },
 
@@ -255,6 +263,7 @@ export default {
     },
 
     loadMyIdCard() {
+      this.loading = true;
       axios
         .get("admin/all/idcards", {
           headers: {
@@ -262,10 +271,12 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
           this.prepPagination(response.data);
           this.memberid = response.data.data;
         })
         .catch((error) => {
+          this.loading = true
           console.log(error);
         });
     },
