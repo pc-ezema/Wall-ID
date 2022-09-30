@@ -1,5 +1,5 @@
 <template>
-  <MainHeader />
+  <!-- <MainHeader /> -->
 
   <section class="login-area-sign">
     <div class="row m-0">
@@ -48,9 +48,12 @@
 
                 <!-- Password Here -->
                 <div class="col-lg-12">
-                  <label>Password</label>
+                  <label style="display: inline-block;">Password</label>
+                  <span class="icon" style="cursor: pointer" @click="switchVisibility()">
+                    {{ passwordFieldIcon }}
+                  </span>
                   <input
-                    type="password"
+                    :type="passwordFieldType"
                     @keyup="validPassword"
                     required
                     v-model="register.password"
@@ -63,9 +66,12 @@
 
                 <!-- Confirm Password Here -->
                 <div class="col-lg-12">
-                  <label>Confirm password</label>
+                  <label style="display: inline-block;">Confirm password</label>
+                  <span class="icon" style="cursor: pointer" @click="switchVisibilityConfirm()">
+                    {{ comfirmpasswordFieldIcon }}
+                  </span>
                   <input
-                    type="password"
+                    :type="confirmpasswordFieldType"
                     @keyup="validConfirmPassword"
                     required
                     v-model="password_confirmation"
@@ -86,7 +92,6 @@
                     <option value="1">Restricted / Closed</option>
                   </select>
                 </div>
-                <span style="color: red">{{ validationError }}</span>
 
                 <!-- Accept Privacy Policy -->
                 <div class="col-lg-12 accept-terms">
@@ -130,7 +135,7 @@
     </div>
   </section>
 
-  <MainFooter />
+  <!-- <MainFooter /> -->
 </template>
 <script>
 import MainHeader from "./MainHeader.vue";
@@ -152,6 +157,10 @@ export default {
       password_confirmation: "",
       validationConfirmError: "",
       validationError: "",
+      passwordFieldType: "password",
+      passwordFieldIcon: "Show",
+      confirmpasswordFieldType: "password",
+      comfirmpasswordFieldIcon: "Show",
     };
   },
 
@@ -312,6 +321,29 @@ export default {
           });
       }
     },
+
+    switchVisibility()
+    {
+      if(this.passwordFieldType === 'password') {
+        this.passwordFieldType = "text";
+        this.passwordFieldIcon = "Hide";
+      } else {
+        this.passwordFieldType = "password";
+        this.passwordFieldIcon = "Show";
+      }
+    },
+
+    switchVisibilityConfirm()
+    {
+      if(this.confirmpasswordFieldType === 'password') {
+        this.confirmpasswordFieldType = "text";
+        this.comfirmpasswordFieldIcon = "Hide";
+      } else {
+        this.confirmpasswordFieldType = "password";
+        this.comfirmpasswordFieldIcon = "Show";
+      }
+    }
+
   },
 
   mounted() {
@@ -319,3 +351,12 @@ export default {
   },
 };
 </script>
+
+<style scooped>
+  .icon {
+    position: relative;
+    float: right;
+    top: 45px;
+    right: 6px;
+  }  
+</style>

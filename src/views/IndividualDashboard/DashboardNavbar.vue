@@ -19,36 +19,37 @@
               <li>
                 <a class="bell_notification_clicker" href="#">
                   <img src="@/assets/img/icon/bell.svg" alt="" />
-                  <span>3</span>
+                  <span v-if="loading">
+
+                  </span>
+                  <span v-else>
+                    {{this.countNotification}}
+                  </span>
                 </a>
                 <div class="Menu_NOtification_Wrap">
                   <div class="notification_Header">
-                    <h4>Notifications</h4>
+                    <h4>Notifications <span style="float: right">View More</span></h4>
                   </div>
                   <div class="Notification_body">
-                    <div class="single_notify d-flex align-items-center">
-                      <div class="notify_content">
-                        <a href="#">
-                          <h5>Notification Title</h5>
-                        </a>
-                        <p>Hello! You've gotten a new notification content.</p>
+                    <div v-if="!viewUnreadNotification || !viewUnreadNotification.length" class="single_notify d-flex align-items-center justify-content-center">
+                      <div v-if="loading" class="notify_content">
+                        <div style="text-align: center"  class="fa-3x">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                      </div>
+                      <div v-else class="notify_content">
+                        <div style="text-align: center"  class="fa-3x">
+                            <h5>No New Notification</h5>
+                        </div>
                       </div>
                     </div>
-                    <div class="single_notify d-flex align-items-center">
-                      <div class="notify_content">
-                        <a href="#">
-                          <h5>Notification Title</h5>
-                        </a>
-                        <p>Hello! You've gotten a new notification content.</p>
-                      </div>
-                    </div>
-                    <div class="single_notify d-flex align-items-center">
-                      <div class="notify_content">
-                        <a href="#">
-                          <h5>Notification Title</h5>
-                        </a>
-                        <p>Hello! You've gotten a new notification content.</p>
-                      </div>
+                    <div v-else class="single_notify d-flex align-items-center">
+                        <div v-for="(row, index) in viewUnreadNotification" v-bind:key="index" class="notify_content p-2" style="background: azure">
+                          <a href="javascript:void(0)" @click="readNotification(row.id)">
+                            <h5 style="font-weight: 700">{{row.subject}} - {{row.firstname}}</h5>
+                            <p>{{row.message}}</p>
+                          </a>
+                        </div>
                     </div>
                   </div>
                 </div>
@@ -97,6 +98,9 @@ export default {
     return {
       baseURL: axios.defaults.baseURL.slice(0, -5),
       user: JSON.parse(localStorage.getItem('user')) || [],
+      countNotification: {},
+      viewUnreadNotification: [],
+      loading: false
     };
   },
 
@@ -106,9 +110,84 @@ export default {
       axios.post("logout");
       this.$router.replace("/");
     },
+    
+    countUnreadNotification() {
+      this.loading = true;
+      axios
+        .get("users/user/countUnreadNotification", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.loading = false;
+          this.countNotification = response.data.data;
+        })
+        .catch((error) => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
+
+    viewUnreadNotifications() {
+      this.loading = true;
+      axios
+        .get("users/user/getUnreadNotifications", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.loading = false;
+          // console.log(response.data.data);
+          this.viewUnreadNotification = response.data.data;
+        })
+        .catch((error) => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
+
+    async readNotification(data) {
+      this.$Progress.start();
+      await axios
+        .get(
+          "users/user/readNotification/" + data,
+          {
+            status: "Approved",
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.$Progress.finish();
+          // this.$notify({
+          //   type: "success",
+          //   title: response.data.message,
+          //   duration: 5000,
+          //   speed: 1000,
+          // });
+          this.countUnreadNotification();
+          this.viewUnreadNotifications();
+        })
+        .catch((error) => {
+          this.$Progress.fail();
+          // this.$notify({
+          //   type: "error",
+          //   title: error.response.data.message,
+          //   duration: 5000,
+          //   speed: 1000,
+          // });
+        });
+    },
   },
 
   mounted() {
+    this.countUnreadNotification();
+    this.viewUnreadNotifications();
     window.scrollTo(0, 0);
     let externalScriptJquery = document.createElement("script");
     let externalScriptMetisMenu = document.createElement("script");

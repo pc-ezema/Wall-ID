@@ -1,5 +1,5 @@
 <template>
-  <MainHeader />
+  <!-- <MainHeader /> -->
 
   <section class="login-area">
     <div class="row m-0">
@@ -24,9 +24,13 @@
 
               <!-- Password Here -->
               <div>
-                <label>Password</label>
+                <label style="display: inline-block;">Password</label>
+                <span class="icon" style="cursor: pointer" @click="switchVisibility()">
+                  <!-- <i :class="passwordFieldIcon"></i> -->
+                  {{ passwordFieldIcon }}
+                </span>
                 <input
-                  type="password"
+                  :type="passwordFieldType"
                   @keyup="validPassword"
                   v-model="login.password"
                   placeholder="*********"
@@ -69,7 +73,7 @@
     </div>
   </section>
 
-  <MainFooter />
+  <!-- <MainFooter /> -->
 </template>
 <script>
 import MainHeader from "./MainHeader.vue";
@@ -86,6 +90,8 @@ export default {
         password: "",
       },
       validationError: "",
+      passwordFieldType: "password",
+      passwordFieldIcon: "Show"
     };
   },
 
@@ -199,6 +205,17 @@ export default {
           });
       }
     },
+
+    switchVisibility()
+    {
+      if(this.passwordFieldType === 'password') {
+        this.passwordFieldType = "text";
+        this.passwordFieldIcon = "Hide";
+      } else {
+        this.passwordFieldType = "password";
+        this.passwordFieldIcon = "Show";
+      }
+    }
   },
 
   mounted() {
@@ -206,3 +223,12 @@ export default {
   },
 };
 </script>
+
+<style scooped>
+  .icon {
+    position: relative;
+    float: right;
+    top: 45px;
+    right: 6px;
+  }  
+</style>

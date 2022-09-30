@@ -1,5 +1,5 @@
 <template>
-  <MainHeader />
+  <!-- <MainHeader /> -->
 
   <div class="signup-portal-div">
     <div class="col-md-12 text-center mb-3">
@@ -33,7 +33,7 @@
     </div>
   </div>
 
-  <MainFooter />
+  <!-- <MainFooter /> -->
 </template>
 <script>
 import MainHeader from "./MainHeader.vue";
