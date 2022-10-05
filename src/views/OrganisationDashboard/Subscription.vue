@@ -517,8 +517,7 @@ export default {
     },
 
     async updateSubscriptionPlan() 
-    {
-      
+    { 
       this.$wait.start("processing");
       this.$Progress.start();
 
@@ -577,7 +576,8 @@ export default {
         });
     },
 
-    async deleteSubscriptionPlan(data) {
+    async deleteSubscriptionPlan(data) 
+    {
       this.$Progress.start();
       await axios
         .delete("organizations/subscriptions/plans/delete/" + data, {

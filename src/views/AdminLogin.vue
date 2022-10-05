@@ -39,8 +39,12 @@
             <!-- Password Here -->
             <div>
               <label for="password">Password</label>
+              <span class="icon" style="cursor: pointer" @click="switchVisibility()">
+                <!-- <i :class="passwordFieldIcon"></i> -->
+                {{ passwordFieldIcon }}
+              </span>
               <input
-                type="password"
+                :type="passwordFieldType"
                 required
                 placeholder="*************"
                 v-model="login.password"
@@ -81,6 +85,8 @@ export default {
       },
       error: "",
       message: "",
+      passwordFieldType: "password",
+      passwordFieldIcon: "Show"
     };
   },
 
@@ -110,7 +116,7 @@ export default {
 
           localStorage.setItem(
             "user",
-            JSON.stringify(response.data.data.user),
+            JSON.stringify(response.data.data.admin),
           );
 
           setTimeout(() => {
@@ -125,6 +131,26 @@ export default {
           this.$Progress.fail();
         });
     },
+
+    switchVisibility()
+    {
+      if(this.passwordFieldType === 'password') {
+        this.passwordFieldType = "text";
+        this.passwordFieldIcon = "Hide";
+      } else {
+        this.passwordFieldType = "password";
+        this.passwordFieldIcon = "Show";
+      }
+    }
   },
 };
 </script>
+
+<style scooped>
+  .icon {
+    position: relative;
+    float: right;
+    top: 38px;
+    right: 6px;
+  }  
+</style>

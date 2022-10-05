@@ -259,7 +259,8 @@
 export default {
   methods: {
     logoutClick() {
-      localStorage.removeItem("token", "user");
+       localStorage.removeItem("token");
+      localStorage.removeItem("user");
       axios.post("logout");
       this.$router.replace("/");
     },

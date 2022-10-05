@@ -23,6 +23,7 @@
     "chart.js": "^3.8.0",
     "core-js": "^3.8.3",
     "jquery": "^3.6.0",
+    "moment": "^2.29.4",
     "popper.js": "^1.16.1",
     "stylus": "^0.58.1",
     "stylus-loader": "^3.0.2",

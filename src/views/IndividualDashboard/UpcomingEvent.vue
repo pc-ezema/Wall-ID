@@ -65,19 +65,18 @@
                           <th scope="col">End Date</th>
                           <th scope="col">Event ID</th>
                           <th scope="col">Image</th>
-                          <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody v-if="!events || !events.length">
                         <tr v-if="loading" >
-                          <td colspan="11">
+                          <td colspan="10">
                             <div style="text-align: center"  class="fa-3x">
                                 <i class="fas fa-spinner fa-spin"></i>
                             </div>
                           </td>
                         </tr>
                         <tr v-else>
-                          <td class="align-center text-dark font-13" colspan="11">
+                          <td class="align-center text-dark font-13" colspan="10">
                             No Upcoming Event
                           </td>
                         </tr>
@@ -112,16 +111,6 @@
                             <img
                               :src="this.baseURL + '/storage/events/' + item.image"
                             />
-                          </td>
-                          <td>
-                            <div class="action_btns d-flex">
-                              <a href="#" title="View" class="action_btn">
-                                <i class="bi bi-eye-fill"></i>
-                              </a>
-                              <a href="#" title="Delete" class="action_btn">
-                                <i class="bi bi-trash-fill"></i>
-                              </a>
-                            </div>
                           </td>
                         </tr>
                       </tbody>

@@ -62,13 +62,20 @@
                         </tr>
                       </thead>
                       <tbody v-if="!users || !users.length">
-                        <tr>
+                        <tr v-if="loading" >
+                          <td colspan="8">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
                           <td class="align-enter text-dark font-13" colspan="8">
                             No Users
                           </td>
                         </tr>
                       </tbody>
-                      <tbody>
+                      <tbody v-else>
                         <tr v-for="(row, index) in users" v-bind:key="index">
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.details.id_card_number }}</td>
@@ -127,18 +134,17 @@
                           <th scope="col">Username</th>
                           <th scope="col">Date Created</th>
                           <th scope="col">Status</th>
-                          <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody v-if="!users || !users.length">
+                      <tbody v-if="!activeusers || !activeusers.length">
                         <tr>
-                          <td class="align-enter text-dark font-13" colspan="9">
+                          <td class="align-enter text-dark font-13" colspan="8">
                             No Active Users
                           </td>
                         </tr>
                       </tbody>
                       <tbody>
-                        <tr v-for="(row, index) in users" v-bind:key="index">
+                        <tr v-for="(row, index) in activeusers" v-bind:key="index">
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.details.id_card_number }}</td>
                           <td>
@@ -165,30 +171,6 @@
                               class="status_btn"
                               >{{ row.status }}</a
                             >
-                            <a
-                              v-if="row.status == 'suspended'"
-                              href="#"
-                              class="status_btn yellow_btn"
-                              >{{ row.status }}</a
-                            >
-                          </td>
-                          <td>
-                            <div class="action_btns d-flex">
-                              <a
-                                href="javascript:void(0)"
-                                data-toggle="modal"
-                                data-target="#suspendConfirmationModal"
-                                @click="sendInfo(row)"
-                                title="Suspend Account"
-                                class="action_btn"
-                              >
-                                <i
-                                  class="bi bi-file-excel"
-                                  style="color: red"
-                                ></i>
-                              </a>
-                              <!-- <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a> -->
-                            </div>
                           </td>
                         </tr>
                       </tbody>
@@ -197,7 +179,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div>  
           <div v-if="suspended" class="col-lg-11 mt-3">
             <div class="white_card card_height_100 mb_30">
               <div class="white_card_body">
@@ -214,22 +196,19 @@
                           <th scope="col">Username</th>
                           <th scope="col">Date Created</th>
                           <th scope="col">Status</th>
-                          <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody v-if="!users || !users.length">
+                      <tbody v-if="!suspendedusers || !suspendedusers.length">
                         <tr>
-                          <td class="align-enter text-dark font-13" colspan="9">
-                            No Suspended User
+                          <td class="align-enter text-dark font-13" colspan="8">
+                            No Suspended Users
                           </td>
                         </tr>
                       </tbody>
                       <tbody>
-                        <tr v-for="(row, index) in users" v-bind:key="index">
+                        <tr v-for="(row, index) in suspendedusers" v-bind:key="index">
                           <th scope="row">{{ index + 1 }}</th>
-                          <td>
-                              {{ row.details.id_card_number }}
-                          </td>
+                          <td>{{ row.details.id_card_number }}</td>
                           <td>
                             <span v-if="row.details.name">
                               {{ row.details.name }}
@@ -249,32 +228,11 @@
                           </td>
                           <td>
                             <a
-                              v-if="row.status == 'active'"
-                              href="#"
-                              class="status_btn"
-                              >{{ row.status }}</a
-                            >
-                            <a
                               v-if="row.status == 'suspended'"
                               href="#"
                               class="status_btn yellow_btn"
                               >{{ row.status }}</a
                             >
-                          </td>
-                          <td>
-                            <div class="action_btns d-flex">
-                              <a
-                                href="javascript:void(0)"
-                                data-toggle="modal"
-                                data-target="#activateConfirmationModal"
-                                @click="sendInfo(row)"
-                                title="Activate Account"
-                                class="action_btn"
-                              >
-                                <i class="bi bi-file-check"></i>
-                              </a>
-                              <!-- <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a> -->
-                            </div>
                           </td>
                         </tr>
                       </tbody>
@@ -403,6 +361,7 @@
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
+<style scoped src="@/assets/css/styleDashboardSupport.css"></style>
 <script>
 import DashboardSidebar from "./DashboardSidebar.vue";
 import DashboardNavbar from "./DashboardNavbar.vue";
@@ -415,6 +374,8 @@ export default {
   data() {
     return {
       users: {},
+      activeusers: {},
+      suspendedusers: {},
       pagination: {},
       all: true,
       active: false,
@@ -445,75 +406,18 @@ export default {
         this.all = true;
         this.active = false;
         this.suspended = false;
-
-        axios
-          .get("admin/users" + "?page=" + page, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.users = response.data.data;
-            this.prepPagination(response.data);
-          })
-          .catch((error) => {
-            this.$notify({
-              type: "error",
-              title: error.response.data.message,
-              duration: 5000,
-              speed: 1000,
-            });
-          });
       }
 
       if (this.key == "active") {
         this.all = false;
         this.active = true;
         this.suspended = false;
-
-        axios
-          .get("admin/users/active" + "?page=" + page, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.users = response.data.data;
-            this.prepPagination(response.data);
-          })
-          .catch((error) => {
-            this.$notify({
-              type: "error",
-              title: error.response.data.message,
-              duration: 5000,
-              speed: 1000,
-            });
-          });
       }
 
       if (this.key == "suspended") {
         this.all = false;
         this.active = false;
         this.suspended = true;
-
-        axios
-          .get("admin/users/suspended" + "?page=" + page, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            this.users = response.data.data;
-            this.prepPagination(response.data);
-          })
-          .catch((error) => {
-            this.$notify({
-              type: "error",
-              title: error.response.data.message,
-              duration: 5000,
-              speed: 1000,
-            });
-          });
       }
     },
 
@@ -555,11 +459,53 @@ export default {
         });
     },
 
+    loadActiveUsers(page = 1) {
+      axios
+        .get("admin/users/active" + "?page=" + page, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.activeusers = response.data.data;
+          this.prepPagination(response.data);
+        })
+        .catch((error) => {
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+        });
+    },
+
+    loadSuspendedUsers(page = 1) {
+      axios
+        .get("admin/users/suspended" + "?page=" + page, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.prepPagination(response.data);
+          this.suspendedusers = response.data.data;
+        })
+        .catch((error) => {
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+        });
+    },
+
     sendInfo(row) {
       this.selected.id = row.id;
       this.selected.type = row.type;
       this.selected.indname =
-        row.details.firstname + " " + row.details.lastname;
+      row.details.firstname + " " + row.details.lastname;
       this.selected.orgname = row.details.name;
     },
 
@@ -580,6 +526,8 @@ export default {
             speed: 1000,
           });
           this.loadAllUsers();
+          this.loadActiveUsers();
+          this.loadSuspendedUsers();
           this.closeModal();
           this.closeActivate();
         })
@@ -591,19 +539,18 @@ export default {
             duration: 5000,
             speed: 1000,
           });
+          this.loadAllUsers();
+          this.loadActiveUsers();
+          this.loadSuspendedUsers();
           this.closeModal();
-          this.closeActivate();
         });
     },
   },
 
-  created() {
-    this.loadAllUsers();
-  },
-
   mounted() {
     this.loadAllUsers();
-
+    this.loadActiveUsers();
+    this.loadSuspendedUsers();
     window.scrollTo(0, 0);
   },
 };

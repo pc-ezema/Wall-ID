@@ -57,13 +57,20 @@
                         </tr>
                       </thead>
                       <tbody v-if="!users || !users.length">
-                        <tr>
+                        <tr v-if="loading" >
+                          <td colspan="9">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
                           <td class="align-enter text-dark font-13" colspan="9">
                             No Suspended User
                           </td>
                         </tr>
                       </tbody>
-                      <tbody>
+                      <tbody v-else>
                         <tr v-for="(row, index) in users" v-bind:key="index">
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.details.id_card_number }}</td>
@@ -105,10 +112,10 @@
                                 data-toggle="modal"
                                 data-target="#activateConfirmationModal"
                                 @click="sendInfo(row)"
-                                title="Activate Account"
                                 class="action_btn"
+                                style="width: auto; background: #ffba00; color: #fff; padding: 0px 5px;"
                               >
-                                <i class="bi bi-file-check"></i>
+                                Active
                               </a>
                               <!-- <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a> -->
                             </div>
@@ -188,6 +195,8 @@
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
+<style scoped src="@/assets/css/styleDashboardSupport.css"></style>
+
 <script>
 import DashboardSidebar from "./DashboardSidebar.vue";
 import DashboardNavbar from "./DashboardNavbar.vue";
@@ -206,6 +215,7 @@ export default {
         indname: null,
         orgname: null,
       },
+      loading: false
     };
   },
 
@@ -215,6 +225,7 @@ export default {
     },
 
     loadAllSuspendedUsers(page = 1) {
+      this.loading = true;
       axios
         .get("admin/users/suspended" + "?page=" + page, {
           headers: {
@@ -222,10 +233,12 @@ export default {
           },
         })
         .then((response) => {
+          this.loading = false;
           this.prepPagination(response.data);
           this.users = response.data.data;
         })
         .catch((error) => {
+          this.loading = false;
           this.$notify({
             type: "error",
             title: error.response.data.message,

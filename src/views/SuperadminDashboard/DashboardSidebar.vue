@@ -209,6 +209,31 @@
           </li>
         </ul>
       </li>
+      <!--Profile -->
+      <li class="">
+        <router-link to="#" class="has-arrow menuRouter">
+          <a aria-expanded="false">
+            <div class="nav_icon_small">
+              <img src="@/assets/img/dashAssets/menu-card.png" />
+            </div>
+            <div class="nav_title">
+              <span>Profile</span>
+            </div>
+          </a>
+        </router-link>
+        <ul>
+          <li>
+            <router-link
+              to="/superadmin-dashboard/my-profile"
+              class="menuRouter"><a>My Profile</a></router-link>
+          </li>
+          <li>
+            <router-link
+              to="/superadmin-dashboard/settings"
+              class="menuRouter"><a>Settings</a></router-link>
+          </li>
+        </ul>
+      </li>
       <!--Admins-->
       <!-- <li class="">
                 <router-link to="#" class="has-arrow menuRouter">
@@ -250,8 +275,7 @@
 export default {
   methods: {
     logoutClick() {
-      localStorage.removeItem("token");
-      this.$store.dispatch("user", null);
+      localStorage.removeItem("token", "user");
       axios.post("logout");
       this.$router.replace("/");
     },

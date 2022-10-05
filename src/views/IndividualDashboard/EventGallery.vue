@@ -123,7 +123,14 @@
                               <a href="#" title="View" class="action_btn">
                                 <i class="bi bi-eye-fill"></i>
                               </a>
-                              <a href="#" title="Delete" class="action_btn">
+                              <a 
+                                href="javascript:void(0)"
+                                data-toggle="modal"
+                                data-target="#deleteEvent"
+                                title="Delete"
+                                class="action_btn"
+                                @click="sendInfo(item)"
+                              >
                                 <i class="bi bi-trash-fill"></i>
                               </a>
                             </div>
@@ -148,9 +155,58 @@
       <i class="ti-angle-up"></i>
     </a>
   </div>
+
+  <div
+    class="modal fade"
+    id="deleteEvent"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content viewCardModal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabelTitle">
+            Delete Event
+          </h5>
+          <button
+            type="button"
+            class="close"
+            id="closeDelete"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body eventCategoryForm">
+          <p>Are you sure you want to delete this event?</p>
+        </div>
+        <div class="modal-footer eventCategoryForm">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <form
+            @submit.prevent="
+              deleteEvent(this.selectedEventID)
+            "
+          >
+            <button
+              type="submit"
+              style="background-color: red !important; color: white"
+            >
+              Delete
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
+<style scoped src="@/assets/css/styleDashboardSupport.css"></style>
 <script>
 import DashboardSidebar from "./DashboardSidebar.vue";
 import DashboardNavbar from "./DashboardNavbar.vue";
@@ -158,10 +214,7 @@ import DashboardFooter from "./DashboardFooter.vue";
 import axios from "axios";
 export default {
   components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
-  mounted() {
-    window.scrollTo(0, 0);
-    this.getAllEvent();
-  },
+  
   data() {
     return {
       events: "",
@@ -169,7 +222,8 @@ export default {
       category: [],
       categoryName: "",
       searchQuery: null,
-      loading: true
+      loading: true,
+      selectedEventID: null
     };
   },
 
@@ -188,6 +242,10 @@ export default {
   },
 
   methods: {
+    closeDelete() {
+      document.getElementById("closeDelete").click();
+    },
+
     getDate(value) {
       return new Date(value).toLocaleDateString("en-US");
     },
@@ -214,6 +272,47 @@ export default {
           console.log(err);
         });
     },
+
+    async deleteEvent(data) 
+    {
+      this.$Progress.start();
+      await axios
+        .delete("/events/" + data, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.$Progress.finish();
+          this.getAllEvent();
+          this.$notify({
+            type: "success",
+            title: response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+          this.closeDelete();
+        })
+        .catch((error) => {
+          this.$Progress.fail();
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+          this.closeDelete();
+        });
+    },
+
+    sendInfo(item) {
+      this.selectedEventID = item.id;
+    },
+  },
+
+  mounted() {
+    this.getAllEvent();
+    window.scrollTo(0, 0);
   },
 };
 </script>

@@ -17,6 +17,7 @@ import AdminLogin from "../views/AdminLogin.vue";
 
 // Individual Dashboard
 import IndividualHome from "../views/IndividualDashboard/Home.vue";
+import IndividualNotification from "../views/IndividualDashboard/Notification.vue";
 import IndividualMyProfile from "../views/IndividualDashboard/MyProfile.vue";
 import IndividualDashboardSetting from "../views/IndividualDashboard/DashboardSetting.vue";
 //id card management
@@ -58,6 +59,7 @@ import IndividualTicket from '../views/IndividualDashboard/Ticket.vue'
 
 // Organisation Dashboard
 import OrganisationHome from "../views/OrganisationDashboard/Home.vue";
+import OrganisationNotification from "../views/OrganisationDashboard/Notification.vue";
 import OrganisationMyProfile from "../views/OrganisationDashboard/MyProfile.vue";
 import OrganisationDashboardSetting from "../views/OrganisationDashboard/DashboardSetting.vue";
 //id card management
@@ -99,6 +101,7 @@ import OrganisationTicket from '../views/OrganisationDashboard/Ticket.vue'
 // Superadmin Dashboard
 import SuperadminHome from "../views/SuperadminDashboard/Home.vue";
 import SuperadminMyProfile from "../views/SuperadminDashboard/MyProfile.vue";
+import SuperadminSettings from "../views/SuperadminDashboard/Settings.vue";
 // users
 import SuperadminAllUsers from "../views/SuperadminDashboard/AllUsers.vue";
 import SuperadminActiveUsers from "../views/SuperadminDashboard/ActiveUsers.vue";
@@ -281,6 +284,15 @@ const routes = [
     component: IndividualHome,
     meta: {
       title: "Dashboard - Individual Dashboard | WALLID",
+      middleware: auth,
+    },
+  },
+  {
+    path: "/individual-dashboard/notification",
+    name: "IndividualNotification",
+    component: IndividualNotification,
+    meta: {
+      title: "Notification - Individual Dashboard | WALLID",
       middleware: auth,
     },
   },
@@ -544,6 +556,15 @@ const routes = [
     },
   },
   {
+    path: "/organisation-dashboard/notification",
+    name: "OrganisationNotification",
+    component: OrganisationNotification,
+    meta: {
+      title: "Notification - Organisation Dashboard | WALLID",
+      middleware: auth,
+    },
+  },
+  {
     path: "/organisation-dashboard/my-profile",
     name: "OrganisationMyProfile",
     component: OrganisationMyProfile,
@@ -791,6 +812,15 @@ const routes = [
     component: SuperadminMyProfile,
     meta: {
       title: "My Profile - Superadmin Dashboard | WALLID",
+      middleware: auth,
+    },
+  },
+  {
+    path: "/superadmin-dashboard/settings",
+    name: "SuperadminSettings",
+    component: SuperadminSettings,
+    meta: {
+      title: "Settings - Superadmin Dashboard | WALLID",
       middleware: auth,
     },
   },

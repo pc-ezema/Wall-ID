@@ -28,7 +28,7 @@
                 </a>
                 <div class="Menu_NOtification_Wrap">
                   <div class="notification_Header">
-                    <h4>Notifications <span style="float: right">View More</span></h4>
+                    <h4>Notifications <router-link to="/organisation-dashboard/notification" style="float: right; cursor: pointer; color: #fff;">View More</router-link></h4>
                   </div>
                   <div class="Notification_body">
                     <div v-if="!viewUnreadNotification || !viewUnreadNotification.length" class="single_notify d-flex align-items-center justify-content-center">
@@ -102,7 +102,8 @@ export default {
 
   methods: {
     logoutClick() {
-      localStorage.removeItem("token","user");
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
       axios.post("logout");
       this.$router.replace("/");
     },

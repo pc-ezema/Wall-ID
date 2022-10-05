@@ -13347,3 +13347,9 @@ table.dataTable td {
   text-align: center;
   text-transform: uppercase;
 }
+
+.firstTxt
+{
+  color: #000;
+  font-weight: 700;
+}

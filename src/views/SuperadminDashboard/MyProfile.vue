@@ -31,19 +31,19 @@
           </div>
           <div class="col-lg-10 mb-4">
             <span>Name</span>
-            <p>Admin Admin</p>
+            <p>{{user.name}}</p>
           </div>
           <div class="col-lg-5 mb-4">
             <span>Email</span>
-            <p>email@email.com</p>
-          </div>
-          <div class="col-lg-5 mb-4">
-            <span>Phone</span>
-            <p>08012345678</p>
+            <p>{{user.email}}</p>
           </div>
           <div class="col-lg-5 mb-4">
             <span>Type</span>
-            <p>Superadmin</p>
+            <p>Administrator</p>
+          </div>
+          <div class="col-lg-5 mb-4">
+            <span>Level</span>
+            <p>{{user.level}}</p>
           </div>
         </div>
       </div>
@@ -60,12 +60,38 @@
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
+<style scoped src="@/assets/css/styleDashboardSupport.css"></style>
 <script>
 import DashboardSidebar from "./DashboardSidebar.vue";
 import DashboardNavbar from "./DashboardNavbar.vue";
 import DashboardFooter from "./DashboardFooter.vue";
+
+import axios from "axios";
+
 export default {
   components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+  
+  data() {
+    return {
+      baseURL: axios.defaults.baseURL.slice(0, -5),
+      user: JSON.parse(localStorage.getItem('user')) || [],
+    };
+  },
+  
+  methods: {
+    copy() {
+      this.$refs.clone.focus();
+      document.execCommand('copy');
+      this.$notify({
+        type: "success",
+        title: "Wall ID Number",
+        text: "Copied Successsfully!",
+        duration: 5000,
+        speed: 1000,
+      });
+    }
+  },
+  
   mounted() {
     window.scrollTo(0, 0);
   },

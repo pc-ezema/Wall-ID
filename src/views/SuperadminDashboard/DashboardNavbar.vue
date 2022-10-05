@@ -15,7 +15,7 @@
             class="header_right d-flex justify-content-between align-items-center"
           >
             <div class="header_notification_warp d-flex align-items-center">
-              <li>
+              <!-- <li>
                 <a class="bell_notification_clicker" href="#">
                   <img src="@/assets/img/icon/bell.svg" alt="" />
                   <span>3</span>
@@ -51,20 +51,20 @@
                     </div>
                   </div>
                 </div>
-              </li>
+              </li> -->
             </div>
             <div class="profile_info">
               <img src="@/assets/img/client_img.png" alt="#" />
               <div class="profile_info_iner">
                 <div class="profile_author_name">
-                  <p>Superadmin</p>
-                  <h5>Admin Admin</h5>
+                  <p>Administrator</p>
+                  <h5>{{ user.name }}</h5>
                 </div>
                 <div class="profile_info_details">
                   <router-link to="/superadmin-dashboard/my-profile"
                     ><a>My Profile</a></router-link
                   >
-                  <!-- <router-link to="/organisation-dashboard/settings"><a>Settings</a></router-link> -->
+                  <router-link to="/superadmin-dashboard/settings"><a>Settings</a></router-link>
                   <a href="javascript:void(0)" @click="logoutClick">Log Out</a>
                 </div>
               </div>
@@ -78,24 +78,20 @@
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
 <script>
-import { mapGetters } from "vuex";
 import axios from "axios";
 
 export default {
   data() {
     return {
       baseURL: axios.defaults.baseURL.slice(0, -5),
+      user: JSON.parse(localStorage.getItem('user')) || [],
     };
-  },
-
-  computed: {
-    ...mapGetters(["user"]),
   },
 
   methods: {
     logoutClick() {
       localStorage.removeItem("token");
-      this.$store.dispatch("user", null);
+      localStorage.removeItem("user");
       axios.post("logout");
       this.$router.replace("/");
     },
