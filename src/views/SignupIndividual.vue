@@ -7,6 +7,13 @@
       <div class="col-lg-6">
         <div class="login-content signup-content-only">
           <div class="login-form">
+            <div class="col-lg-12 text-center mb-5">
+            <router-link :to="{ name: 'Home' }"><img
+                  style="width: 170px"
+                  src="@/assets/images/logo.png"
+                  alt="WALLID"
+                /></router-link>
+            </div>
             <div class="col-lg-12 text-center">
               <h3>Individual Sign Up</h3>
               <p>Fill up the form below to sign up for your Wall-ID account.</p>

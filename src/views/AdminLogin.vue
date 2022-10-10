@@ -3,11 +3,13 @@
     <div class="row justify-content-center p-5">
       <div class="col-xl-5">
         <div class="login-content text-center">
-          <img
-            src="@/assets/images/logo.png"
-            width="170px"
-            alt="Wall-ID Logo"
-          />
+          <div class="col-lg-12 text-center">
+              <router-link :to="{ name: 'Home' }"><img
+                  style="width: 170px"
+                  src="@/assets/images/logo.png"
+                  alt="WALLID"
+                /></router-link>
+          </div>
           <p class="form-title">Login to have access to your dashboard</p>
           <div
             v-if="message"
@@ -146,7 +148,7 @@ export default {
 };
 </script>
 
-<style scooped>
+<style scoped>
   .icon {
     position: relative;
     float: right;

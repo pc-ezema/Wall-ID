@@ -123,7 +123,9 @@ import SuperadminTicketPayment from "../views/SuperadminDashboard/TicketPayment.
 import SuperadminSubscriptionPayment from "../views/SuperadminDashboard/SubscriptionPayment.vue";
 // verifier
 import SuperadminAllVerifiers from "../views/SuperadminDashboard/AllVerifiers.vue";
-
+import SuperadminAllEventVerifiers from "../views/SuperadminDashboard/AllEventVerifiers.vue";
+// notifications
+import SuperadminAllNotifications from "../views/SuperadminDashboard/AllNotifications.vue";
 import auth from "../middleware/auth";
 import guest from "../middleware/guest";
 
@@ -954,6 +956,25 @@ const routes = [
     component: SuperadminAllVerifiers,
     meta: {
       title: "All Verifiers - Superadmin Dashboard | WALLID",
+      middleware: auth,
+    },
+  },
+  {
+    path: "/superadmin-dashboard/all-event-verifiers",
+    name: "SuperadminAllEventVerifiers",
+    component: SuperadminAllEventVerifiers,
+    meta: {
+      title: "All Verifiers - Superadmin Dashboard | WALLID",
+      middleware: auth,
+    },
+  },
+  // All Notifications
+  {
+    path: "/superadmin-dashboard/all-notifications",
+    name: "SuperadminAllNotifications",
+    component: SuperadminAllNotifications,
+    meta: {
+      title: "All Notifications - Superadmin Dashboard | WALLID",
       middleware: auth,
     },
   },

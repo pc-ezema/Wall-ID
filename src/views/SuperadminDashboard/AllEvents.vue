@@ -52,33 +52,82 @@
                     <table class="table lms_table_active">
                       <thead>
                         <tr>
-                          <th scope="col">S/N</th>
+                          <th scope="col">ID</th>
                           <th scope="col">Name</th>
-                          <th scope="col">Creator Name</th>
-                          <th scope="col">Creator Email</th>
+                          <th scope="col">Type</th>
+                          <th scope="col">Category</th>
                           <th scope="col">Tickets</th>
-                          <th scope="col">Date Created</th>
-                          <th scope="col">Status</th>
+                          <th scope="col">Ticket QTY</th>
+                          <th scope="col">Start Date</th>
+                          <th scope="col">End Date</th>
+                          <th scope="col">Event ID</th>
+                          <th scope="col">Image</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
-                      <tbody>
-                        <tr>
-                          <th scope="row">1</th>
-                          <td>All Night Party</td>
-                          <td>Matthew Alex</td>
-                          <td>me@me.com</td>
-                          <td>Free</td>
-                          <td>2022-03-30</td>
+                      <tbody v-if="!events || !events.length">
+                        <tr v-if="loading" >
+                          <td colspan="11">
+                            <div style="text-align: center"  class="fa-3x">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                          </td>
+                        </tr>
+                        <tr v-else>
+                          <td class="align-center text-dark font-13" colspan="11">
+                            No Event Gallery
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tbody v-else>
+                        <tr v-for="(item, i) in resultQuery" :key="item.id">
+                          <th scope="row">
+                            {{ i + 1 }}
+                          </th>
+                          <td>{{ item.name }}</td>
+                          <td style="text-transform: capitalize">
+                            {{ item.type }}
+                          </td>
+                          <td style="text-transform: capitalize">
+                            {{ item.category.name }}
+                          </td>
                           <td>
-                            <a href="#" class="status_btn">Active</a>
+                            <span v-if="item.isFree == 'true'">Free</span>
+                            <span v-if="item.isFree == 'false'">Paid</span>
+                          </td>
+                          <td>{{ item.tickets }}</td>
+                          <td>
+                            {{ getDate(item.start_date) }}
+                          </td>
+                          <td>
+                            {{ getDate(item.end_date) }}
+                          </td>
+                          <td>
+                            {{ item.unique_id }}
+                          </td>
+                          <td>
+                            <span v-if="item.image == null">
+                                None
+                            </span>
+                            <span v-else>
+                            <img
+                              :src="this.baseURL + '/storage/events/' + item.image"
+                            />
+                            </span>
                           </td>
                           <td>
                             <div class="action_btns d-flex">
                               <a href="#" title="View" class="action_btn">
                                 <i class="bi bi-eye-fill"></i>
                               </a>
-                              <a href="#" title="Delete" class="action_btn">
+                              <a 
+                                href="javascript:void(0)"
+                                data-toggle="modal"
+                                data-target="#deleteEvent"
+                                title="Delete"
+                                class="action_btn"
+                                @click="sendInfo(item)"
+                              >
                                 <i class="bi bi-trash-fill"></i>
                               </a>
                             </div>
@@ -106,13 +155,114 @@
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
+<style scoped src="@/assets/css/styleDashboardSupport.css"></style>
+
 <script>
 import DashboardSidebar from "./DashboardSidebar.vue";
 import DashboardNavbar from "./DashboardNavbar.vue";
 import DashboardFooter from "./DashboardFooter.vue";
+import axios from "axios";
 export default {
   components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
+  
+  data() {
+    return {
+      events: "",
+      baseURL: axios.defaults.baseURL.slice(0, -5),
+      category: [],
+      categoryName: "",
+      searchQuery: null,
+      loading: true,
+      selectedEventID: null
+    };
+  },
+
+  computed: {
+    resultQuery() {
+      if (this.searchQuery) {
+        const value= this.searchQuery.charAt(0).toUpperCase() + this.searchQuery.slice(1);
+        return this.events.filter(function(event){
+          return event.name.indexOf(value) > -1 ||
+                event.unique_id.indexOf(value) > -1 
+        })
+      } else {
+        return this.events;
+      }
+    },
+  },
+
+  methods: {
+    closeDelete() {
+      document.getElementById("closeDelete").click();
+    },
+
+    getDate(value) {
+      return new Date(value).toLocaleDateString("en-US");
+    },
+
+    getAllEvent() {
+      this.loading = true;
+      axios
+        .get(`admin/events`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data.data);
+          this.loading = false;
+          this.events = res.data.data;
+          this.category = res.data.data.category;
+          for (let x of this.events) {
+            this.category = x.category;
+            // console.log(this.category);
+          }
+        })
+        .catch((err) => {
+          this.loading = false;
+          console.log(err);
+        });
+    },
+
+    async deleteEvent(data) 
+    {
+      this.$Progress.start();
+      await axios
+        .delete("/events/" + data, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.$Progress.finish();
+          this.getAllEvent();
+          this.$notify({
+            type: "success",
+            title: response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+          this.closeDelete();
+        })
+        .catch((error) => {
+          this.$Progress.fail();
+          this.$notify({
+            type: "error",
+            title: error.response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+          this.closeDelete();
+        });
+    },
+
+    sendInfo(item) {
+      this.selectedEventID = item.id;
+    },
+  },
+
   mounted() {
+    this.getAllEvent();
     window.scrollTo(0, 0);
   },
 };

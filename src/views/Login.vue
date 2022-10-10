@@ -7,6 +7,13 @@
       <div class="col-lg-4">
         <div class="login-content">
           <div class="login-form">
+            <div class="col-lg-12 text-center mb-5">
+            <router-link :to="{ name: 'Home' }"><img
+                  style="width: 170px"
+                  src="@/assets/images/logo.png"
+                  alt="WALLID"
+                /></router-link>
+            </div>
             <div class="col-lg-12 text-center">
               <h3>Login</h3>
               <p>Enter your Wall-ID details to continue.</p>
@@ -224,7 +231,7 @@ export default {
 };
 </script>
 
-<style scooped>
+<style scoped>
   .icon {
     position: relative;
     float: right;

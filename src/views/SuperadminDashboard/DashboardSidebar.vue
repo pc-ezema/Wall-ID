@@ -158,6 +158,19 @@
           </li>
         </ul>
       </li>
+      <!--Notification-->
+      <li class="">
+        <router-link to="/superadmin-dashboard/all-notifications" class="menuRouter">
+          <a aria-expanded="false">
+            <div class="nav_icon_small">
+              <img src="@/assets/img/dashAssets/menu-event.png" />
+            </div>
+            <div class="nav_title">
+              <span>All Notifications</span>
+            </div>
+          </a>
+        </router-link>
+      </li>
       <!--Payment History-->
       <li class="">
         <router-link to="#" class="has-arrow menuRouter">
@@ -205,6 +218,13 @@
               to="/superadmin-dashboard/all-verifiers"
               class="menuRouter"
               ><a>All Verifier</a></router-link
+            >
+          </li>
+          <li>
+            <router-link
+              to="/superadmin-dashboard/all-event-verifiers"
+              class="menuRouter"
+              ><a>Event Verifier</a></router-link
             >
           </li>
         </ul>

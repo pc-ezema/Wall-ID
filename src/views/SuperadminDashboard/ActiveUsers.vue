@@ -117,6 +117,16 @@
                               >
                                 Suspend
                               </a>
+                              <a
+                                href="javascript:void(0)"
+                                data-toggle="modal"
+                                data-target="#sendMessage"
+                                @click="sendInfo(row)"
+                                class="action_btn"
+                                style="width: auto; background: blue; color: #fff; padding: 0px 5px; margin-left: 1rem;"
+                              >
+                                Send Message
+                              </a>
                               <!-- <a href="#" title="Delete" class="action_btn"> <i class="bi bi-trash-fill"></i> </a> -->
                             </div>
                           </td>
@@ -192,6 +202,69 @@
       </div>
     </div>
   </div>
+
+  <div
+    class="modal fade"
+    id="sendMessage"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content viewCardModal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            Send Message
+          </h5>
+          <button
+            type="button"
+            class="close"
+            id="closeMessage"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body eventCategoryForm">
+          <form @submit.prevent="sendMessage(selected.id)">
+            <div class="row">
+              <div class="col-lg-12">
+                <input
+                  type="text"
+                  v-model="form.subject"
+                  class="input"
+                  placeholder="Subject"
+                />
+              </div>
+              <div class="col-lg-12">
+                <textarea
+                  cols="30"
+                  v-model="form.message"
+                  rows="5"
+                  class="input"
+                  placeholder="Message"
+                ></textarea>
+              </div>
+              <div class="col-lg-12 text-center">
+                <button
+                  style="width: 50%"
+                  v-if="$wait.is('processing')"
+                  type="submit"
+                >
+                  Sending message...
+                </button>
+                <button v-else type="submit" @close="showModal = false">
+                  Send Message
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
@@ -214,6 +287,10 @@ export default {
         indname: null,
         orgname: null,
       },
+      form: {
+        subject: null,
+        message: null,
+      },
       loading: false
     };
   },
@@ -221,6 +298,11 @@ export default {
   methods: {
     closeModal() {
       document.getElementById("close").click();
+    },
+
+    closeMessage() 
+    {
+      document.getElementById("closeMessage").click();
     },
 
     loadAllActiveUsers(page = 1) {
@@ -298,6 +380,62 @@ export default {
             speed: 1000,
           });
           this.closeModal();
+        });
+    },
+
+    async sendMessage(id) {
+      this.$wait.start("processing");
+      this.$Progress.start();
+
+      await axios
+        .post(
+          "admin/send/message/" + id,
+          {
+            subject: this.form.subject,
+            message: this.form.message,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((response) => {
+          this.$wait.end("processing");
+          this.$Progress.finish();
+          this.$notify({
+            type: "success",
+            title: response.data.message,
+            duration: 5000,
+            speed: 1000,
+          });
+          this.loadAllActiveUsers();
+          this.closeMessage();
+        })
+        .catch((error) => {
+          if (error.response.status == 422) {
+            this.$wait.end("processing");
+            this.$Progress.fail();
+            for (let i in error.response.data.error) {
+              this.$notify({
+                type: "error",
+                title: error.response.data.error[i][0],
+                duration: 5000,
+                speed: 1000,
+              });
+            }
+            this.closeMessage();
+          } else {
+            this.$wait.end("processing");
+            this.$Progress.fail();
+            this.$notify({
+              type: "error",
+              title: error.response.data.message,
+              duration: 5000,
+              speed: 1000,
+            });
+            this.closeMessage();
+          }
         });
     },
   },

@@ -14,7 +14,7 @@
               <div class="row">
                 <div class="col-lg-12">
                   <div class="dashboard_header_title">
-                    <h3>All Verifiers</h3>
+                    <h3>All Event Verifiers</h3>
                     <p>
                       <router-link to="/superadmin-dashboard/home"
                         ><a
@@ -32,7 +32,7 @@
         <!--Boxes Section-->
         <div class="row justify-content-center mt-3 secForm">
           <div class="col-lg-11 secFormHead">
-            <h5>All Verifiers list</h5>
+            <h5>All Event Verifiers list</h5>
           </div>
           <div class="col-lg-11 filterSelect">
             <input
@@ -50,15 +50,15 @@
                     <table class="table lms_table_active">
                       <thead>
                         <tr>
-                          <th scope="col">S/N</th>
+                          <th scope="col">ID</th>
                           <th scope="col">Name</th>
-                          <th scope="col">Organization Joined</th>
                           <th scope="col">Role</th>
-                          <th scope="col">Date Joined</th>
-                          <th scope="col">Status</th>
+                          <th scope="col">Event Name</th>
+                          <th scope="col">Event Unique ID</th>
+                          <th scope="col">Created At</th>
                         </tr>
                       </thead>
-                      <tbody v-if="!verifiers || !verifiers.length">
+                      <tbody v-if="!myEventVerifiers || !myEventVerifiers.length">
                         <tr v-if="loading" >
                           <td colspan="6">
                             <div style="text-align: center"  class="fa-3x">
@@ -68,36 +68,21 @@
                         </tr>
                         <tr v-else>
                           <td class="align-enter text-dark font-13" colspan="6">
-                            No Joined Member
+                            No Event Verifiers.
                           </td>
                         </tr>
                       </tbody>
                       <tbody v-else>
                         <tr
-                          v-for="(row, index) in verifiers"
+                          v-for="(row, index) in myEventVerifiers"
                           v-bind:key="index"
                         >
                           <th scope="row">{{ index + 1 }}</th>
                           <td>{{ row.name }}</td>
-                          <td>{{ row.organization.name }}</td>
                           <td>{{ row.role }}</td>
-                          <td>
-                            {{ new Date(row.created_at).toLocaleString() }}
-                          </td>
-                          <td>
-                            <a
-                              v-if="row.status == 'Approved'"
-                              href="#"
-                              class="status_btn"
-                              >Active</a
-                            >
-                            <a
-                              v-if="row.status == 'Pending'"
-                              href="#"
-                              class="status_btn yellow_btn"
-                              >Suspended</a
-                            >
-                          </td>
+                          <td>{{ row.event_name }}</td>
+                          <td>{{ row.event_unique_id }}</td>
+                          <td>{{ getDate(row.created_at) }}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -121,46 +106,27 @@
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
+<style scoped src="@/assets/css/styleDashboardSupport.css"></style>
 <script>
 import DashboardSidebar from "./DashboardSidebar.vue";
 import DashboardNavbar from "./DashboardNavbar.vue";
 import DashboardFooter from "./DashboardFooter.vue";
+
 import axios from "axios";
 
 export default {
   components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
-
   data() {
     return {
-      verifiers: [],
       pagination: {},
+      myEventVerifiers: [],
       loading: false
     };
   },
 
   methods: {
-    loadAllVerifiers(page = 1) {
-      this.loading = true;
-      axios
-        .get("admin/all/verifiers" + "?page=" + page, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then((response) => {
-          this.loading = false;
-          this.prepPagination(response.data);
-          this.verifiers = response.data.data;
-        })
-        .catch((error) => {
-          this.loading = false
-          this.$notify({
-            type: "error",
-            title: error.response.data.message,
-            duration: 5000,
-            speed: 1000,
-          });
-        });
+    getDate(value) {
+      return new Date(value).toLocaleDateString("en-US");
     },
 
     prepPagination(data) {
@@ -176,11 +142,29 @@ export default {
         total: data.meta.total,
       };
     },
+
+    eventVerifiers() {
+      this.loading = true;
+      axios
+        .get("admin/all/event/verifiers", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then((response) => {
+          this.loading = false;
+        //   this.prepPagination(response.data);
+          this.myEventVerifiers = response.data.data;
+        })
+        .catch((error) => {
+          this.loading = false;
+          console.log(error);
+        });
+    },
   },
 
-mounted() {
-    this.loadAllVerifiers();
-
+  mounted() {
+    this.eventVerifiers();
     window.scrollTo(0, 0);
   },
 };
