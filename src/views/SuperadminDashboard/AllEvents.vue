@@ -36,13 +36,13 @@
           </div>
           <div class="col-lg-11 filterSelect">
             <input type="text" placeholder="Search..." />
-            <select>
+            <!-- <select>
               <option hidden>Filter</option>
               <option>New Vibe</option>
               <option>Live Concert</option>
               <option>Religion</option>
               <option>Entertainment</option>
-            </select>
+            </select> -->
           </div>
           <div class="col-lg-11 mt-3">
             <div class="white_card card_height_100 mb_30">
@@ -53,28 +53,34 @@
                       <thead>
                         <tr>
                           <th scope="col">ID</th>
-                          <th scope="col">Name</th>
-                          <th scope="col">Type</th>
-                          <th scope="col">Category</th>
-                          <th scope="col">Tickets</th>
+                          <th scope="col">Posted By</th>
+                          <th scope="col">Event Name</th>
+                          <th scope="col">Event Type</th>
+                          <th scope="col">Event Category</th>
+                          <th scope="col">Event Tickets</th>
                           <th scope="col">Ticket QTY</th>
                           <th scope="col">Start Date</th>
                           <th scope="col">End Date</th>
                           <th scope="col">Event ID</th>
-                          <th scope="col">Image</th>
+                          <th scope="col">Event Image</th>
+                          <th scope="col">Venue Image</th>
+                          <th scope="col">Ticket Category</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody v-if="!events || !events.length">
-                        <tr v-if="loading" >
-                          <td colspan="11">
-                            <div style="text-align: center"  class="fa-3x">
-                                <i class="fas fa-spinner fa-spin"></i>
+                        <tr v-if="loading">
+                          <td colspan="14">
+                            <div style="text-align: center" class="fa-3x">
+                              <i class="fas fa-spinner fa-spin"></i>
                             </div>
                           </td>
                         </tr>
                         <tr v-else>
-                          <td class="align-center text-dark font-13" colspan="11">
+                          <td
+                            class="align-center text-dark font-13"
+                            colspan="14"
+                          >
                             No Event Gallery
                           </td>
                         </tr>
@@ -84,6 +90,10 @@
                           <th scope="row">
                             {{ i + 1 }}
                           </th>
+                          <td>
+                              <span v-if="item.user.type == 'organization'">{{ item.user.details.name }}</span>
+                              <span v-if="item.user.type == 'individual'">{{ item.user.details.firstname }} {{ item.user.details.lastname }}</span>
+                          </td>
                           <td>{{ item.name }}</td>
                           <td style="text-transform: capitalize">
                             {{ item.type }}
@@ -106,21 +116,40 @@
                             {{ item.unique_id }}
                           </td>
                           <td>
-                            <span v-if="item.image == null">
-                                None
-                            </span>
+                            <span v-if="item.image == null"> None </span>
                             <span v-else>
-                            <img
-                              :src="this.baseURL + '/storage/events/' + item.image"
-                            />
+                              <img
+                                :src="
+                                  this.baseURL + '/storage/events/' + item.image
+                                "
+                              />
                             </span>
                           </td>
                           <td>
+                            <span v-if="item.venue_image == null"> None </span>
+                            <span v-else>
+                              <img
+                                :src="
+                                  this.baseURL +
+                                  '/storage/events/' +
+                                  item.venue_image
+                                "
+                              />
+                            </span>
+                          </td>
+                          <td>
+                            <button
+                              class="viewCardBtn"
+                              data-toggle="modal"
+                              data-target="#ViewTicketCategory"
+                              @click="sendTCInfo(item.ticketCategories)"
+                            >
+                              View Ticket Category
+                            </button>
+                          </td>
+                          <td>
                             <div class="action_btns d-flex">
-                              <a href="#" title="View" class="action_btn">
-                                <i class="bi bi-eye-fill"></i>
-                              </a>
-                              <a 
+                              <a
                                 href="javascript:void(0)"
                                 data-toggle="modal"
                                 data-target="#deleteEvent"
@@ -152,6 +181,107 @@
       <i class="ti-angle-up"></i>
     </a>
   </div>
+
+  <div
+    class="modal fade"
+    id="ViewTicketCategory"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content viewCardModal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            View Ticket Category
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="QA_section">
+            <div class="QA_table mb_30">
+              <table class="table lms_table_active">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(ticket, i) in ticketCategories" :key="ticket.id">
+                    <th scope="row">
+                      {{ i + 1 }}
+                    </th>
+                    <td>{{ ticket.name }}</td>
+                    <td style="text-transform: capitalize">
+                      {{ ticket.price }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="modal fade"
+    id="deleteEvent"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content viewCardModal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabelTitle">
+            Delete Event
+          </h5>
+          <button
+            type="button"
+            class="close"
+            id="closeDelete"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body eventCategoryForm">
+          <p>Are you sure you want to delete this event?</p>
+        </div>
+        <div class="modal-footer eventCategoryForm">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <form
+            @submit.prevent="
+              deleteEvent(this.selectedEventID)
+            "
+          >
+            <button
+              type="submit"
+              style="background-color: red !important; color: white"
+            >
+              Delete
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped src="@/assets/css/styleDashboard.css"></style>
@@ -164,7 +294,7 @@ import DashboardFooter from "./DashboardFooter.vue";
 import axios from "axios";
 export default {
   components: { DashboardSidebar, DashboardNavbar, DashboardFooter },
-  
+
   data() {
     return {
       events: "",
@@ -173,18 +303,22 @@ export default {
       categoryName: "",
       searchQuery: null,
       loading: true,
-      selectedEventID: null
+      selectedEventID: null,
+      ticketCategories: [],
     };
   },
 
   computed: {
     resultQuery() {
       if (this.searchQuery) {
-        const value= this.searchQuery.charAt(0).toUpperCase() + this.searchQuery.slice(1);
-        return this.events.filter(function(event){
-          return event.name.indexOf(value) > -1 ||
-                event.unique_id.indexOf(value) > -1 
-        })
+        const value =
+          this.searchQuery.charAt(0).toUpperCase() + this.searchQuery.slice(1);
+        return this.events.filter(function (event) {
+          return (
+            event.name.indexOf(value) > -1 ||
+            event.unique_id.indexOf(value) > -1
+          );
+        });
       } else {
         return this.events;
       }
@@ -209,13 +343,12 @@ export default {
           },
         })
         .then((res) => {
-          console.log(res.data.data);
+          // console.log(res.data.data);
           this.loading = false;
           this.events = res.data.data;
           this.category = res.data.data.category;
           for (let x of this.events) {
             this.category = x.category;
-            // console.log(this.category);
           }
         })
         .catch((err) => {
@@ -224,8 +357,7 @@ export default {
         });
     },
 
-    async deleteEvent(data) 
-    {
+    async deleteEvent(data) {
       this.$Progress.start();
       await axios
         .delete("/events/" + data, {
@@ -258,6 +390,10 @@ export default {
 
     sendInfo(item) {
       this.selectedEventID = item.id;
+    },
+
+    sendTCInfo(ticketCategories) {
+      this.ticketCategories = ticketCategories;
     },
   },
 

@@ -65,19 +65,21 @@
                           <th scope="col">End Date</th>
                           <th scope="col">Event ID</th>
                           <th scope="col">Image</th>
+                          <th scope="col">Venue Image</th>
+                          <th scope="col">Ticket Category</th>
                           <th scope="col">Action</th>
                         </tr>
                       </thead>
                       <tbody v-if="!events || !events.length">
                         <tr v-if="loading" >
-                          <td colspan="11">
+                          <td colspan="13">
                             <div style="text-align: center"  class="fa-3x">
                                 <i class="fas fa-spinner fa-spin"></i>
                             </div>
                           </td>
                         </tr>
                         <tr v-else>
-                          <td class="align-center text-dark font-13" colspan="11">
+                          <td class="align-center text-dark font-13" colspan="13">
                             No Event Gallery
                           </td>
                         </tr>
@@ -119,10 +121,32 @@
                             </span>
                           </td>
                           <td>
+                            <span v-if="item.venue_image == null"> None </span>
+                            <span v-else>
+                              <img
+                                :src="
+                                  this.baseURL +
+                                  '/storage/events/' +
+                                  item.venue_image
+                                "
+                              />
+                            </span>
+                          </td>
+                          <td>
+                            <button
+                              class="viewCardBtn"
+                              data-toggle="modal"
+                              data-target="#ViewTicketCategory"
+                              @click="sendTCInfo(item.ticketCategories)"
+                            >
+                              View Ticket Category
+                            </button>
+                          </td>
+                          <td>
                             <div class="action_btns d-flex">
-                              <a href="#" title="View" class="action_btn">
+                              <!-- <a href="#" title="View" class="action_btn">
                                 <i class="bi bi-eye-fill"></i>
-                              </a>
+                              </a> -->
                               <a 
                                 href="javascript:void(0)"
                                 data-toggle="modal"
@@ -154,6 +178,59 @@
     <a title="Go to Top" href="#">
       <i class="ti-angle-up"></i>
     </a>
+  </div>
+
+  <div
+    class="modal fade"
+    id="ViewTicketCategory"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content viewCardModal">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            View Ticket Category
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="QA_section">
+            <div class="QA_table mb_30">
+              <table class="table lms_table_active">
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(ticket, i) in ticketCategories" :key="ticket.id">
+                    <th scope="row">
+                      {{ i + 1 }}
+                    </th>
+                    <td>{{ ticket.name }}</td>
+                    <td style="text-transform: capitalize">
+                      {{ ticket.price }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div
@@ -223,7 +300,8 @@ export default {
       categoryName: "",
       searchQuery: null,
       loading: true,
-      selectedEventID: null
+      selectedEventID: null,
+      ticketCategories: [],
     };
   },
 
@@ -307,6 +385,10 @@ export default {
 
     sendInfo(item) {
       this.selectedEventID = item.id;
+    },
+
+    sendTCInfo(ticketCategories) {
+      this.ticketCategories = ticketCategories;
     },
   },
 
