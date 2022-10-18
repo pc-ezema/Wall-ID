@@ -309,6 +309,7 @@ export default {
   width: 70px;
   margin-right: 1rem;
   margin-top: -0.5rem;
+  height: 50px;
 }
 .profile-row {
   display: flex;

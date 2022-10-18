@@ -142,6 +142,7 @@ export default {
           },
         })
         .then((response) => {
+          console.log(response.data.data);
           this.loading = false;
           this.prepPagination(response.data);
           this.tickets = response.data.data;

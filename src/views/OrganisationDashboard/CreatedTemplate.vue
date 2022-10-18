@@ -349,6 +349,7 @@ export default {
   width: 70px;
   margin-right: 1rem;
   margin-top: -0.5rem;
+  height: 50px;
 }
 .profile-row {
   display: flex;
@@ -368,6 +369,8 @@ export default {
   display: block;
   /* box-shadow: 0px 0px 4px 3px #fff; */
   border: 5px solid #fff;
+  width: 120px;
+  height: 130px;
 }
 /* .profile-row .desc {
   padding-top: 4rem;
